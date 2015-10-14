@@ -1,15 +1,15 @@
 # Input Variables
 
 ## Resource Tags
-variable "app_label" {}
-variable "app_name" {}
+variable "stack_item_label" {}
+variable "stack_item_fullname" {}
 
 ## VPC parameters
 variable "vpc_cidr" {}
 variable "enable_dns" {
-        default = true
+  default = true
 }
 variable "enable_hostnames" {
-        default = true
+  default = true
 }
 variable "lan_cidr" {}

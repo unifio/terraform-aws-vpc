@@ -1,8 +1,8 @@
 # Input Variables
 
 ## Resource tags
-variable "app_label" {}
-variable "app_name" {}
+variable "stack_item_label" {}
+variable "stack_item_fullname" {}
 
 ## VPC parameters
 variable "vpc_id" {}

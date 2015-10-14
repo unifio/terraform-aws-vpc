@@ -1,18 +1,20 @@
 # Input variables
 
 ## Resource tags
-variable "app_label" {}
-variable "app_name" {}
+variable "stack_item_label" {}
+variable "stack_item_fullname" {}
 
 ## VPC parameters
 variable "vpc_id" {}
 variable "region" {}
 variable "az" {}
-variable "az_count" {}
 variable "dmz_cidr" {}
 variable "lan_cidr" {}
 variable "enable_dmz_public_ips" {
-        default = true
+  default = true
+}
+variable "lans_per_az" {
+  default = "1"
 }
 variable "rt_dmz_id" {}
 
@@ -24,9 +26,9 @@ variable "nat_sg_id" {}
 
 ## Context parameters
 variable "user_data_template" {
-        default = "user_data.tpl"
+  default = "user_data.tpl"
 }
 variable "domain" {}
 variable "ssh_user" {
-        default = "ec2-user"
+  default = "ec2-user"
 }

@@ -1,4 +1,5 @@
-# Terraform VPC Stack #
+# Terraform AWS VPC Stack #
+[![Circle CI](https://circleci.com/gh/unifio/terraform-aws-vpc/tree/master.svg?style=svg)](https://circleci.com/gh/unifio/terraform-aws-vpc/tree/master)
 
 Module stack that supports full AWS VPC deployment.  Users can provision a VPC with optional support for
 DHCP Options Sets, Virtual Private Gateway creation, and provision one or more availability zones (AZs) each coming with its own NAT setup, external facing (DMZ) and private (LAN) subnets.

@@ -36,6 +36,22 @@ variable "lan_access_cidr" {
   default = "10.10.2.0/23"
 }
 
+### DHCP
+
+variable "enable_dns" {
+  default = true
+}
+variable "enable_hostnames" {
+  default = true
+}
+variable "netbios_node_type" {
+  default = 2
+}
+variable "domain_name" {}
+variable "name_servers" {}
+variable "ntp_servers" {}
+variable "netbios_name_servers" {}
+
 ### NATs
 
 variable "instance_type" {

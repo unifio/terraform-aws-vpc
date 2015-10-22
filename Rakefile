@@ -1,15 +1,12 @@
 require 'rake'
 
 inputs = {
-  'stack_item_label'     => 'exmpl',
-  'stack_item_fullname'  => 'Full Terraform AWS VPC deployment example',
-  'domain_name'          => 'unif.io',
-  'name_servers'         => '10.10.0.15,10.10.1.15',
-  'ntp_servers'          => '10.10.0.15,10.10.1.15',
-  'netbios_name_servers' => '10.10.0.15,10.10.1.15',
-  'ami'                  => 'ami-xxxxxx',
-  'key_name'             => 'example',
-  'ssh_user'             => 'ec2-user',
+  'stack_item_label'    => 'exmpl',
+  'stack_item_fullname' => 'Full Terraform AWS VPC deployment example',
+  'domain_name'         => 'unif.io',
+  'ami'                 => 'ami-xxxxxx',
+  'key_name'            => 'example',
+  'ssh_user'            => 'ec2-user',
 }
 
 task :default => :verify

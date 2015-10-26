@@ -6,7 +6,7 @@ DHCP Options Sets, Virtual Private Gateway creation, and provision one or more a
 
 ## Base Module ##
 
-The Base module provisions the VPC, attaches an Internet Gateway, and creates NAT Security Group and DMZ Routing table
+The Base module provisions the VPC, attaches an Internet Gateway, and creates NAT Security Group, DMZ Routing table, and creates a CloudWatch group, IAM role, and AWS flow log.  The flow log is configured to capture all traffic (ALLOW and DENY) over the entire VPC.
 
 ### Input Variables ###
 
@@ -16,6 +16,7 @@ The Base module provisions the VPC, attaches an Internet Gateway, and creates NA
 - `enable_dns` - (Optional) A boolean flag to enable/disable DNS support in the VPC. Defaults true.
 - `enable_hostnames` - (Optional) A boolean flag to enable/disable DNS hostnames in the VPC. Defaults false.
 - `lan_cidr` - Comma separated list of CIDR blocks to be given ingress access to NAT boxes in each subnet.
+
 
 ### Usage ###
 
@@ -37,6 +38,7 @@ module "vpc_base" {
 - `igw_id` - ID of the Internet gateway
 - `rt_dmz_id` - ID of the DMZ routing table
 - `nat_sg_id` - ID of NAT security group
+- `flow_log_id` - ID of the AWS flow log
 
 ## DHCP module ##
 

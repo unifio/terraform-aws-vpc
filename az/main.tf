@@ -36,9 +36,9 @@ resource "template_file" "user_data" {
 
 ### Provisions NAT instance
 resource "aws_instance" "nat" {
-  count = "${length(split(",",var.az))}"
-  ami = "${var.ami}"
+  count = "${length(split(",",var.az)) * element(split(",",var.lans_per_az_is_zero),var.lans_per_az)}"
   instance_type = "${var.instance_type}"
+  ami = "${var.ami}"
   key_name = "${var.key_name}"
   vpc_security_group_ids = ["${var.nat_sg_id}"]
   subnet_id = "${element(aws_subnet.dmz.*.id,count.index)}"
@@ -49,6 +49,30 @@ resource "aws_instance" "nat" {
     managed_by = "terraform"
   }
   user_data = "${element(template_file.user_data.*.rendered, count.index)}"
+}
+
+## Add CloudWatch alarm to recover instance in the case of a fault
+resource "aws_cloudwatch_metric_alarm" "recover_alarm" {
+  ## The use of the lans_per_az_is_zero list is to map any nonzero variable onto a value of 1
+  ## and a value of zero variable onto 0.  This is not a foolproof way to do this, since
+  ## technically you need an index for every conceivable value, so instead we count on the following:
+  ## 1) We have 20 indices, which allows the user up to 20 lans_per_az, which should be plenty
+  ## 2) If the user accidentally puts some random value in for lans_per_az or nat_auto_recovery the modulo
+  ##    ensures that in the worst case don't get a giant multiplier
+  count = "${length(split(",",var.az)) * element(split(",",var.lans_per_az_is_zero),var.lans_per_az) * element(split(",",var.lans_per_az_is_zero),var.nat_auto_recovery)}"
+  alarm_name = "${var.stack_item_label}-nat-${count.index}-alarm"
+  dimensions = {
+    InstanceId = "${element(aws_instance.nat.*.id, count.index)}"
+  }
+  metric_name = "StatusCheckFailed"
+  namespace = "AWS/EC2"
+  statistic = "Average"
+  comparison_operator = "GreaterThanThreshold"
+  threshold = "0"
+  period = "${var.period}"
+  evaluation_periods = "${var.evaluation_periods}"
+  alarm_description = "Recover instance upon series of StatusCheckFailed events"
+  alarm_actions = [ "arn:aws:automate:${var.region}:ec2:recover" ]
 }
 
 ## Provisions LAN resources

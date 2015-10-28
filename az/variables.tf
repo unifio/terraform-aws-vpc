@@ -13,6 +13,15 @@ variable "lan_cidr" {}
 variable "enable_dmz_public_ips" {
   default = true
 }
+variable "nat_auto_recovery" {
+  default = "1"
+}
+variable "period" {
+  default = 60
+}
+variable "evaluation_periods" {
+  default = 2
+}
 variable "lans_per_az" {
   default = "1"
 }
@@ -31,4 +40,9 @@ variable "user_data_template" {
 variable "domain" {}
 variable "ssh_user" {
   default = "ec2-user"
+}
+
+## private/hidden variables
+variable "lans_per_az_is_zero" {
+  default = "0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1"
 }

@@ -2,11 +2,11 @@
 [![Circle CI](https://circleci.com/gh/unifio/terraform-aws-vpc/tree/master.svg?style=svg)](https://circleci.com/gh/unifio/terraform-aws-vpc/tree/master)
 
 Module stack that supports full AWS VPC deployment.  Users can provision a VPC with optional support for
-DHCP Options Sets, Virtual Private Gateway creation, and provision one or more availability zones (AZs) each coming with its own NAT setup, external facing (DMZ) and private (LAN) subnets.
+DHCP Options Sets, Virtual Private Gateway creation, and provision one or more availability zones (AZs) each coming with its own NAT setup, external facing (DMZ) and private (LAN) subnets.  AWS flow logs are setup VPC wide, and there is optional support for auto recovery on the AZ NAT instances using CloudWatch alarms.
 
 ## Base Module ##
 
-The Base module provisions the VPC, attaches an Internet Gateway, and creates NAT Security Group, DMZ Routing table, and creates a CloudWatch group, IAM role, and AWS flow log.  The flow log is configured to capture all traffic (ALLOW and DENY) over the entire VPC.
+The Base module provisions the VPC, attaches an Internet Gateway, and creates NAT Security Group and DMZ Routing table
 
 ### Input Variables ###
 
@@ -16,7 +16,6 @@ The Base module provisions the VPC, attaches an Internet Gateway, and creates NA
 - `enable_dns` - (Optional) A boolean flag to enable/disable DNS support in the VPC. Defaults true.
 - `enable_hostnames` - (Optional) A boolean flag to enable/disable DNS hostnames in the VPC. Defaults false.
 - `lan_cidr` - Comma separated list of CIDR blocks to be given ingress access to NAT boxes in each subnet.
-
 
 ### Usage ###
 
@@ -38,7 +37,6 @@ module "vpc_base" {
 - `igw_id` - ID of the Internet gateway
 - `rt_dmz_id` - ID of the DMZ routing table
 - `nat_sg_id` - ID of NAT security group
-- `flow_log_id` - ID of the AWS flow log
 
 ## DHCP module ##
 
@@ -133,6 +131,10 @@ In each Availability Zone provided, this module provisions a NAT instance, and c
  * ssh_user - SSH username to be given NAT access via SSH
 - `domain` - Domain name
 - `ssh_user` - Username to use when enabling SSH access to NAT instance.  Default is ec2-user.
+- `nat_auto_recovery` - Set to 0 or 1.  0 disables and 1 enables.  If enabled, CloudWatch alarms will be created that will automatically recover the NAT instances, preserving its instance id, ip, etc. in the case of system failure.  Default is 1 (enabled).  Please check that the AMI used for the NAT supports recovery of its instances.
+- `period` - The period in seconds over which a system failure in the NAT instance occurs. Not used if enable_nat_auto_recovery is 0.
+- `evaluation_periods` - The number of consecutive periods in which the system failure must occur for the alarm to fire.  Not used if enable_nat_auto_recovery is 0.
+
 
 ### Usage ###
 
@@ -172,4 +174,4 @@ See the [examples](examples) directory for a complete set of example source file
 
 ## License ##
 
-Apache 2 Licensed. See LICENSE for full details.
+MPL 2.0. See LICENSE for full details.

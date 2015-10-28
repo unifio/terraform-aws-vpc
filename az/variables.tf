@@ -27,13 +27,16 @@ variable "enable_nats" {
   default = "true"
 }
 variable "enable_nat_auto_recovery" {
-  default = "true"
+  default = "false"
 }
 variable "period" {
   default = 60
 }
 variable "evaluation_periods" {
   default = 2
+}
+variable "enable_nat_eip" {
+  default = "false"
 }
 
 ## Context parameters

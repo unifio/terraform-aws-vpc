@@ -54,6 +54,12 @@ resource "aws_instance" "nat" {
   user_data = "${element(template_file.user_data.*.rendered, count.index)}"
 }
 
+resource "aws_eip" "nat_eip" {
+  count = "${length(split(",",var.az)) * lookup(var.decision_tree,var.enable_nat_eip) * lookup(var.decision_tree,var.enable_nats)}"
+  vpc = true
+  instance = "${element(aws_instance.nat.*.id,count.index)}"
+}
+
 ## Add CloudWatch alarm to recover instance in the case of a fault
 resource "aws_cloudwatch_metric_alarm" "recover_alarm" {
   count = "${length(split(",",var.az)) * lookup(var.decision_tree,var.enable_nats) * lookup(var.decision_tree,var.enable_nat_auto_recovery)}"

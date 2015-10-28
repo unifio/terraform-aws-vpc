@@ -64,4 +64,6 @@ module "vpc_az" {
   user_data_template = "${var.user_data_template}"
   domain = "${var.domain_name}"
   ssh_user = "${var.ssh_user}"
+  enable_nat_auto_recovery = "${var.enable_nat_auto_recovery}"
+  enable_nat_eip = "${var.enable_nat_eip}"
 }

@@ -32,6 +32,9 @@ variable "lan_cidr" {
 variable "lans_per_az" {
   default = 1
 }
+variable "enable_nat_eip" {
+  default = "false"
+}
 variable "lan_access_cidr" {
   default = "10.10.2.0/23"
 }

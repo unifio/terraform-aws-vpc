@@ -1,12 +1,15 @@
 # Terraform AWS VPC Stack #
 [![Circle CI](https://circleci.com/gh/unifio/terraform-aws-vpc/tree/master.svg?style=svg)](https://circleci.com/gh/unifio/terraform-aws-vpc/tree/master)
 
-Module stack that supports full AWS VPC deployment.  Users can provision a VPC with optional support for
-DHCP Options Sets, Virtual Private Gateway creation, and provision one or more availability zones (AZs) each coming with its own NAT setup, external facing (DMZ) and private (LAN) subnets.
+Module stack that supports full AWS VPC deployment.  Users can provision a basic VPC with optional support for the following:
+
+* Availability Zone (AZ) provisioning w/ configurable subnet and NAT configuration
+* DHCP Options Set
+* Virtual Private Gateway creation
 
 ## Base Module ##
 
-The Base module provisions the VPC, attaches an Internet Gateway, and creates NAT Security Group and DMZ Routing table
+The Base module provisions the VPC, attaches an Internet Gateway, and creates NAT Security Group, DMZ Routing table, and creates a CloudWatch group, IAM role, and AWS flow log.  The flow log is configured to capture all traffic (ALLOW and DENY) over the entire VPC.
 
 ### Input Variables ###
 
@@ -31,12 +34,14 @@ module "vpc_base" {
   lan_cidr = "10.10.2.0/25,10.10.2.128/25,10.10.3.0/25"
 }
 ```
+
 ### Outputs ###
 
 - `vpc_id` - ID of the VPC
 - `igw_id` - ID of the Internet gateway
 - `rt_dmz_id` - ID of the DMZ routing table
 - `nat_sg_id` - ID of NAT security group
+- `flow_log_id` - ID of the AWS flow log
 
 ## DHCP module ##
 
@@ -72,6 +77,7 @@ module "dhcp" {
   netbios_node_type = 2
 }
 ```
+
 ### Outputs ###
 
 - `dhcp_id` - ID of the DHCP Options set
@@ -91,7 +97,6 @@ Creates a VPC VPN Gateway
 The usage examples may assume that previous modules in this stack have already been declared, such as the base module, instantiated as "vpc_base".  This declaration is not necessary, but does promote a consistent and maintainable standard.
 
 ```js
-
 module "vpg" {
   source = "github.com/terraform-aws-vpc//vpg"
 
@@ -159,6 +164,7 @@ module "AZs" {
     ssh_user = "ec2-user"
 }
 ```
+
 ### Outputs ###
 
 - `lan_id` - List of subnet IDs of the LAN subnetworks.  The order and association of the IDs match the order of the availability zones passed to the module.

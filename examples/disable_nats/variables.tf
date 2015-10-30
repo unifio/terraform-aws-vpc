@@ -30,7 +30,7 @@ variable "lan_cidr" {
   default = "10.10.2.0/25,10.10.2.128/25,10.10.3.0/25"
 }
 variable "lans_per_az" {
-  default = 1
+  default = 0
 }
 variable "lan_access_cidr" {
   default = "10.10.2.0/23"
@@ -69,6 +69,6 @@ variable "user_data_template" {
 variable "ami" {}
 variable "key_name" {}
 variable "ssh_user" {}
-variable "enable_nat_auto_recovery" {
+variable "enable_nats" {
   default = "false"
 }

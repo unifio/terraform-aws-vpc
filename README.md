@@ -20,6 +20,7 @@ The Base module provisions the VPC, attaches an Internet Gateway, and creates NA
 - `enable_hostnames` - (Optional) A boolean flag to enable/disable DNS hostnames in the VPC. Defaults false.
 - `lan_cidr` - Comma separated list of CIDR blocks to be given ingress access to NAT boxes in each subnet.
 
+
 ### Usage ###
 
 ```js
@@ -136,6 +137,9 @@ In each Availability Zone provided, this module provisions a NAT instance, and c
  * ssh_user - SSH username to be given NAT access via SSH
 - `domain` - Domain name
 - `ssh_user` - Username to use when enabling SSH access to NAT instance.  Default is ec2-user.
+- `nat_auto_recovery` - Set to 0 or 1.  0 disables and 1 enables.  If enabled, CloudWatch alarms will be created that will automatically recover the NAT instances, preserving its instance id, ip, etc. in the case of system failure.  Default is 1 (enabled).  Please check that the AMI used for the NAT supports recovery of its instances.
+- `period` - The period in seconds over which a system failure in the NAT instance occurs. Not used if enable_nat_auto_recovery is 0.
+- `evaluation_periods` - The number of consecutive periods in which the system failure must occur for the alarm to fire.  Not used if enable_nat_auto_recovery is 0.
 
 ### Usage ###
 

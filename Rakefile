@@ -19,7 +19,7 @@ task :verify do
     vars.push("-var #{var}=\"#{value}\"")
   end
 
-  ['basic', 'full_stack'].each do |stack|
+  ['basic', 'full_stack', 'disable_nats'].each do |stack|
     task_args = {:stack => stack, :args => vars.join(' ')}
     Rake::Task['clean'].execute(Rake::TaskArguments.new(task_args.keys, task_args.values))
     Rake::Task['plan'].execute(Rake::TaskArguments.new(task_args.keys, task_args.values))

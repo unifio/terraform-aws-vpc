@@ -5,7 +5,9 @@ provider "aws" {
 }
 
 module "vpc_base" {
-  source = "github.com/unifio/terraform-aws-vpc//base"
+  # Example GitHub source
+  #source = "github.com/unifio/terraform-aws-vpc?ref=master//base"
+  source = "../../base"
 
   stack_item_label = "${var.stack_item_label}"
   stack_item_fullname = "${var.stack_item_fullname}"
@@ -16,7 +18,9 @@ module "vpc_base" {
 }
 
 module "vpc_az" {
-  source = "github.com/unifio/terraform-aws-vpc//az"
+  # Example GitHub source
+  #source = "github.com/unifio/terraform-aws-vpc?ref=master//az"
+  source = "../../az"
 
   stack_item_label = "${var.stack_item_label}"
   stack_item_fullname = "${var.stack_item_fullname}"
@@ -35,4 +39,5 @@ module "vpc_az" {
   user_data_template = "${var.user_data_template}"
   domain = "${var.domain_name}"
   ssh_user = "${var.ssh_user}"
+  enable_nat_auto_recovery = "${var.enable_nat_auto_recovery}"
 }

@@ -137,7 +137,9 @@ In each Availability Zone provided, this module provisions a NAT instance, and c
  * ssh_user - SSH username to be given NAT access via SSH
 - `domain` - Domain name
 - `ssh_user` - Username to use when enabling SSH access to NAT instance.  Default is ec2-user.
-- `nat_auto_recovery` - Set to 0 or 1.  0 disables and 1 enables.  If enabled, CloudWatch alarms will be created that will automatically recover the NAT instances, preserving its instance id, ip, etc. in the case of system failure.  Default is 1 (enabled).  Please check that the AMI used for the NAT supports recovery of its instances.
+- `enable_nats` - Set to "true" to allocate NAT instances for each DMZ subnet.  Default is "true"
+- `enable_nat_eip` - Set to "true" to assign an Elastic IP to each of the NAT machines created.  Default is "false"
+- `enable_nat_auto_recovery` - Set to "true" or "false".  "false" disables and "true" enables.  If enabled, CloudWatch alarms will be created that will automatically recover the NAT instances, preserving its instance id, ip, etc. in the case of system failure.  Default is "false".  Please check that the AMI used for the NAT supports recovery of its instances.
 - `period` - The period in seconds over which a system failure in the NAT instance occurs. Not used if enable_nat_auto_recovery is 0.
 - `evaluation_periods` - The number of consecutive periods in which the system failure must occur for the alarm to fire.  Not used if enable_nat_auto_recovery is 0.
 
@@ -173,6 +175,7 @@ module "AZs" {
 
 - `lan_id` - List of subnet IDs of the LAN subnetworks.  The order and association of the IDs match the order of the availability zones passed to the module.
 - `dmz_id` - List of subnet IDs of the DMZ subnetworks.  The order and association of the IDs match the order of the availability zones passed to the module.
+- `nat_eip_id` - List of Elastic IP IDs for each of the NAT machines.
 
 ## Examples ##
 
@@ -180,4 +183,4 @@ See the [examples](examples) directory for a complete set of example source file
 
 ## License ##
 
-Apache 2 Licensed. See LICENSE for full details.
+MPL 2. See LICENSE for full details.

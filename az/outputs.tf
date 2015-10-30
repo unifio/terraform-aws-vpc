@@ -8,3 +8,7 @@ output "dmz_id" {
 output "lan_id" {
   value = "${join(",",aws_subnet.lan.*.id)}"
 }
+
+output "nat_eip_id" {
+  value = "${join(",",aws_eip.nat_eip.*.id)}"
+}

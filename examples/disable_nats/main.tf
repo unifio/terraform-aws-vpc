@@ -61,8 +61,6 @@ module "vpc_az" {
   instance_type = "${var.instance_type}"
   key_name = "${var.key_name}"
   nat_sg_id = "${module.vpc_base.nat_sg_id}"
-  user_data_template = "${var.user_data_template}"
-  domain = "${var.domain_name}"
-  ssh_user = "${var.ssh_user}"
+  user_data = "n/a"
   enable_nats = "${var.enable_nats}"
 }

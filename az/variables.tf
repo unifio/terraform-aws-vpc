@@ -19,6 +19,7 @@ variable "lans_per_az" {
 variable "rt_dmz_id" {}
 
 ## NAT parameters
+variable "user_data" {}
 variable "ami" {}
 variable "instance_type" {}
 variable "key_name" {}
@@ -37,15 +38,6 @@ variable "evaluation_periods" {
 }
 variable "enable_nat_eip" {
   default = "false"
-}
-
-## Context parameters
-variable "user_data_template" {
-  default = "user_data.tpl"
-}
-variable "domain" {}
-variable "ssh_user" {
-  default = "ec2-user"
 }
 
 # Internal variables

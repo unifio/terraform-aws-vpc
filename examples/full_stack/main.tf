@@ -42,6 +42,17 @@ module "vpc_vpg" {
   stack_item_fullname = "${var.stack_item_fullname}"
 }
 
+## Generates instance user data from a template
+resource "template_file" "user_data" {
+  filename = "../templates/user_data.tpl"
+
+  vars {
+    hostname = "${var.stack_item_label}-example"
+    fqdn = "${var.stack_item_label}-nat.${var.domain_name}"
+    ssh_user = "{var.ssh_user}"
+  }
+}
+
 module "vpc_az" {
   # Example GitHub source
   #source = "github.com/unifio/terraform-aws-vpc?ref=master//az"
@@ -61,9 +72,7 @@ module "vpc_az" {
   instance_type = "${var.instance_type}"
   key_name = "${var.key_name}"
   nat_sg_id = "${module.vpc_base.nat_sg_id}"
-  user_data_template = "${var.user_data_template}"
-  domain = "${var.domain_name}"
-  ssh_user = "${var.ssh_user}"
+  user_data = "${template_file.user_data.rendered}"
   enable_nat_auto_recovery = "${var.enable_nat_auto_recovery}"
   enable_nat_eip = "${var.enable_nat_eip}"
 }

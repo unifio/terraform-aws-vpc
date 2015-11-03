@@ -24,18 +24,6 @@ resource "aws_route_table_association" "rta_dmz" {
   route_table_id = "${var.rt_dmz_id}"
 }
 
-### Generates NAT instance user data
-resource "template_file" "user_data" {
-  count = "${length(split(",",var.az)) * lookup(var.decision_tree,var.enable_nats)}"
-  filename = "${path.root}/templates/${var.user_data_template}"
-
-  vars {
-    hostname = "${var.stack_item_label}-nat-${count.index}"
-    fqdn = "${var.stack_item_label}-nat-${count.index}.${var.domain}"
-    ssh_user = "${var.ssh_user}"
-  }
-}
-
 ### Provisions NAT instance
 resource "aws_instance" "nat" {
   count = "${length(split(",",var.az)) * lookup(var.decision_tree,var.enable_nats)}"
@@ -45,7 +33,7 @@ resource "aws_instance" "nat" {
   vpc_security_group_ids = ["${var.nat_sg_id}"]
   subnet_id = "${element(aws_subnet.dmz.*.id,count.index)}"
   source_dest_check = false
-
+  user_data = "${var.user_data}"
   tags {
     Name = "${var.stack_item_label}-nat-${count.index}"
     application = "${var.stack_item_fullname}"

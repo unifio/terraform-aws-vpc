@@ -63,9 +63,7 @@ variable "netbios_name_servers" {
 variable "instance_type" {
   default = "t2.micro"
 }
-variable "user_data_template" {
-  default = "user_data.tpl"
-}
+
 variable "ami" {}
 variable "key_name" {}
 variable "ssh_user" {}

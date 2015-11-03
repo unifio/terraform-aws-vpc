@@ -131,12 +131,7 @@ In each Availability Zone provided, this module provisions a NAT instance, and c
 - `instance_type` - EC2 instance type to be used.
 - `key_name` -  The key name to use for the NAT instances.
 - `nat_sg_id` - ID of the NAT security group.
-- `user_data_template` - Template to be used to generate user data.  Default is "templates/user_data.tpl".  This template will be passed the following variables:
- * hostname - Name of NAT instance for the current AZ.
- * fqdn - Fully Qualified Domain Name for the NAT instance
- * ssh_user - SSH username to be given NAT access via SSH
-- `domain` - Domain name
-- `ssh_user` - Username to use when enabling SSH access to NAT instance.  Default is ec2-user.
+- `user_data` - User data to associate with the NAT instance.
 - `enable_nats` - Set to "true" to allocate NAT instances for each DMZ subnet.  Default is "true"
 - `enable_nat_eip` - Set to "true" to assign an Elastic IP to each of the NAT machines created.  Default is "false"
 - `enable_nat_auto_recovery` - Set to "true" or "false".  "false" disables and "true" enables.  If enabled, CloudWatch alarms will be created that will automatically recover the NAT instances, preserving its instance id, ip, etc. in the case of system failure.  Default is "false".  Please check that the AMI used for the NAT supports recovery of its instances.
@@ -165,9 +160,7 @@ module "AZs" {
     instance_type = "t2.micro"
     key_name = "ops"
     nat_sg_id = "${module.vpc_base.nat_sg_id}"
-    user_data_template = "templates/user_data.tpl"
-    domain - "mydomain.com"
-    ssh_user = "ec2-user"
+    user_data = "${template_file.templ.rendered}"
 }
 ```
 

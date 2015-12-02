@@ -7,6 +7,11 @@ Module stack that supports full AWS VPC deployment.  Users can provision a basic
 * DHCP Options Set
 * Virtual Private Gateway creation
 
+## Requirements ##
+
+- Terraform 0.6.7 or newer
+- AWS provider
+
 ## Base Module ##
 
 The Base module provisions the VPC, attaches an Internet Gateway, and creates NAT Security Group, DMZ Routing table, and creates a CloudWatch group, IAM role, and AWS flow log.  The flow log is configured to capture all traffic (ALLOW and DENY) over the entire VPC.

@@ -34,12 +34,12 @@ resource "aws_instance" "nat" {
   subnet_id = "${element(aws_subnet.dmz.*.id,count.index)}"
   source_dest_check = false
   user_data = "${var.user_data}"
+
   tags {
     Name = "${var.stack_item_label}-nat-${count.index}"
     application = "${var.stack_item_fullname}"
     managed_by = "terraform"
   }
-  user_data = "${element(template_file.user_data.*.rendered, count.index)}"
 }
 
 resource "aws_eip" "nat_eip" {

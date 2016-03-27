@@ -1,3 +1,12 @@
+## Unreleased
+
+#### FEATURES:
+* Added support for configuring instance tenancy.
+* Added support for enabling ClassicLink.
+
+#### IMPROVEMENTS:
+* Verified with Terraform v0.6.14
+
 ## 0.1.1 (Dec 1, 2015)
 
 #### FEATURES:

@@ -9,7 +9,7 @@ Module stack that supports full AWS VPC deployment.  Users can provision a basic
 
 ## Requirements ##
 
-- Terraform 0.6.7 or newer
+- Terraform 0.6.14 or newer
 - AWS provider
 
 ## Base Module ##
@@ -20,9 +20,11 @@ The Base module provisions the VPC, attaches an Internet Gateway, and creates NA
 
 - `stack_item_label` - Short form identifier for this stack.  This value is used to create the "Name" resource tag for resources created by this stack item, and also serves as a unique key for re-use.
 - `stack_item_fullname` - Long form descriptive name for this stack item.  This value is used to create the "application" resource tag for resources created by this stack item.
-- `vpc_cidr` - CIDR block for the VPC.
-- `enable_dns` - (Optional) A boolean flag to enable/disable DNS support in the VPC. Defaults true.
-- `enable_hostnames` - (Optional) A boolean flag to enable/disable DNS hostnames in the VPC. Defaults false.
+- `vpc_cidr` - The CIDR block you want the VPC to cover. For example: 10.0.0.0/16.
+- `instance_tenacy` - The allowed tenancy of instances launched into the VPC. Defaults to 'default'. Only other option at this time is 'dedicated', which will force any instance launched into the VPC to be dedicated, regardless of the tenancy option specified when the instance is launched.
+- `enable_dns` - (Optional) Specifies whether DNS resolution is supported for the VPC. Defaults to true.
+- `enable_hostnames` - (Optional) Specifies whether the instances launched in the VPC get DNS hostnames. Defaults to true.
+- `enable_classiclink` - (Optional) Specifies whether ClassicLink is enabled for the VPC. Defaults to false.
 - `lan_cidr` - Comma separated list of CIDR blocks to be given ingress access to NAT boxes in each subnet.
 
 

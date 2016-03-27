@@ -3,8 +3,10 @@
 ## Provisions Virtual Private Cloud (VPC)
 resource "aws_vpc" "vpc" {
   cidr_block = "${var.vpc_cidr}"
+  instance_tenancy = "${var.instance_tenancy}"
   enable_dns_support = "${var.enable_dns}"
   enable_dns_hostnames = "${var.enable_hostnames}"
+  enable_classiclink = "${var.enable_classiclink}"
 
   tags {
     Name = "${var.stack_item_label}-vpc"

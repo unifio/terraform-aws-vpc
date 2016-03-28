@@ -29,7 +29,7 @@ module "vpc_dhcp" {
   name_servers = "${var.name_servers}"
   ntp_servers = "${var.ntp_servers}"
   netbios_name_servers = "${var.netbios_name_servers}"
-  netbios_node_type = 2
+  netbios_node_type = "${var.netbios_node_type}"
 }
 
 ## Configures Virtual Private Gateway

@@ -7,6 +7,7 @@ resource "aws_vpc_dhcp_options" "dhcp" {
   ntp_servers = ["${split(",",var.ntp_servers)}"]
   netbios_name_servers = ["${split(",",var.netbios_name_servers)}"]
   netbios_node_type = "${var.netbios_node_type}"
+
   tags {
     Name = "${var.stack_item_label}-dhcp"
     application = "${var.stack_item_fullname}"

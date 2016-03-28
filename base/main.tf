@@ -42,33 +42,6 @@ resource "aws_route_table" "rt_dmz" {
   }
 }
 
-## Provisions NAT security group
-resource "aws_security_group" "nat_sg" {
-  name = "${var.stack_item_label}-nat"
-  description = "NAT security group"
-  vpc_id = "${aws_vpc.vpc.id}"
-
-  tags {
-    Name = "${var.stack_item_label}-nat"
-    application = "${var.stack_item_fullname}"
-    managed_by = "terraform"
-  }
-
-  ingress {
-    cidr_blocks = ["${var.lan_cidr}"]
-    from_port = 0
-    to_port = 0
-    protocol = "-1"
-  }
-
-  egress {
-    from_port = 0
-    to_port = 0
-    protocol = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
-
 ## Provision VPC flow log
 resource "aws_cloudwatch_log_group" "flow_log_group" {
   name = "${var.stack_item_label}-vpc-flow-logs"

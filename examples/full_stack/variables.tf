@@ -32,15 +32,9 @@ variable "lan_cidr" {
 variable "lans_per_az" {
   default = "1"
 }
-variable "enable_nat_eip" {
-  default = "true"
-}
-variable "lan_access_cidr" {
-  default = "10.10.2.0/23"
 }
 
 ### DHCP
-
 variable "enable_dns" {
   default = true
 }
@@ -59,17 +53,4 @@ variable "ntp_servers" {
 }
 variable "netbios_name_servers" {
   default = "127.0.0.1"
-}
-
-### NATs
-
-variable "instance_type" {
-  default = "t2.micro"
-}
-
-variable "ami" {}
-variable "key_name" {}
-variable "ssh_user" {}
-variable "enable_nat_auto_recovery" {
-  default = "true"
 }

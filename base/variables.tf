@@ -15,7 +15,6 @@ variable "vpc_cidr" {
   type = "string"
   description = "The CIDR block you want the VPC to cover. For example: 10.0.0.0/16"
 }
-variable "lan_cidr" {}
 variable "instance_tenancy" {
   type = "string"
   description = "The allowed tenancy of instances launched into the VPC"

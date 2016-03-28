@@ -1,9 +1,11 @@
-# AWS VPC
+# AWS Virtual Private Cloud
 
+## Configures AWS provider
 provider "aws" {
   region = "${var.region}"
 }
 
+## Configures base VPC
 module "vpc_base" {
   # Example GitHub source
   #source = "github.com/unifio/terraform-aws-vpc?ref=master//base"
@@ -17,6 +19,7 @@ module "vpc_base" {
   lan_cidr = "${var.lan_access_cidr}"
 }
 
+## Configures DHCP
 module "vpc_dhcp" {
   # Example GitHub source
   #source = "github.com/unifio/terraform-aws-vpc?ref=master//dhcp"
@@ -32,6 +35,7 @@ module "vpc_dhcp" {
   netbios_node_type = 2
 }
 
+## Configures Virtual Private Gateway
 module "vpc_vpg" {
   # Example GitHub source
   #source = "github.com/unifio/terraform-aws-vpc?ref=master//vpg"
@@ -40,17 +44,6 @@ module "vpc_vpg" {
   vpc_id = "${module.vpc_base.vpc_id}"
   stack_item_label = "${var.stack_item_label}"
   stack_item_fullname = "${var.stack_item_fullname}"
-}
-
-## Generates instance user data from a template
-resource "template_file" "user_data" {
-  template = "${file("../templates/user_data.tpl")}"
-
-  vars {
-    hostname = "${var.stack_item_label}-example"
-    fqdn = "${var.stack_item_label}-nat.${var.domain_name}"
-    ssh_user = "{var.ssh_user}"
-  }
 }
 
 module "vpc_az" {
@@ -68,11 +61,4 @@ module "vpc_az" {
   lans_per_az = "${var.lans_per_az}"
   enable_dmz_public_ips = "${var.enable_dmz_public_ips}"
   rt_dmz_id = "${module.vpc_base.rt_dmz_id}"
-  ami = "${var.ami}"
-  instance_type = "${var.instance_type}"
-  key_name = "${var.key_name}"
-  nat_sg_id = "${module.vpc_base.nat_sg_id}"
-  user_data = "${template_file.user_data.rendered}"
-  enable_nat_auto_recovery = "${var.enable_nat_auto_recovery}"
-  enable_nat_eip = "${var.enable_nat_eip}"
 }

@@ -18,32 +18,8 @@ variable "lans_per_az" {
 }
 variable "rt_dmz_id" {}
 
-## NAT parameters
-variable "user_data" {}
-variable "ami" {}
-variable "instance_type" {}
-variable "key_name" {}
-variable "nat_sg_id" {}
-variable "enable_nats" {
-  default = "true"
 }
-variable "enable_nat_auto_recovery" {
-  default = "false"
 }
-variable "period" {
-  default = 60
 }
-variable "evaluation_periods" {
-  default = 2
 }
-variable "enable_nat_eip" {
-  default = "false"
-}
-
-# Internal variables
-variable "decision_tree" {
-  default = {
-    "false" = 0
-    "true" = 1
-  }
 }

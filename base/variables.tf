@@ -35,3 +35,8 @@ variable "enable_classiclink" {
   description = "Specifies whether ClassicLink is enabled for the VPC"
   default = false
 }
+variable "flow_log_traffic_type" {
+  type = "string"
+  description = "The type of traffic to capture. Valid values: ACCEPT,REJECT,ALL"
+  default = "ALL"
+}

@@ -37,7 +37,7 @@ resource "aws_route_table" "rt_dmz" {
   }
 }
 
-## Provision VPC flow log
+## Provisions VPC flow log
 resource "aws_cloudwatch_log_group" "flow_log_group" {
   name = "${var.stack_item_label}-vpc-flow-logs"
 }
@@ -77,7 +77,7 @@ resource "aws_iam_role_policy" "flow_log_role_policies" {
         "logs:DescribeLogStreams"
       ],
       "Effect": "Allow",
-      "Resource": "*"
+      "Resource": "${aws_cloudwatch_log_group.flow_log_group.arn}"
     }
   ]
 }
@@ -88,5 +88,5 @@ resource "aws_flow_log" "flow_log" {
   log_group_name = "${var.stack_item_label}-vpc-flow-logs"
   iam_role_arn = "${aws_iam_role.flow_log_role.arn}"
   vpc_id = "${aws_vpc.vpc.id}"
-  traffic_type = "ALL"
+  traffic_type = "${var.flow_log_traffic_type}"
 }

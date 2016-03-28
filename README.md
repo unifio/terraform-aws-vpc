@@ -25,6 +25,7 @@ The Base module provisions the VPC, attaches an Internet Gateway, and creates NA
 - `enable_dns` - (Optional) Specifies whether DNS resolution is supported for the VPC. Defaults to true.
 - `enable_hostnames` - (Optional) Specifies whether the instances launched in the VPC get DNS hostnames. Defaults to true.
 - `enable_classiclink` - (Optional) Specifies whether ClassicLink is enabled for the VPC. Defaults to false.
+- `flow_log_traffic_type` - (Optional) The type of traffic to capture. Valid values: ACCEPT,REJECT,ALL.
 
 
 ### Usage ###
@@ -127,8 +128,8 @@ In each Availability Zone provided, this module provisions subnets and routing t
 - `az` - Availability zone(s).  Will accept a comma delimited string.
 - `dmz_cidr` - The CIDR block(s) you want the DMZ subnet(s) to cover.  Will accept a comma delimited string.  This list should correspond 1:1 to each AZ.
 - `lan_cidr` - The CIDR block(s) you want the LAN subnet(s) to cover.  Will accept a comma delimited string.  This list should correspond 1:1 to each AZ.
-- `lans_per_az` - The number of private LAN subnets to be provisioned per AZ.  You will need to double the CIDR blocks specified in the `lan_cidr` variable for each increase in this value.
-- `enable_dmz_public_ips` - Specify true to indicate that instances launched into the DMZ subnet should be assigned a public IP address.  Defaults to true.
+- `lans_per_az` - (Optional) The number of private LAN subnets to be provisioned per AZ.  You will need to double the CIDR blocks specified in the `lan_cidr` variable for each increase in this value.  Defaults to 1.
+- `enable_dmz_public_ips` - (Optional) Specify true to indicate that instances launched into the DMZ subnet should be assigned a public IP address.  Defaults to true.
 - `rt_dmz_id` - The ID of the DMZ routing table.
 
 ### Usage ###

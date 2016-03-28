@@ -18,3 +18,7 @@ output "nat_id" {
   value = "${join(",",aws_nat_gateway.nat.*.id)}"
 }
 
+## Returns the routing table ID
+output "rt_lan_id" {
+  value = "${join(",",aws_route_table.rt_lan.*.id)}"
+}

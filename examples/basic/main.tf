@@ -16,8 +16,6 @@ module "vpc_base" {
   vpc_cidr = "${var.vpc_cidr}"
   enable_dns = "${var.enable_dns}"
   enable_hostnames = "${var.enable_hostnames}"
-  lan_cidr = "${var.lan_access_cidr}"
-}
 }
 
 ## Configures VPC Availabilty Zones
@@ -31,9 +29,24 @@ module "vpc_az" {
   vpc_id = "${module.vpc_base.vpc_id}"
   region = "${var.region}"
   az = "${lookup(var.az,var.region)}"
-  dmz_cidr = "${var.dmz_cidr}"
-  lan_cidr = "${var.lan_cidr}"
+  dmz_cidr = "${cidrsubnet(var.vpc_cidr,3,0)},${cidrsubnet(var.vpc_cidr,3,1)},${cidrsubnet(var.vpc_cidr,3,2)}"
+  lan_cidr = "${cidrsubnet(var.vpc_cidr,3,4)},${cidrsubnet(var.vpc_cidr,3,5)},${cidrsubnet(var.vpc_cidr,3,6)}"
   lans_per_az = "${var.lans_per_az}"
   enable_dmz_public_ips = "${var.enable_dmz_public_ips}"
   rt_dmz_id = "${module.vpc_base.rt_dmz_id}"
+}
+
+## Configures routing
+resource "aws_route" "dmz-to-igw" {
+  count = "${length(split(",",lookup(var.az,var.region)))}"
+  route_table_id = "${module.vpc_base.rt_dmz_id}"
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id = "${module.vpc_base.igw_id}"
+}
+
+resource "aws_route" "lan-to-nat"{
+  count = "${length(split(",",lookup(var.az,var.region))) * var.lans_per_az}"
+  route_table_id = "${element(split(module.vpc_az.rt_lan_id),count.index)}"
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id = "${element(split(module.vpc_az.nat_id),count.index)}"
 }

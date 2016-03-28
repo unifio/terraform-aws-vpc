@@ -57,11 +57,6 @@ resource "aws_route_table" "rt_lan" {
   count = "${length(split(",",var.az)) * var.lans_per_az}"
   vpc_id = "${var.vpc_id}"
 
-  route {
-    cidr_block = "0.0.0.0/0"
-    instance_id = "${element(aws_instance.nat.*.id,count.index)}"
-  }
-
   tags {
     Name = "${var.stack_item_label}-lan-${count.index}"
     application = "${var.stack_item_fullname}"

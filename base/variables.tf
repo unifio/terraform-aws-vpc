@@ -23,15 +23,15 @@ variable "instance_tenancy" {
 variable "enable_dns" {
   type = "string"
   description = "Specifies whether DNS resolution is supported for the VPC"
-  default = "true"
+  default = true
 }
 variable "enable_hostnames" {
   type = "string"
   description = "Specifies whether the instances launched in the VPC get DNS hostnames"
-  default = "true"
+  default = true
 }
 variable "enable_classiclink" {
   type = "string"
   description = "Specifies whether ClassicLink is enabled for the VPC"
-  default = "false"
+  default = false
 }

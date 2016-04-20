@@ -1,5 +1,7 @@
 ## Unreleased
 
+## 0.2.0 (Apr 20, 2016)
+
 #### FEATURES:
 * Added support for configuring instance tenancy.
 * Added support for enabling ClassicLink.

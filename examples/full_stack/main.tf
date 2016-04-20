@@ -53,7 +53,7 @@ module "vpc_az" {
   vpc_id = "${module.vpc_base.vpc_id}"
   region = "${var.region}"
   az = "${lookup(var.az,var.region)}"
-  dmz_cidr = "${cidrsubnet(var.vpc_cidr,3,0)},${cidrsubnet(var.vpc_cidr,3,1)},${cidrsubnet(var.vpc_cidr,3,2)}"
+  dmz_cidr = "${cidrsubnet(var.vpc_cidr,4,0)},${cidrsubnet(var.vpc_cidr,4,1)},${cidrsubnet(var.vpc_cidr,4,2)},${cidrsubnet(var.vpc_cidr,4,3)}"
   lan_cidr = "${cidrsubnet(var.vpc_cidr,4,8)},${cidrsubnet(var.vpc_cidr,4,9)},${cidrsubnet(var.vpc_cidr,4,10)},${cidrsubnet(var.vpc_cidr,4,13)},${cidrsubnet(var.vpc_cidr,4,14)},${cidrsubnet(var.vpc_cidr,4,15)}"
   lans_per_az = "${var.lans_per_az}"
   rt_dmz_id = "${module.vpc_base.rt_dmz_id}"

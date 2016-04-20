@@ -19,13 +19,17 @@ variable "region" {
 variable "vpc_cidr" {
   type = "string"
   description = "The CIDR block you want the VPC to cover. For example: 10.0.0.0/16"
-  default = "10.10.0.0/22"
+  default = "10.10.0.0/21"
 }
 variable "az" {
   type = "map"
   description = "The AWS availability zone"
   default = {
+    eu-west-1 = "a,b,c"
+    us-east-1 = "a,c,d,e"
     us-west-2 = "a,b,c"
+    us-west-1 = "a,c"
+    ap-northeast-1 = "b,c"
   }
 }
 variable "lans_per_az" {

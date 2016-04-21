@@ -69,7 +69,7 @@ resource "aws_route" "dmz-to-igw" {
 
 resource "aws_route" "lan-to-nat"{
   count = "${length(split(",",lookup(var.az,var.region))) * var.lans_per_az}"
-  route_table_id = "${element(split(module.vpc_az.rt_lan_id),count.index)}"
+  route_table_id = "${element(split(",",module.vpc_az.rt_lan_id),count.index)}"
   destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id = "${element(split(module.vpc_az.nat_id),count.index)}"
+  nat_gateway_id = "${element(split(",",module.vpc_az.nat_id),count.index)}"
 }

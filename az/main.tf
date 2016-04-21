@@ -1,4 +1,4 @@
-# VPC AZ
+# VPC Availability Zone
 
 ## Provisions DMZ resources
 
@@ -24,46 +24,16 @@ resource "aws_route_table_association" "rta_dmz" {
   route_table_id = "${var.rt_dmz_id}"
 }
 
-### Provisions NAT instance
-resource "aws_instance" "nat" {
-  count = "${length(split(",",var.az)) * lookup(var.decision_tree,var.enable_nats)}"
-  instance_type = "${var.instance_type}"
-  ami = "${var.ami}"
-  key_name = "${var.key_name}"
-  vpc_security_group_ids = ["${var.nat_sg_id}"]
+### Provisions NAT gateway
+resource "aws_nat_gateway" "nat" {
+  count = "${length(split(",",var.az))}"
+  allocation_id = "${element(aws_eip.eip_nat.*.id,count.index)}"
   subnet_id = "${element(aws_subnet.dmz.*.id,count.index)}"
-  source_dest_check = false
-  user_data = "${var.user_data}"
-
-  tags {
-    Name = "${var.stack_item_label}-nat-${count.index}"
-    application = "${var.stack_item_fullname}"
-    managed_by = "terraform"
-  }
 }
 
-resource "aws_eip" "nat_eip" {
-  count = "${length(split(",",var.az)) * lookup(var.decision_tree,var.enable_nat_eip) * lookup(var.decision_tree,var.enable_nats)}"
+resource "aws_eip" "eip_nat" {
+  count = "${length(split(",",var.az))}"
   vpc = true
-  instance = "${element(aws_instance.nat.*.id,count.index)}"
-}
-
-## Add CloudWatch alarm to recover instance in the case of a fault
-resource "aws_cloudwatch_metric_alarm" "recover_alarm" {
-  count = "${length(split(",",var.az)) * lookup(var.decision_tree,var.enable_nats) * lookup(var.decision_tree,var.enable_nat_auto_recovery)}"
-  alarm_name = "${var.stack_item_label}-nat-${count.index}-alarm"
-  dimensions = {
-    InstanceId = "${element(aws_instance.nat.*.id, count.index)}"
-  }
-  metric_name = "StatusCheckFailed"
-  namespace = "AWS/EC2"
-  statistic = "Average"
-  comparison_operator = "GreaterThanThreshold"
-  threshold = "0"
-  period = "${var.period}"
-  evaluation_periods = "${var.evaluation_periods}"
-  alarm_description = "Recover instance upon series of StatusCheckFailed events"
-  alarm_actions = [ "arn:aws:automate:${var.region}:ec2:recover" ]
 }
 
 ## Provisions LAN resources
@@ -86,11 +56,6 @@ resource "aws_subnet" "lan" {
 resource "aws_route_table" "rt_lan" {
   count = "${length(split(",",var.az)) * var.lans_per_az}"
   vpc_id = "${var.vpc_id}"
-
-  route {
-    cidr_block = "0.0.0.0/0"
-    instance_id = "${element(aws_instance.nat.*.id,count.index)}"
-  }
 
   tags {
     Name = "${var.stack_item_label}-lan-${count.index}"

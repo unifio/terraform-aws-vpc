@@ -1,9 +1,11 @@
-# AWS VPC
+# AWS Virtual Private Cloud
 
+## Configures AWS provider
 provider "aws" {
   region = "${var.region}"
 }
 
+## Configures base VPC
 module "vpc_base" {
   # Example GitHub source
   #source = "github.com/unifio/terraform-aws-vpc?ref=master//base"
@@ -14,20 +16,9 @@ module "vpc_base" {
   vpc_cidr = "${var.vpc_cidr}"
   enable_dns = "${var.enable_dns}"
   enable_hostnames = "${var.enable_hostnames}"
-  lan_cidr = "${var.lan_access_cidr}"
 }
 
-## Generates instance user data from a template
-resource "template_file" "user_data" {
-  template = "${file("../templates/user_data.tpl")}"
-
-  vars {
-    hostname = "${var.stack_item_label}-example"
-    fqdn = "${var.stack_item_label}-nat.${var.domain_name}"
-    ssh_user = "{var.ssh_user}"
-  }
-}
-
+## Configures VPC Availabilty Zones
 module "vpc_az" {
   # Example GitHub source
   #source = "github.com/unifio/terraform-aws-vpc?ref=master//az"
@@ -38,16 +29,24 @@ module "vpc_az" {
   vpc_id = "${module.vpc_base.vpc_id}"
   region = "${var.region}"
   az = "${lookup(var.az,var.region)}"
-  dmz_cidr = "${var.dmz_cidr}"
-  lan_cidr = "${var.lan_cidr}"
+  dmz_cidr = "${cidrsubnet(var.vpc_cidr,3,0)},${cidrsubnet(var.vpc_cidr,3,1)},${cidrsubnet(var.vpc_cidr,3,2)}"
+  lan_cidr = "${cidrsubnet(var.vpc_cidr,3,4)},${cidrsubnet(var.vpc_cidr,3,5)},${cidrsubnet(var.vpc_cidr,3,6)}"
   lans_per_az = "${var.lans_per_az}"
   enable_dmz_public_ips = "${var.enable_dmz_public_ips}"
   rt_dmz_id = "${module.vpc_base.rt_dmz_id}"
-  ami = "${var.ami}"
-  instance_type = "${var.instance_type}"
-  key_name = "${var.key_name}"
-  nat_sg_id = "${module.vpc_base.nat_sg_id}"
-  enable_nat_auto_recovery = "${var.enable_nat_auto_recovery}"
-  enable_nat_eip = "${var.enable_nat_eip}"
-  user_data = "${template_file.user_data.rendered}"
+}
+
+## Configures routing
+resource "aws_route" "dmz-to-igw" {
+  count = "${length(split(",",lookup(var.az,var.region)))}"
+  route_table_id = "${module.vpc_base.rt_dmz_id}"
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id = "${module.vpc_base.igw_id}"
+}
+
+resource "aws_route" "lan-to-nat"{
+  count = "${length(split(",",lookup(var.az,var.region))) * var.lans_per_az}"
+  route_table_id = "${element(split(module.vpc_az.rt_lan_id),count.index)}"
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id = "${element(split(module.vpc_az.nat_id),count.index)}"
 }

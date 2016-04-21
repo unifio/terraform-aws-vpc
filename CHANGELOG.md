@@ -1,3 +1,15 @@
+## Unreleased
+
+## 0.2.0 (Apr 20, 2016)
+
+#### FEATURES:
+* Added support for configuring instance tenancy.
+* Added support for enabling ClassicLink.
+
+#### IMPROVEMENTS:
+* Verified with Terraform v0.6.14.
+* Migrated NAT features to VPC NAT gateway.
+
 ## 0.1.1 (Dec 1, 2015)
 
 #### FEATURES:

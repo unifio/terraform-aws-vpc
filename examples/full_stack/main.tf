@@ -32,6 +32,18 @@ module "vpc_dhcp" {
   netbios_node_type = "${var.netbios_node_type}"
 }
 
+## Configures ACLs
+resource "aws_network_acl" "acl" {
+  vpc_id = "${module.vpc_base.vpc_id}"
+  subnet_ids = ["${split(",","${module.vpc_az.lan_id},${module.vpc_az.dmz_id}")}"]
+
+  tags {
+    Name = "${var.stack_item_label}-acl"
+    application = "${var.stack_item_fullname}"
+    managed_by = "terraform"
+  }
+}
+
 ## Configures Virtual Private Gateway
 module "vpc_vpg" {
   # Example GitHub source
@@ -72,4 +84,10 @@ resource "aws_route" "lan-to-nat"{
   route_table_id = "${element(split(",",module.vpc_az.rt_lan_id),count.index)}"
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id = "${element(split(",",module.vpc_az.nat_id),count.index)}"
+}
+
+resource "aws_vpc_endpoint" "s3-ep" {
+    vpc_id = "${module.vpc_base.vpc_id}"
+    service_name = "com.amazonaws.${var.region}.s3"
+    route_table_ids = ["${split(",","${module.vpc_az.lan_id}")}"]
 }

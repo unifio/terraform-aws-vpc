@@ -7,7 +7,9 @@
 * Added support for enabling ClassicLink.
 
 #### IMPROVEMENTS:
-* Verified with Terraform v0.6.14.
+* Verified with Terraform v0.6.15.
+* Updated formatting to HashiCorp standard.
+* Expanded examples to include new VPC resources.
 * Migrated NAT features to VPC NAT gateway.
 
 ## 0.1.1 (Dec 1, 2015)

@@ -159,6 +159,8 @@ module "AZs" {
 
 - `lan_id` - List of subnet IDs of the LAN subnetworks.
 - `dmz_id` - List of subnet IDs of the DMZ subnetworks.
+- `lan_cidr` - List of subnet CIDR blocks of the LAN subnetworks.
+- `dmz_cidr` - List of subnet CIDR blocks of the DMZ subnetworks.
 - `eip_nat_id` - List of Elastic IP IDs for each of the NAT gateways.
 - `nat_id` - List of NAT gateways IDs.
 - `rt_lan_id` - List of routing table IDs for the LAN subnets.

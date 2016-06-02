@@ -9,7 +9,7 @@ Module stack that supports full AWS VPC deployment.  Users can provision a basic
 
 ## Requirements ##
 
-- Terraform 0.6.14 or newer
+- Terraform 0.6.16 or newer
 - AWS provider
 
 ## Base Module ##

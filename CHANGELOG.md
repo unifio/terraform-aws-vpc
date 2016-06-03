@@ -1,5 +1,10 @@
 ## Unreleased
 
+## 0.2.2 (June 2, 2016)
+
+#### IMPROVEMENTS:
+* Verified with Terraform v0.6.16.
+
 ## 0.2.1 (May 16, 2016)
 
 #### FEATURES:

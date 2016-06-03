@@ -9,7 +9,7 @@ Module stack that supports full AWS VPC deployment.  Users can provision a basic
 
 ## Requirements ##
 
-- Terraform 0.6.14 or newer
+- Terraform 0.6.16 or newer
 - AWS provider
 
 ## Base Module ##
@@ -32,13 +32,12 @@ The Base module provisions the VPC, attaches an Internet Gateway, and creates NA
 
 ```js
 module "vpc_base" {
-  source = "github.com/unifio/terraform-aws-vpc//base"
-
-  stack_item_label = "mystack1"
+  source              = "github.com/unifio/terraform-aws-vpc//base"
+  stack_item_label    = "mystack1"
   stack_item_fullname = "Stack Item Description"
-  vpc_cidr = "10.10.0.0/22"
-  enable_dns = true
-  enable_hostnames = false
+  vpc_cidr            = "10.10.0.0/22"
+  enable_dns          = true
+  enable_hostnames    = false
 }
 ```
 
@@ -55,9 +54,9 @@ The DHCP module provisions a DHCP options resource and associates it with the sp
 
 ### Input Variables ###
 
-- `vpc_id` - ID of the VPC to associate the DHCP Options Set with.
 - `stack_item_label` - Short form identifier for this stack.  This value is used to create the "Name" resource tag for resources created by this stack item, and also serves as a unique key for re-use.
 - `stack_item_fullname` - Long form descriptive name for this stack item.  This value is used to create the "application" resource tag for resources created by this stack item.
+- `vpc_id` - ID of the VPC to associate the DHCP Options Set with.
 - `domain_name` - (Optional) The suffix domain name to use by default when resolving non Fully Qualified Domain Names. In other words, this is what ends up being the search value in the /etc/resolv.conf file.
 - `name_servers` - (Optional) List of name servers to configure in /etc/resolv.conf.
 - `ntp_servers` - (Optional) List of NTP servers to configure.
@@ -70,16 +69,15 @@ The usage examples may assume that previous modules in this stack have already b
 
 ```js
 module "dhcp" {
-  source = "github.com/terraform-aws-vpc//dhcp"
-
-  vpc_id = "${module.vpc_base.vpc_id}"
-  stack_item_label = "mystack1"
-  stack_item_fullname = "myname"
-  domain_name = "mydomain.com"
-  name_servers = "10.128.8.10"
-  ntp_servers = "10.128.8.10"
+  source               = "github.com/terraform-aws-vpc//dhcp"
+  vpc_id               = "${module.vpc_base.vpc_id}"
+  stack_item_label     = "mystack1"
+  stack_item_fullname  = "myname"
+  domain_name          = "mydomain.com"
+  name_servers         = "10.128.8.10"
+  ntp_servers          = "10.128.8.10"
   netbios_name_servers = "10.128.8.10"
-  netbios_node_type = 2
+  netbios_node_type    = 2
 }
 ```
 
@@ -93,9 +91,9 @@ Creates a VPC VPN Gateway
 
 ### Input Variables
 
-- `vpc_id` - The VPC to associate the VPG with.
 - `stack_item_label` - Short form identifier for this stack.  This value is used to create the "Name" resource tag for resources created by this stack item, and also serves as a unique key for re-use.
 - `stack_item_fullname` - Long form descriptive name for this stack item.  This value is used to create the "application" resource tag for resources created by this stack item.
+- `vpc_id` - The VPC to associate the VPG with.
 
 ### Usage
 
@@ -103,11 +101,10 @@ The usage examples may assume that previous modules in this stack have already b
 
 ```js
 module "vpg" {
-  source = "github.com/terraform-aws-vpc//vpg"
-
-  vpc_id = "${module.vpc_base.vpc_id}"
+  source              = "github.com/terraform-aws-vpc//vpg"
+  vpc_id              = "${module.vpc_base.vpc_id}"
   stack_item_fullname = "Stack Item Description"
-  stack_item_label = "mystack1"
+  stack_item_label    = "mystack1"
 }
 ```
 
@@ -138,18 +135,17 @@ The usage examples may assume that previous modules in this stack have already b
 
 ```js
 module "AZs" {
-    source = "github.com/unifio/terraform-aws-vpc//az"
-
-    stack_item_label = "mystack1"
-    stack_item_fullname = "Stack Item Description"
-    vpc_id = "${module.vpc_base.vpc_id}"
-    region = "us-west-2"
-    az = "a,b"    
-    dmz_cidr = "10.10.0.0/25,10.10.0.128/25,10.10.1.0/25"
-    lan_cidr = "10.10.2.0/25,10.10.2.128/25,10.10.3.0/25"
-    lans_per_az = "1"
+    source                = "github.com/unifio/terraform-aws-vpc//az"
+    stack_item_label      = "mystack1"
+    stack_item_fullname   = "Stack Item Description"
+    vpc_id                = "${module.vpc_base.vpc_id}"
+    region                = "us-west-2"
+    az                    = "a,b"    
+    dmz_cidr              = "10.10.0.0/25,10.10.0.128/25,10.10.1.0/25"
+    lan_cidr              = "10.10.2.0/25,10.10.2.128/25,10.10.3.0/25"
+    lans_per_az           = "1"
     enable_dmz_public_ips = true
-    rt_dmz_id = "${module.vpc_base.rt_dmz_id}"
+    rt_dmz_id             = "${module.vpc_base.rt_dmz_id}"
 }
 ```
 
@@ -157,10 +153,10 @@ module "AZs" {
 
 ** The order and association of the IDs match the order of the availability zones passed to the module.
 
-- `lan_id` - List of subnet IDs of the LAN subnetworks.
 - `dmz_id` - List of subnet IDs of the DMZ subnetworks.
-- `lan_cidr` - List of subnet CIDR blocks of the LAN subnetworks.
+- `lan_id` - List of subnet IDs of the LAN subnetworks.
 - `dmz_cidr` - List of subnet CIDR blocks of the DMZ subnetworks.
+- `lan_cidr` - List of subnet CIDR blocks of the LAN subnetworks.
 - `eip_nat_id` - List of Elastic IP IDs for each of the NAT gateways.
 - `nat_id` - List of NAT gateways IDs.
 - `rt_lan_id` - List of routing table IDs for the LAN subnets.

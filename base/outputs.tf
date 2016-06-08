@@ -12,9 +12,10 @@ output "igw_id" {
 
 ## Returns ID of the DMZ routing table
 output "rt_dmz_id" {
-  value = "${aws_route_table.rt_dmz.id}"
+  value = "${module.rt_dmz.rt_id}"
 }
 
+## Returns ID of the VPC flow log
 output "flow_log_id" {
   value = "${aws_flow_log.flow_log.id}"
 }

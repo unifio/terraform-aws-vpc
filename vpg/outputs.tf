@@ -2,5 +2,5 @@
 
 ## Returns ID of the VPG
 output "vpg_id" {
-  value = "${aws_vpn_gateway.vpg.id}"
+  value = "${coalesce(join(",",aws_vpn_gateway.vpg.*.id),join(",",aws_vpn_gateway.vpg_unattached.*.id))}"
 }

@@ -36,6 +36,17 @@ module "vpc_az" {
   rt_dmz_id             = "${module.vpc_base.rt_dmz_id}"
 }
 
+## Configures Virtual Private Gateway
+module "vpc_vpg" {
+  # Example GitHub source
+  #source = "github.com/unifio/terraform-aws-vpc?ref=master//vpg"
+  source = "../../vpg"
+
+  vpc_attach          = 0
+  stack_item_label    = "${var.stack_item_label}"
+  stack_item_fullname = "${var.stack_item_fullname}"
+}
+
 ## Configures routing
 resource "aws_route" "dmz-to-igw" {
   count                  = "${length(split(",",lookup(var.az,var.region)))}"

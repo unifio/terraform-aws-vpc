@@ -1,5 +1,11 @@
 ## Unreleased
 
+## 0.2.3 (June 8, 2016)
+
+#### IMPROVEMENTS:
+* Added support for VGW route propagation for routing tables.
+* Added support for VPG creation without VPC attachment. Necessary to avoid chicken-and-egg scenario when configuring VPC for VPG route propagation.
+
 ## 0.2.2 (June 2, 2016)
 
 #### IMPROVEMENTS:

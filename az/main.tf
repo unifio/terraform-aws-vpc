@@ -53,20 +53,20 @@ resource "aws_subnet" "lan" {
 }
 
 ### Provisions routing table
-resource "aws_route_table" "rt_lan" {
-  count  = "${length(split(",",var.az)) * var.lans_per_az}"
-  vpc_id = "${var.vpc_id}"
+module "rt_lan" {
+  source = "../rt"
 
-  tags {
-    Name        = "${var.stack_item_label}-lan-${count.index}"
-    application = "${var.stack_item_fullname}"
-    managed_by  = "terraform"
-  }
+  rt_count            = "${length(split(",",var.az)) * var.lans_per_az}"
+  stack_item_label    = "${var.stack_item_label}-lan"
+  stack_item_fullname = "${var.stack_item_fullname}"
+  vpc_id              = "${var.vpc_id}"
+  vgw_prop            = "${signum(var.rt_vgw_prop)}"
+  vgw_ids             = "${var.vgw_ids}"
 }
 
 ### Associates subnet with routing table
 resource "aws_route_table_association" "rta_lan" {
   count          = "${length(split(",",var.az)) * var.lans_per_az}"
   subnet_id      = "${element(aws_subnet.lan.*.id,count.index)}"
-  route_table_id = "${element(aws_route_table.rt_lan.*.id,count.index)}"
+  route_table_id = "${element(split(",",module.rt_lan.rt_id),count.index)}"
 }

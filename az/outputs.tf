@@ -29,5 +29,5 @@ output "nat_id" {
 
 ## Returns the routing table ID
 output "rt_lan_id" {
-  value = "${join(",",aws_route_table.rt_lan.*.id)}"
+  value = "${module.rt_lan.rt_id}"
 }

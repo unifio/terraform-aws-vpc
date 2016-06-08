@@ -69,6 +69,8 @@ module "vpc_az" {
   lan_cidr            = "${cidrsubnet(var.vpc_cidr,4,8)},${cidrsubnet(var.vpc_cidr,4,9)},${cidrsubnet(var.vpc_cidr,4,10)},${cidrsubnet(var.vpc_cidr,4,13)},${cidrsubnet(var.vpc_cidr,4,14)},${cidrsubnet(var.vpc_cidr,4,15)}"
   lans_per_az         = "${var.lans_per_az}"
   rt_dmz_id           = "${module.vpc_base.rt_dmz_id}"
+  rt_vgw_prop         = 1
+  vgw_ids             = "${module.vpc_vpg.vpg_id}"
 }
 
 ## Configures routing

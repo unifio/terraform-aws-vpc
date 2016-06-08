@@ -46,3 +46,15 @@ variable "flow_log_traffic_type" {
   description = "The type of traffic to capture. Valid values: ACCEPT,REJECT,ALL"
   default     = "ALL"
 }
+
+variable "rt_vgw_prop" {
+  type        = "string"
+  description = "Specifies whether virtual gateway route propagation should be enabled on the routing table(s)"
+  default     = 0
+}
+
+variable "vgw_ids" {
+  type        = "string"
+  description = "A list of virtual gateways to associate with the routing tables for route propagation."
+  default     = ""
+}

@@ -27,14 +27,15 @@ resource "aws_internet_gateway" "igw" {
 }
 
 ## Provisions DMZ routing table
-resource "aws_route_table" "rt_dmz" {
-  vpc_id = "${aws_vpc.vpc.id}"
+module "rt_dmz" {
+  source = "../rt"
 
-  tags {
-    Name        = "${var.stack_item_label}-dmz"
-    application = "${var.stack_item_fullname}"
-    managed_by  = "terraform"
-  }
+  rt_count            = 1
+  stack_item_label    = "${var.stack_item_label}-dmz"
+  stack_item_fullname = "${var.stack_item_fullname}"
+  vpc_id              = "${aws_vpc.vpc.id}"
+  vgw_prop            = "${signum(var.rt_vgw_prop)}"
+  vgw_ids             = "${var.vgw_ids}"
 }
 
 ## Provisions VPC flow log

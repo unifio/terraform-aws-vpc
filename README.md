@@ -26,6 +26,8 @@ The Base module provisions the VPC, attaches an Internet Gateway, and creates NA
 - `enable_hostnames` - (Optional) Specifies whether the instances launched in the VPC get DNS hostnames. Defaults to true.
 - `enable_classiclink` - (Optional) Specifies whether ClassicLink is enabled for the VPC. Defaults to false.
 - `flow_log_traffic_type` - (Optional) The type of traffic to capture. Valid values: ACCEPT,REJECT,ALL.
+- `rt_vgw_prop` - (Optional) Specifies whether virtual gateway route propagation should be enabled on the routing table(s). Valid values: 0 or 1. Defaults to 0 (disabled).
+- `vgw_ids` - (Optional) A list of virtual gateways to associate with the routing tables for route propagation.
 
 
 ### Usage ###
@@ -93,6 +95,7 @@ Creates a VPC VPN Gateway
 
 - `stack_item_label` - Short form identifier for this stack.  This value is used to create the "Name" resource tag for resources created by this stack item, and also serves as a unique key for re-use.
 - `stack_item_fullname` - Long form descriptive name for this stack item.  This value is used to create the "application" resource tag for resources created by this stack item.
+- `vpc_attach` - Specifies whether the VPG should be associated with a VPC. Valid value: 0 or 1. Defaults to 0 (unattached).
 - `vpc_id` - The VPC to associate the VPG with.
 
 ### Usage
@@ -102,6 +105,7 @@ The usage examples may assume that previous modules in this stack have already b
 ```js
 module "vpg" {
   source              = "github.com/terraform-aws-vpc//vpg"
+  vpc_attach          = 1
   vpc_id              = "${module.vpc_base.vpc_id}"
   stack_item_fullname = "Stack Item Description"
   stack_item_label    = "mystack1"
@@ -128,6 +132,8 @@ In each Availability Zone provided, this module provisions subnets and routing t
 - `lans_per_az` - (Optional) The number of private LAN subnets to be provisioned per AZ.  You will need to double the CIDR blocks specified in the `lan_cidr` variable for each increase in this value.  Defaults to 1.
 - `enable_dmz_public_ips` - (Optional) Specify true to indicate that instances launched into the DMZ subnet should be assigned a public IP address.  Defaults to true.
 - `rt_dmz_id` - The ID of the DMZ routing table.
+- `rt_vgw_prop` - (Optional) Specifies whether virtual gateway route propagation should be enabled on the routing table(s). Valid values: 0 or 1. Defaults to 0 (disabled).
+- `vgw_ids` - (Optional) A list of virtual gateways to associate with the routing tables for route propagation.
 
 ### Usage ###
 
@@ -146,6 +152,8 @@ module "AZs" {
     lans_per_az           = "1"
     enable_dmz_public_ips = true
     rt_dmz_id             = "${module.vpc_base.rt_dmz_id}"
+    rt_vgw_prop           = 1
+    vgw_ids               = "${aws_vpn_gateway.vpg.id}"
 }
 ```
 

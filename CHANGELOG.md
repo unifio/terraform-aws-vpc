@@ -1,5 +1,10 @@
 ## Unreleased
 
+## 0.2.4 (June 24, 2016)
+
+#### IMPROVEMENTS:
+* Added NAT gateway public IP to the AZ module outputs.
+
 ## 0.2.3 (June 8, 2016)
 
 #### IMPROVEMENTS:

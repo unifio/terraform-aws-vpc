@@ -167,6 +167,7 @@ module "AZs" {
 - `lan_cidr` - List of subnet CIDR blocks of the LAN subnetworks.
 - `eip_nat_id` - List of Elastic IP IDs for each of the NAT gateways.
 - `nat_id` - List of NAT gateways IDs.
+- `eip_nat_ip` - List of NAT gateway public IPs.
 - `rt_lan_id` - List of routing table IDs for the LAN subnets.
 
 ## Examples ##

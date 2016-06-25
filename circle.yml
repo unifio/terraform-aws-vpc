@@ -9,6 +9,6 @@ dependencies:
 test:
   override:
     # Style check
-    - "[ $(terraform fmt | wc -l) -eq 0 ]"
+    - "[ $(terraform fmt -write=false | wc -l) -eq 0 ]"
     # Verify plan
     - bundle exec rake

@@ -1,14 +1,11 @@
 machine:
+  services:
+    - docker
   environment:
-    TF_VERSION: 0.6.16
-    TF_URL: https://releases.hashicorp.com/terraform/${TF_VERSION}/terraform_${TF_VERSION}_linux_amd64.zip
-dependencies:
-  pre:
-    - "[[ -f \"${HOME}/bin/terraform\" ]] || (wget -O \"/tmp/tf.zip\" \"${TF_URL}\" && unzip -o -d \"${HOME}/bin\" \"/tmp/tf.zip\")"
-    - terraform version
+    TF_IMG: unifio/terraform:0.7.4
+    TF_CMD: docker run -v /home/ubuntu/.aws:/home/user/.aws -e AWS_DEFAULT_REGION=us-east-1 -e LOCAL_USER_ID=1000 --rm
 test:
+  pre:
+    - docker pull $TF_IMG
   override:
-    # Style check
-    - "[ $(terraform fmt -write=false | wc -l) -eq 0 ]"
-    # Verify plan
     - bundle exec rake

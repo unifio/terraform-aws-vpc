@@ -9,3 +9,5 @@ test:
     - docker pull $TF_IMG
   override:
     - bundle exec rake
+    - "bundle exec rake apply['basic',${TF_IMG},\"${TF_CMD}\",'basic.tfvars']"
+    - "bundle exec rake destroy['basic',${TF_IMG},\"${TF_CMD}\",'basic.tfvars']"

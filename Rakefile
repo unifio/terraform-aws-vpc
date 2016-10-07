@@ -37,6 +37,11 @@ task :get, [:stack, :tf_img, :tf_cmd] do |t, args|
   sh "#{args['tf_cmd']} -v `pwd`:/data -w /data/examples/#{args['stack']} #{args['tf_img']} get"
 end
 
+desc "Get output"
+task :output, [:stack, :tf_img, :tf_cmd, :output] do |t, args|
+  sh "#{args['tf_cmd']} -v `pwd`:/data -w /data/examples/#{args['stack']} #{args['tf_img']} output #{args['output']}"
+end
+
 desc "Apply stack"
 task :apply, [:stack, :tf_img, :tf_cmd, :var_file] do |t, args|
   sh "#{args['tf_cmd']} -v `pwd`:/data -w /data/examples/#{args['stack']} #{args['tf_img']} apply -var-file /data/examples/#{args['var_file']}"

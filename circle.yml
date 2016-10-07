@@ -3,7 +3,7 @@ machine:
     - docker
   environment:
     TF_IMG: unifio/terraform:0.7.5
-    TF_CMD: docker run -v /home/ubuntu/.aws:/home/user/.aws -e AWS_DEFAULT_REGION=us-east-1 -e LOCAL_USER_ID=1000 --rm
+    TF_CMD: docker run -v /home/ubuntu/.aws:/home/user/.aws -e AWS_DEFAULT_REGION=us-east-1 -e LOCAL_USER_ID=1000
 test:
   pre:
     - docker pull $TF_IMG
@@ -21,6 +21,16 @@ test:
     - 'echo -e "vpg_vpc_attach = \"1\"\n" | tee -a examples/full_stack.tfvars'
     - 'echo -e "rt_vgw_prop = \"1\"\n" | tee -a examples/full_stack.tfvars'
     - "bundle exec rake apply['full_stack',${TF_IMG},\"${TF_CMD}\",'full_stack.tfvars']"
+    # Testing peering connection
+    - 'export LAN_RT_IDS=`bundle exec rake output["basic",${TF_IMG},"${TF_CMD}","lan_rt_ids"]` && echo -e "owner_rt_lan_id = \"${LAN_RT_IDS}\"" | tee -a examples/peering.tfvars'
+    - 'export VPC_ID=`bundle exec rake output["basic",${TF_IMG},"${TF_CMD}","vpc_id"]` && echo -e "owner_vpc_id = \"${VPC_ID}\"" | tee -a examples/peering.tfvars'
+    - 'export LAN_RT_IDS=`bundle exec rake output["full_stack",${TF_IMG},"${TF_CMD}","lan_rt_ids"]` && echo -e "peer_rt_lan_id = \"${LAN_RT_IDS}\"" | tee -a examples/peering.tfvars'
+    - 'export VPC_ID=`bundle exec rake output["full_stack",${TF_IMG},"${TF_CMD}","vpc_id"]` && echo -e "peer_vpc_id = \"${VPC_ID}\"" | tee -a examples/peering.tfvars'
+    - 'echo -e "peer_owner_id = \"${PEER_OWNER_ID}\"\n" | tee -a examples/peering.tfvars'
+    - "bundle exec rake get['peering',${TF_IMG},\"${TF_CMD}\"]"
+    - "bundle exec rake apply['peering',${TF_IMG},\"${TF_CMD}\",'peering.tfvars']"
     # Test stack clean-up
-    - "bundle exec rake destroy['basic',${TF_IMG},\"${TF_CMD}\",'basic.tfvars']"
+    - "bundle exec rake destroy['peering',${TF_IMG},\"${TF_CMD}\",'peering.tfvars']"
     - "bundle exec rake destroy['full_stack',${TF_IMG},\"${TF_CMD}\",'full_stack.tfvars']"
+    - "bundle exec rake destroy['basic',${TF_IMG},\"${TF_CMD}\",'basic.tfvars']"
+    

@@ -8,8 +8,19 @@ test:
   pre:
     - docker pull $TF_IMG
   override:
+    # Verify stacks
     - bundle exec rake
+    # Test basic VPC deployment
     - "bundle exec rake apply['basic',${TF_IMG},\"${TF_CMD}\",'basic.tfvars']"
+    # Test VPG attachment
     - 'echo -e "vpg_vpc_attach = \"1\"\n" | tee -a examples/basic.tfvars'
     - "bundle exec rake apply['basic',${TF_IMG},\"${TF_CMD}\",'basic.tfvars']"
+    # Test full stack VPC deployment
+    - "bundle exec rake apply['full_stack',${TF_IMG},\"${TF_CMD}\",'full_stack.tfvars']"
+    # Test VPG attachment and route propagation
+    - 'echo -e "vpg_vpc_attach = \"1\"\n" | tee -a examples/full_stack.tfvars'
+    - 'echo -e "rt_vgw_prop = \"1\"\n" | tee -a examples/full_stack.tfvars'
+    - "bundle exec rake apply['full_stack',${TF_IMG},\"${TF_CMD}\",'full_stack.tfvars']"
+    # Test stack clean-up
     - "bundle exec rake destroy['basic',${TF_IMG},\"${TF_CMD}\",'basic.tfvars']"
+    - "bundle exec rake destroy['full_stack',${TF_IMG},\"${TF_CMD}\",'full_stack.tfvars']"

@@ -50,7 +50,7 @@ module "vpc_vpg" {
   #source = "github.com/unifio/terraform-aws-vpc?ref=master//vpg"
   source = "../../vpg"
 
-  vpc_attach          = 1
+  vpc_attach          = "${var.vpg_vpc_attach}"
   vpc_id              = "${module.vpc_base.vpc_id}"
   stack_item_label    = "${var.stack_item_label}"
   stack_item_fullname = "${var.stack_item_fullname}"
@@ -70,27 +70,43 @@ module "vpc_az" {
   lan_cidr            = "${cidrsubnet(var.vpc_cidr,4,8)},${cidrsubnet(var.vpc_cidr,4,9)},${cidrsubnet(var.vpc_cidr,4,10)},${cidrsubnet(var.vpc_cidr,4,13)},${cidrsubnet(var.vpc_cidr,4,14)},${cidrsubnet(var.vpc_cidr,4,15)}"
   lans_per_az         = "${var.lans_per_az}"
   rt_dmz_id           = "${module.vpc_base.rt_dmz_id}"
-  rt_vgw_prop         = 1
+  rt_vgw_prop         = "${var.rt_vgw_prop}"
   vgw_ids             = "${module.vpc_vpg.vpg_id}"
 }
 
 ## Configures routing
 resource "aws_route" "dmz-to-igw" {
-  count                  = "${length(split(",",lookup(var.az,var.region)))}"
   route_table_id         = "${module.vpc_base.rt_dmz_id}"
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = "${module.vpc_base.igw_id}"
 }
 
 resource "aws_route" "lan-to-nat" {
-  count                  = "${length(split(",",lookup(var.az,var.region))) * var.lans_per_az}"
+  count                  = "${(signum(var.rt_vgw_prop) + 1 % 2) * length(split(",",lookup(var.az,var.region))) * var.lans_per_az}"
+  route_table_id         = "${element(split(",",module.vpc_az.rt_lan_id),count.index)}"
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id         = "${element(split(",",module.vpc_az.nat_id),count.index)}"
+}
+
+### Route resource does not handle changes in routing table IDs well. This trick forces the destroy and create cycle necessary for a clean upadate.
+resource "aws_route" "vgw-to-lan-to-nat" {
+  count                  = "${(signum(var.rt_vgw_prop)) * length(split(",",lookup(var.az,var.region))) * var.lans_per_az}"
   route_table_id         = "${element(split(",",module.vpc_az.rt_lan_id),count.index)}"
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = "${element(split(",",module.vpc_az.nat_id),count.index)}"
 }
 
 resource "aws_vpc_endpoint" "s3-ep" {
+  count           = "${signum(var.rt_vgw_prop) + 1 % 2}"
   vpc_id          = "${module.vpc_base.vpc_id}"
   service_name    = "com.amazonaws.${var.region}.s3"
-  route_table_ids = ["${split(",","${module.vpc_az.lan_id}")}"]
+  route_table_ids = ["${split(",","${module.vpc_az.rt_lan_id}")}"]
+}
+
+### Endpoint resource does not handle changes in routing table IDs well. This trick forces the destroy and create cycle necessary for a clean upadate.
+resource "aws_vpc_endpoint" "vgw-s3-ep" {
+  count           = "${signum(var.rt_vgw_prop)}"
+  vpc_id          = "${module.vpc_base.vpc_id}"
+  service_name    = "com.amazonaws.${var.region}.s3"
+  route_table_ids = ["${split(",","${module.vpc_az.rt_lan_id}")}"]
 }

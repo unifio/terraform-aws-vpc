@@ -10,4 +10,6 @@ test:
   override:
     - bundle exec rake
     - "bundle exec rake apply['basic',${TF_IMG},\"${TF_CMD}\",'basic.tfvars']"
+    - 'echo -e "vpg_vpc_attach = \"1\"\n" | tee -a examples/basic.tfvars'
+    - "bundle exec rake apply['basic',${TF_IMG},\"${TF_CMD}\",'basic.tfvars']"
     - "bundle exec rake destroy['basic',${TF_IMG},\"${TF_CMD}\",'basic.tfvars']"

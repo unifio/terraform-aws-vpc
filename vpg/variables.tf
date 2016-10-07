@@ -21,5 +21,5 @@ variable "vpc_id" {
 variable "vpc_attach" {
   type        = "string"
   description = "Specifies whether the VPG should be associated with a VPC."
-  default     = 0
+  default     = "0"
 }

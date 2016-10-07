@@ -56,3 +56,9 @@ variable "enable_hostnames" {
   description = "Specifies whether the instances launched in the VPC get DNS hostnames"
   default     = false
 }
+
+variable "vpg_vpc_attach" {
+  type        = "string"
+  description = "Flag for selecting whether the VPG should be attached to a VPC."
+  default     = "0"
+}

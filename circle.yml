@@ -2,7 +2,7 @@ machine:
   services:
     - docker
   environment:
-    TF_IMG: unifio/terraform:0.7.4
+    TF_IMG: unifio/terraform:0.7.5
     TF_CMD: docker run -v /home/ubuntu/.aws:/home/user/.aws -e AWS_DEFAULT_REGION=us-east-1 -e LOCAL_USER_ID=1000 --rm
 test:
   pre:

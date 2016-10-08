@@ -11,3 +11,7 @@ output "dmz_subnet_ids" {
 output "lan_subnet_ids" {
   value = "${module.vpc_az.lan_id}"
 }
+
+output "lan_rt_ids" {
+  value = "${module.vpc_az.rt_lan_id}"
+}

@@ -8,7 +8,7 @@ task :default => :verify
 desc "Verify the stack"
 task :verify do
 
-  ['basic', 'full_stack'].each do |stack|
+  %w(basic full_stack).each do |stack|
     task_args = {:stack => stack, :tf_img => ENV['TF_IMG'], :tf_cmd => ENV['TF_CMD']}
     Rake::Task['clean'].execute(Rake::TaskArguments.new(task_args.keys, task_args.values))
     Rake::Task['check_style'].execute(Rake::TaskArguments.new(task_args.keys, task_args.values))
@@ -35,6 +35,11 @@ end
 desc "Get modules"
 task :get, [:stack, :tf_img, :tf_cmd] do |t, args|
   sh "#{args['tf_cmd']} -v `pwd`:/data -w /data/examples/#{args['stack']} #{args['tf_img']} get"
+end
+
+desc "Get output"
+task :output, [:stack, :tf_img, :tf_cmd, :output] do |t, args|
+  sh "#{args['tf_cmd']} -v `pwd`:/data -w /data/examples/#{args['stack']} #{args['tf_img']} output #{args['output']}"
 end
 
 desc "Apply stack"

@@ -42,9 +42,10 @@ module "vpc_vpg" {
   #source = "github.com/unifio/terraform-aws-vpc?ref=master//vpg"
   source = "../../vpg"
 
-  vpc_attach          = 0
   stack_item_label    = "${var.stack_item_label}"
   stack_item_fullname = "${var.stack_item_fullname}"
+  vpc_attach          = "${var.vpg_vpc_attach}"
+  vpc_id              = "${module.vpc_base.vpc_id}"
 }
 
 ## Configures routing

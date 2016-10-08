@@ -2,9 +2,6 @@
 
 # Gateway configuration
 resource "aws_vpn_gateway" "vpg" {
-  count  = "${signum(var.vpc_attach)}"
-  vpc_id = "${var.vpc_id}"
-
   tags {
     Name        = "${var.stack_item_label}-vpg"
     application = "${var.stack_item_fullname}"
@@ -12,12 +9,9 @@ resource "aws_vpn_gateway" "vpg" {
   }
 }
 
-resource "aws_vpn_gateway" "vpg_unattached" {
-  count = "${signum(var.vpc_attach) + 1 % 2}"
+resource "aws_vpn_gateway_attachment" "attach" {
+  count = "${signum(var.vpc_attach)}"
 
-  tags {
-    Name        = "${var.stack_item_label}-vpg"
-    application = "${var.stack_item_fullname}"
-    managed_by  = "terraform"
-  }
+  vpc_id         = "${var.vpc_id}"
+  vpn_gateway_id = "${aws_vpn_gateway.vpg.id}"
 }

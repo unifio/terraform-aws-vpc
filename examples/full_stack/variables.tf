@@ -43,6 +43,18 @@ variable "lans_per_az" {
   default     = 2
 }
 
+variable "vpg_vpc_attach" {
+  type        = "string"
+  description = "Flag for selecting whether the VPG should be attached to a VPC."
+  default     = "0"
+}
+
+variable "rt_vgw_prop" {
+  type        = "string"
+  description = "Specifies whether virtual gateway route propagation should be enabled on the routing table(s)"
+  default     = "0"
+}
+
 ### DHCP
 variable "domain_name" {
   type        = "string"

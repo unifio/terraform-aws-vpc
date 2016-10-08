@@ -1,5 +1,17 @@
 ## Unreleased
 
+## 0.2.5 (October 7, 2016)
+
+#### BACKWARDS INCOMPATIBILITIES / NOTES:
+* Unattached VPN gateways created by previous versions of this module will be destroyed and recreated on update due to changes in resource naming.
+* This module has been verified for compatiblity with Terraform 0.7.5.
+
+#### FEATURES:
+* Added support for establishing VPC peering connections.
+
+#### BUG FIXES:
+* Resolved issue where changing the attached status of a VPN gateway would result in the resource being destroyed and recreated.
+
 ## 0.2.4 (June 24, 2016)
 
 #### IMPROVEMENTS:

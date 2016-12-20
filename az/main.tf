@@ -26,13 +26,12 @@ resource "aws_route_table_association" "rta_dmz" {
 
 ### Provisions NAT gateway
 resource "aws_nat_gateway" "nat" {
-  count         = "${length(split(",",var.az))}"
-  allocation_id = "${element(aws_eip.eip_nat.*.id,count.index)}"
+  count         = "${length(split(",",var.az)) * signum(var.lans_per_az)}"  allocation_id = "${element(aws_eip.eip_nat.*.id,count.index)}"
   subnet_id     = "${element(aws_subnet.dmz.*.id,count.index)}"
 }
 
 resource "aws_eip" "eip_nat" {
-  count = "${length(split(",",var.az))}"
+  count = "${length(split(",",var.az)) * signum(var.lans_per_az)}"  
   vpc   = true
 }
 

@@ -1,0 +1,16 @@
+---
+# Environments
+
+environments:
+  basic:
+    - no-lan
+    - defaults
+    - base-options
+    - vpg-attach
+
+  complete:
+    - overrides
+    - peer-vpc
+
+  peering:
+    - peer-connect

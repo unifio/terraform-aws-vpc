@@ -1,0 +1,18 @@
+---
+# Common resources
+
+## Basic example
+examples::basic::vars:
+  region: 'us-east-2'
+  stack_item_fullname: 'Basic Examples'
+  stack_item_label: 'bsc'
+  vpc_cidr: '172.16.0.0/21'
+
+## Complete example
+examples::complete::vars: &complete_common
+  region: 'us-east-1'
+  stack_item_fullname: 'Complete Examples'
+
+## Peering example
+examples::peering::vars:
+  <<: *complete_common

@@ -1,0 +1,17 @@
+---
+# Basic no LAN example
+
+## Module
+no-lan::module: 'examples/basic'
+
+## State storage
+no-lan::state:
+  - s3:
+      bucket: "%{hiera('tf_state_bucket')}"
+      name: "terraform-aws-vpc/%{environment}"
+      region: "%{hiera('tf_state_region')}"
+
+## Input variables
+examples::basic::vars:
+  azs_provisioned: '2'
+  lans_per_az: '0'

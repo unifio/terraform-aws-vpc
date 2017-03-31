@@ -1,0 +1,19 @@
+---
+# Basic base options example
+
+## Module
+base-options::module: 'examples/basic'
+
+## State storage
+base-options::state:
+  - s3:
+      bucket: "%{hiera('tf_state_bucket')}"
+      name: "terraform-aws-vpc/%{environment}"
+      region: "%{hiera('tf_state_region')}"
+
+## Input variables
+examples::basic::vars:
+  azs_provisioned: '3'
+  enable_dns: 'false'
+  enable_hostnames: 'true'
+  nat_eips_enabled: 'true'

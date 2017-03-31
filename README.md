@@ -9,7 +9,7 @@ Module stack that supports full AWS VPC deployment.  Users can provision a basic
 
 ## Requirements ##
 
-- Terraform 0.6.16 or newer
+- Terraform 0.8.0 or newer
 - AWS provider
 
 ## Base Module ##
@@ -35,11 +35,11 @@ The Base module provisions the VPC, attaches an Internet Gateway, and creates NA
 module "vpc_base" {
   source = "github.com/unifio/terraform-aws-vpc?ref=master//base"
 
-  enable_dns          = true
-  enable_hostnames    = false
-  stack_item_fullname = "Stack Item Description"
-  stack_item_label    = "mystack1"
-  vpc_cidr            = "10.10.0.0/22"
+  enable_dns          = "true"
+  enable_hostnames    = "false"
+  stack_item_fullname = "My Stack"
+  stack_item_label    = "mystck"
+  vpc_cidr            = "172.16.0.0/21"
 }
 ```
 
@@ -74,12 +74,12 @@ module "dhcp" {
   source = "github.com/terraform-aws-vpc?ref=master//dhcp"
 
   domain_name          = "mydomain.com"
-  name_servers         = "10.128.8.10"
-  netbios_name_servers = "10.128.8.10"
+  name_servers         = ["172.16.0.2"]
+  netbios_name_servers = ["172.16.0.2"]
   netbios_node_type    = 2
-  ntp_servers          = "10.128.8.10"
-  stack_item_fullname  = "myname"
-  stack_item_label     = "mystack1"
+  ntp_servers          = ["172.16.0.2"]
+  stack_item_fullname  = "My Stack"
+  stack_item_label     = "mystck"
   vpc_id               = "${module.vpc_base.vpc_id}"
 }
 ```
@@ -96,8 +96,8 @@ Creates a VPC VPN Gateway
 
 - `stack_item_fullname` - Long form descriptive name for this stack item.  This value is used to create the "application" resource tag for resources created by this stack item.
 - `stack_item_label` - Short form identifier for this stack.  This value is used to create the "Name" resource tag for resources created by this stack item, and also serves as a unique key for re-use.
-- `vpc_attach` - Specifies whether the VPG should be associated with a VPC. Valid value: 0 or 1. Defaults to 0 (unattached).
-- `vpc_id` - The VPC to associate the VPG with.
+- `vpc_attach` - (Optional) Specifies whether the VPG should be associated with a VPC.
+- `vpc_id` - (Optional) The VPC to associate the VPG with.
 
 ### Usage
 
@@ -107,8 +107,8 @@ The usage examples may assume that previous modules in this stack have already b
 module "vpg" {
   source = "github.com/terraform-aws-vpc?ref=master//vpg"
 
-  stack_item_fullname = "Stack Item Description"
-  stack_item_label    = "mystack1"
+  stack_item_fullname = "My Stack"
+  stack_item_label    = "mystck"
   vpc_attach          = 1
   vpc_id              = "${module.vpc_base.vpc_id}"
 }
@@ -124,14 +124,18 @@ In each Availability Zone provided, this module provisions subnets and routing t
 
 ### Input Variables ###
 
-- `az` - Availability zone(s).  Will accept a comma delimited string.
-- `dmz_cidr` - The CIDR block(s) you want the DMZ subnet(s) to cover.  Will accept a comma delimited string.  This list should correspond 1:1 to each AZ.
-- `enable_dmz_public_ips` - (Optional) Specify true to indicate that instances launched into the DMZ subnet should be assigned a public IP address.  Defaults to true.
-- `lan_cidr` - The CIDR block(s) you want the LAN subnet(s) to cover.  Will accept a comma delimited string.  This list should correspond 1:1 to each AZ.
-- `lans_per_az` - (Optional) The number of private LAN subnets to be provisioned per AZ.  You will need to double the CIDR blocks specified in the `lan_cidr` variable for each increase in this value.  Defaults to 1.
-- `region` - The AWS region.
+- `azs_provisioned` - (Optional) The number of availability zones to be provisioned. Either this or **azs\_provisioned\_override** must be specified.
+- `azs_provisioned_override` - List of availability zone letters to be provisioned. Useful in regions where not all AZs are VPC ready. Either this or **azs_provisioned** must be specified.
+- `dmz_cidrs` - (Optional) The CIDR block(s) you want the DMZ subnet(s) to cover.
+- `enable_dmz_public_ips` - (Optional) Specify true to indicate that instances launched into the DMZ subnet should be assigned a public IP address.
+- `lan_cidrs` - (Optional) The CIDR block(s) you want the LAN subnet(s) to cover.
+- `lans_per_az` - (Optional) The number of private LAN subnets to be provisioned per AZ. Auto-provisioning will support up to 2 LANs without the need for overrides.
+- `nat_ami_override` - (Optional) Custom NAT Amazon machine image.
+- `nat_eips_enabled` - (Optional) Flag for specifying allocation of Elastic IPs to NATs for the purposes of whitelisting. This value is overriden to 'true' when utilizing NAT gateways.
+- `nat_gateways_enabled` - (Optional) Flag for specifying utilization of managed NAT gateways over EC2 based NAT instances.
+- `nat_instance_type` - (Default: t2.nano) NAT EC2 instance type.
+- `nat_key_name` - (Optional) NAT EC2 key pair name.
 - `rt_dmz_id` - The ID of the DMZ routing table.
-- `rt_vgw_prop` - (Optional) Specifies whether virtual gateway route propagation should be enabled on the routing table(s). Valid values: 0 or 1. Defaults to 0 (disabled).
 - `stack_item_fullname` - Long form descriptive name for this stack item.  This value is used to create the "application" resource tag for resources created by this stack item.
 - `stack_item_label` - Short form identifier for this stack.  This value is used to create the "Name" resource tag for resources created by this stack item, and also serves as a unique key for re-use.
 - `vgw_ids` - (Optional) A list of virtual gateways to associate with the routing tables for route propagation.
@@ -145,18 +149,13 @@ The usage examples may assume that previous modules in this stack have already b
 module "az" {
   source = "github.com/unifio/terraform-aws-vpc?ref=master//az"
 
-  az                    = "a,b"
-  dmz_cidr              = "10.10.0.0/25,10.10.0.128/25,10.10.1.0/25"
-  enable_dmz_public_ips = true
-  lan_cidr              = "10.10.2.0/25,10.10.2.128/25,10.10.3.0/25"
-  lans_per_az           = "1"
-  region                = "us-west-2"
+  azs_provisioned       = 2
+  enable_dmz_public_ips = "true"
   rt_dmz_id             = "${module.vpc_base.rt_dmz_id}"
-  rt_vgw_prop           = 1
-  stack_item_fullname   = "Stack Item Description"
-  stack_item_label      = "mystack1"
+  stack_item_fullname   = "My Stack"
+  stack_item_label      = "mystck"
   vgw_ids               = "${aws_vpn_gateway.vpg.id}"
-  vpc_id                = "${module.vpc_base.vpc_id}" 
+  vpc_id                = "${module.vpc_base.vpc_id}"
 }
 ```
 
@@ -164,14 +163,14 @@ module "az" {
 
 ** The order and association of the IDs match the order of the availability zones passed to the module.
 
-- `dmz_id` - List of subnet IDs of the DMZ subnetworks.
-- `lan_id` - List of subnet IDs of the LAN subnetworks.
-- `dmz_cidr` - List of subnet CIDR blocks of the DMZ subnetworks.
-- `lan_cidr` - List of subnet CIDR blocks of the LAN subnetworks.
-- `eip_nat_id` - List of Elastic IP IDs for each of the NAT gateways.
-- `nat_id` - List of NAT gateways IDs.
-- `eip_nat_ip` - List of NAT gateway public IPs.
-- `rt_lan_id` - List of routing table IDs for the LAN subnets.
+- `dmz_ids` - Comma-delimeted list of subnet IDs of the DMZ subnetworks.
+- `lan_ids` - Comma-delimeted list of subnet IDs of the LAN subnetworks.
+- `dmz_cidrs` - Comma-delimeted list of subnet CIDR blocks of the DMZ subnetworks.
+- `lan_cidrs` - Comma-delimeted list of subnet CIDR blocks of the LAN subnetworks.
+- `eip_nat_ids` - Comma-delimeted list of Elastic IP IDs for each of the NAT gateways.
+- `nat_ids` - Comma-delimeted list of NAT gateways IDs.
+- `eip_nat_ips` - Comma-delimeted list of NAT gateway public IPs.
+- `rt_lan_ids` - Comma-delimeted list of routing table IDs for the LAN subnets.
 
 ## Peer Module ##
 
@@ -179,14 +178,18 @@ Creates a VPC peering connection
 
 ### Input Variables
 
+- `accepter_allow_classic_link_to_remote` - Allow a local linked EC2-Classic instance to communicate with instances in a peer VPC. This enables an outbound communication from the local ClassicLink connection to the remote VPC.
 - `accepter_allow_remote_dns` - Allow accepter VPC to resolve public DNS hostnames to private IP addresses when queried from instances in the requester VPC.
-- `multi_acct` - Flag indicating whether the peering connection spans multiple AWS accounts.
-- `peer_owner_id` - The AWS account ID of the owner of the peer VPC.
-- `peer_vpc_id` - The ID of the VPC with which you are creating the VPC Peering Connection.
-- `requester_allow_remote_dns` - Allow requester VPC to resolve public DNS hostnames to private IP addresses when queried from instances in the accepter VPC.
+- `accepter_allow_to_remote_classic_link` - Allow a local VPC to communicate with a linked EC2-Classic instance in a peer VPC. This enables an outbound communication from the local VPC to the remote ClassicLink connection.
+- `accepter_auto_accept` - Accept the peering (both VPCs need to be in the same AWS account).
+- `accepter_owner_id` - The AWS account ID of the owner of the peer VPC.
+- `accepter_vpc_id` - The ID of the VPC with which you are creating the VPC Peering Connection.
+- `requester_allow_classic_link_to_remote` - Allow a local linked EC2-Classic instance to communicate with instances in a peer VPC. This enables an outbound communication from the local ClassicLink connection to the remote VPC.
+- `requester_allow_remote_dns` - Allow accepter VPC to resolve public DNS hostnames to private IP addresses when queried from instances in the requester VPC.
+- `requester_allow_to_remote_classic_link` - Allow a local VPC to communicate with a linked EC2-Classic instance in a peer VPC. This enables an outbound communication from the local VPC to the remote ClassicLink connection.
+- `requester_vpc_id` - The ID of the requester VPC.
 - `stack_item_fullname` - Long form descriptive name for this stack item.  This value is used to create the "application" resource tag for resources created by this stack item.
 - `stack_item_label` - Short form identifier for this stack.  This value is used to create the "Name" resource tag for resources created by this stack item, and also serves as a unique key for re-use.
-- `vpc_id` - The ID of the requester VPC.
 
 ### Usage
 
@@ -196,13 +199,13 @@ The usage examples may assume that previous modules in this stack have already b
 module "vpc_peer" {
   source = "github.com/terraform-aws-vpc?ref=master//peer"
 
-  accepter_allow_remote_dns  = false
-  peer_owner_id              = "${var.peer_owner_id}"
-  peer_vpc_id                = "${var.peer_vpc_id}"
-  requester_allow_remote_dns = true
+  accepter_allow_remote_dns  = "false"
+  accepter_owner_id          = "${var.peer_owner_id}"
+  accepter_vpc_id            = "${var.peer_vpc_id}"
+  requester_allow_remote_dns = "true"
+  requester_vpc_id           = "${var.owner_vpc_id}"
   stack_item_fullname        = "${var.stack_item_fullname}"
   stack_item_label           = "${var.stack_item_label}"
-  vpc_id                     = "${var.owner_vpc_id}"
 }
 ```
 

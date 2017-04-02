@@ -28,7 +28,7 @@ output "eip_nat_ips" {
 }
 
 output "nat_ids" {
-  value = "${join(",",aws_nat_gateway.nat.*.id)}"
+  value = "${coalesce(join(",",aws_instance.nat.*.id),join(",",aws_nat_gateway.nat.*.id))}"
 }
 
 ## Returns the routing table ID

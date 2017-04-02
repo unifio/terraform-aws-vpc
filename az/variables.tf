@@ -38,18 +38,6 @@ variable "az_cidrsubnet_offset" {
   }
 }
 
-variable "azs_enabled" {
-  type        = "string"
-  description = "The numebr of availability zones to be actively utilized by consuming stacks."
-  default     = ""
-}
-
-variable "azs_enabled_override" {
-  type        = "map"
-  description = "Slice of the availability zones list to be actively utilized by consuming stacks."
-  default     = {}
-}
-
 variable "azs_provisioned" {
   type        = "string"
   description = "The number of availability zones to be provisioned."
@@ -64,7 +52,7 @@ variable "azs_provisioned_override" {
 
 variable "dmz_cidrs" {
   type        = "list"
-  description = "The CIDR block(s) you want the DMZ subnet(s) to cover. Will accept a comma delimited string."
+  description = "The CIDR block(s) you want the DMZ subnet(s) to cover."
   default     = ["non_empty_list"]
 }
 
@@ -76,7 +64,7 @@ variable "enable_dmz_public_ips" {
 
 variable "lan_cidrs" {
   type        = "list"
-  description = "The CIDR block(s) you want the LAN subnet(s) to cover. Will accept a comma delimited string."
+  description = "The CIDR block(s) you want the LAN subnet(s) to cover."
   default     = ["non_empty_list"]
 }
 
@@ -84,6 +72,36 @@ variable "lans_per_az" {
   type        = "string"
   description = "The number of private LAN subnets to be provisioned per AZ"
   default     = "1"
+}
+
+variable "nat_ami_override" {
+  type        = "string"
+  description = "Custom NAT Amazon machine image"
+  default     = ""
+}
+
+variable "nat_eips_enabled" {
+  type        = "string"
+  description = "Flag for specifying allocation of Elastic IPs to NATs for the purposes of whitelisting. This value is overriden to 'true' when utilizing NAT gateways."
+  default     = "false"
+}
+
+variable "nat_gateways_enabled" {
+  type        = "string"
+  description = "Flag for specifying utilization of managed NAT gateways over EC2 based NAT instances."
+  default     = "false"
+}
+
+variable "nat_instance_type" {
+  type        = "string"
+  description = "NAT EC2 instance type"
+  default     = "t2.nano"
+}
+
+variable "nat_key_name" {
+  type        = "string"
+  description = "NAT EC2 key pair name"
+  default     = ""
 }
 
 variable "rt_dmz_id" {

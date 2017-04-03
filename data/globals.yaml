@@ -1,0 +1,6 @@
+---
+# Global variables
+
+## Terraform
+tf_state_bucket: 'unifio-terraform-state'
+tf_state_region: "us-east-2"

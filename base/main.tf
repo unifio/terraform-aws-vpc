@@ -1,4 +1,9 @@
-# VPC Base
+# VPC base
+
+## Set Terraform version constraint
+terraform {
+  required_version = "> 0.8.0"
+}
 
 ## Provisions Virtual Private Cloud (VPC)
 resource "aws_vpc" "vpc" {
@@ -9,9 +14,9 @@ resource "aws_vpc" "vpc" {
   enable_classiclink   = "${var.enable_classiclink}"
 
   tags {
-    Name        = "${var.stack_item_label}-vpc"
     application = "${var.stack_item_fullname}"
     managed_by  = "terraform"
+    Name        = "${var.stack_item_label}-vpc"
   }
 }
 
@@ -20,25 +25,25 @@ resource "aws_internet_gateway" "igw" {
   vpc_id = "${aws_vpc.vpc.id}"
 
   tags {
-    Name        = "${var.stack_item_label}-igw"
     application = "${var.stack_item_fullname}"
     managed_by  = "terraform"
+    Name        = "${var.stack_item_label}-igw"
   }
 }
 
 ## Provisions DMZ routing table
-module "rt_dmz" {
-  source = "../rt"
+resource "aws_route_table" "rt_dmz" {
+  propagating_vgws = ["${compact(var.vgw_ids)}"]
+  vpc_id           = "${aws_vpc.vpc.id}"
 
-  rt_count            = 1
-  stack_item_label    = "${var.stack_item_label}-dmz"
-  stack_item_fullname = "${var.stack_item_fullname}"
-  vpc_id              = "${aws_vpc.vpc.id}"
-  vgw_prop            = "${signum(var.rt_vgw_prop)}"
-  vgw_ids             = "${var.vgw_ids}"
+  tags {
+    application = "${var.stack_item_fullname}"
+    managed_by  = "terraform"
+    Name        = "${var.stack_item_label}-dmz"
+  }
 }
 
-## Provisions VPC flow log
+## Provisions VPC flow logs
 resource "aws_cloudwatch_log_group" "flow_log_group" {
   name = "${var.stack_item_label}-vpc-flow-logs"
 }
@@ -49,40 +54,35 @@ resource "aws_iam_role" "flow_log_role" {
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": "sts:AssumeRole",
-      "Principal": {
-        "Service": "vpc-flow-logs.amazonaws.com"
-      },
-      "Effect": "Allow",
-      "Sid": ""
-    }
-  ]
+  "Statement": [{
+    "Action": "sts:AssumeRole",
+    "Principal": {
+      "Service": "vpc-flow-logs.amazonaws.com"
+    },
+    "Effect": "Allow"
+  }]
 }
 EOF
 }
 
 resource "aws_iam_role_policy" "flow_log_role_policies" {
-  name = "flow-logs"
+  name = "logs"
   role = "${aws_iam_role.flow_log_role.id}"
 
   policy = <<EOF
 {
   "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": [
-        "logs:CreateLogGroup",
-        "logs:CreateLogStream",
-        "logs:PutLogEvents",
-        "logs:DescribeLogGroups",
-        "logs:DescribeLogStreams"
-      ],
-      "Effect": "Allow",
-      "Resource": "${aws_cloudwatch_log_group.flow_log_group.arn}"
-    }
-  ]
+  "Statement": [{
+    "Action": [
+      "logs:CreateLogGroup",
+      "logs:CreateLogStream",
+      "logs:PutLogEvents",
+      "logs:DescribeLogGroups",
+      "logs:DescribeLogStreams"
+    ],
+    "Effect": "Allow",
+    "Resource": "${aws_cloudwatch_log_group.flow_log_group.arn}"
+  }]
 }
 EOF
 }

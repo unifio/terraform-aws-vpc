@@ -1,0 +1,20 @@
+---
+# Basic VPG attachment example
+
+## Module
+vpg-attach::module: 'examples/basic'
+
+## State storage
+vpg-attach::state:
+  - s3:
+      bucket: "%{hiera('tf_state_bucket')}"
+      name: "terraform-aws-vpc/%{environment}"
+      region: "%{hiera('tf_state_region')}"
+
+## Input variables
+examples::basic::vars:
+  azs_provisioned: '3'
+  enable_dns: 'false'
+  enable_hostnames: 'true'
+  nat_eips_enabled: 'true'
+  vpc_attach: 'true'

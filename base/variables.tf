@@ -1,60 +1,56 @@
 # Input Variables
 
-## Resource Tags
-variable "stack_item_label" {
-  type        = "string"
-  description = "Short form identifier for this stack. This value is used to create the 'Name' resource tag for resources created by this stack item, and also serves as a unique key for re-use."
-}
-
+## Resource tags
 variable "stack_item_fullname" {
   type        = "string"
   description = "Long form descriptive name for this stack item. This value is used to create the 'application' resource tag for resources created by this stack item."
 }
 
-## VPC parameters
-variable "vpc_cidr" {
+variable "stack_item_label" {
   type        = "string"
-  description = "The CIDR block you want the VPC to cover. For example: 10.0.0.0/16"
+  description = "Short form identifier for this stack. This value is used to create the 'Name' resource tag for resources created by this stack item, and also serves as a unique key for re-use."
 }
 
-variable "instance_tenancy" {
+## VPC parameters
+variable "enable_classiclink" {
   type        = "string"
-  description = "The allowed tenancy of instances launched into the VPC"
-  default     = "default"
+  description = "A boolean flag to enable/disable ClassicLink for the VPC. Only valid in regions and accounts that support EC2 Classic. Defaults false."
+  default     = ""
 }
 
 variable "enable_dns" {
   type        = "string"
-  description = "Specifies whether DNS resolution is supported for the VPC"
-  default     = true
+  description = "A boolean flag to enable/disable DNS support in the VPC. Defaults true."
+  default     = ""
 }
 
 variable "enable_hostnames" {
   type        = "string"
-  description = "Specifies whether the instances launched in the VPC get DNS hostnames"
-  default     = true
+  description = "A boolean flag to enable/disable DNS hostnames in the VPC. Defaults false."
+  default     = ""
 }
 
-variable "enable_classiclink" {
+variable "instance_tenancy" {
   type        = "string"
-  description = "Specifies whether ClassicLink is enabled for the VPC"
-  default     = false
+  description = "A tenancy option for instances launched into the VPC."
+  default     = ""
 }
 
+variable "vpc_cidr" {
+  type        = "string"
+  description = "The CIDR block for the VPC."
+}
+
+## Flow log parameters
 variable "flow_log_traffic_type" {
   type        = "string"
   description = "The type of traffic to capture. Valid values: ACCEPT,REJECT,ALL"
   default     = "ALL"
 }
 
-variable "rt_vgw_prop" {
-  type        = "string"
-  description = "Specifies whether virtual gateway route propagation should be enabled on the routing table(s)"
-  default     = 0
-}
-
+## Routing parameters
 variable "vgw_ids" {
-  type        = "string"
-  description = "A list of virtual gateways to associate with the routing tables for route propagation."
-  default     = ""
+  type        = "list"
+  description = "A list of virtual gateways for propagation."
+  default     = []
 }

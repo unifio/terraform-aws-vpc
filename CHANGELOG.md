@@ -6,56 +6,56 @@
 #### BACKWARDS INCOMPATIBILITIES / NOTES:
 * Enabled complex variable types, which are only supported in Terraform 0.7.0 and newer.
 * The following input variables have been removed
- * peer module
-  * `multi_acct`
+  * peer module
+    * `multi_acct`
 * The following input variables have been changed:
- * az module
-  * `az (string, required)` -> `azs (list, optional)`
-  * `dmz_cidr (string, required)` -> `dmz_cidrs (list, optional)`
-  * `lan_cidr (string, required)` -> `lan_cidrs (list, optional)`
-  * `vgw_ids (string, optional` - > `vgw_ids (list, optional)`
- * dhcp module
-  * `name_servers (string, optional)` -> `name_servers (list, optional)`
-  * `netbios_name_servers (string, optional)` -> `netbios_name_servers (list, optional)`
-  * `ntp_servers (string, optional)` -> `ntp_servers (list, optional)`
- * peer module
-  * `peer_owner_id (string, required)` -> `accepter_owner_id (string, optional)`
-  * `peer_vpc_id (string, required)` -> `accepter_vpc_id (string, optional)`
-  * `vpc_id (string, required)` -> `requester_vpc_id (string, optional)`
+  * az module
+    * `az (string, required)` -> `azs (list, optional)`
+    * `dmz_cidr (string, required)` -> `dmz_cidrs (list, optional)`
+    * `lan_cidr (string, required)` -> `lan_cidrs (list, optional)`
+    * `vgw_ids (string, optional` - > `vgw_ids (list, optional)`
+  * dhcp module
+    * `name_servers (string, optional)` -> `name_servers (list, optional)`
+    * `netbios_name_servers (string, optional)` -> `netbios_name_servers (list, optional)`
+    * `ntp_servers (string, optional)` -> `ntp_servers (list, optional)`
+  * peer module
+    * `peer_owner_id (string, required)` -> `accepter_owner_id (string, optional)`
+    * `peer_vpc_id (string, required)` -> `accepter_vpc_id (string, optional)`
+    * `vpc_id (string, required)` -> `requester_vpc_id (string, optional)`
 * The following output variables have been changed:
- * az module
-  * `dmz_cidr (string)` -> `dmz_cidrs (string)`
-  * `dmz_id (string)` -> `dmz_ids (string)`
-  * `eip_nat_id (string)` -> `eip_nat_ids (string)`
-  * `eip_nat_ip (string)` -> `eip_nat_ips (string)`
-  * `lan_id (string)` -> `lan_ids (string)`
-  * `lan_cidr (string)` -> `lan_cidrs (string)`
-  * `nat_id (string)` -> `nat_ids (string)`
- * base module
-  * `dmz_subnet_id (string)` -> `dmz_subnet_ids (string)`
-  * `lan_subnet_id (string)` -> `lan_subnet_ids (string)`
-  * `lan_rt_id (string)` -> `lan_rt_ids (string)`
+  * az module
+    * `dmz_cidr (string)` -> `dmz_cidrs (string)`
+    * `dmz_id (string)` -> `dmz_ids (string)`
+    * `eip_nat_id (string)` -> `eip_nat_ids (string)`
+    * `eip_nat_ip (string)` -> `eip_nat_ips (string)`
+    * `lan_id (string)` -> `lan_ids (string)`
+    * `lan_cidr (string)` -> `lan_cidrs (string)`
+    * `nat_id (string)` -> `nat_ids (string)`
+  * base module
+    * `dmz_subnet_id (string)` -> `dmz_subnet_ids (string)`
+    * `lan_subnet_id (string)` -> `lan_subnet_ids (string)`
+    * `lan_rt_id (string)` -> `lan_rt_ids (string)`
 
 #### IMPROVEMENTS / NEW FEATURES:
 * Added conditional support for the following parameters:
- * az module
-  * `azs`
-  * `dmz_cidrs`
-  * `enable_dmz_public_ips`
-  * `nat_key_name`
- * base module
-  * `enable_classiclink`
-  * `enable_dns`
-  * `enable_hostnames`
-  * `instance_tenancy`
- * peer module
-  * `accepter_allow_clasic_link_to_remote`
-  * `accepter_allow_to_remote_classic_link`
-  * `accepter_auto_accept`
-  * `requester_allow_clasic_link_to_remote`
-  * `requester_allow_to_remote_classic_link`
- * vpg module
-  * `availability_zone`
+  * az module
+    * `azs`
+    * `dmz_cidrs`
+    * `enable_dmz_public_ips`
+    * `nat_key_name`
+  * base module
+    * `enable_classiclink`
+    * `enable_dns`
+    * `enable_hostnames`
+    * `instance_tenancy`
+  * peer module
+    * `accepter_allow_clasic_link_to_remote`
+    * `accepter_allow_to_remote_classic_link`
+    * `accepter_auto_accept`
+    * `requester_allow_clasic_link_to_remote`
+    * `requester_allow_to_remote_classic_link`
+  * vpg module
+    * `availability_zone`
 
 * Added support for AZ auto-provisioning.
 * Re-enabled support for EC2 based NATs.

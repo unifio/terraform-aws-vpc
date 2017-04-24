@@ -1,6 +1,11 @@
 #### Consider Implementing:
 * ipv6 support
 
+## 0.3.1 (April 23, 2017)
+
+#### IMPROVEMENTS / NEW FEATURES:
+* DHCP defaults are now more minimal and do not set values for all parameters.
+
 ## 0.3.0 (April 3, 2017)
 
 #### BACKWARDS INCOMPATIBILITIES / NOTES:

@@ -59,7 +59,7 @@ The DHCP module provisions a DHCP options resource and associates it with the sp
 - `domain_name` - (Optional) The suffix domain name to use by default when resolving non Fully Qualified Domain Names. In other words, this is what ends up being the search value in the /etc/resolv.conf file.
 - `name_servers` - (Optional) List of name servers to configure in /etc/resolv.conf.
 - `netbios_name_servers` -  (Optional) List of NETBIOS name servers.
-- `netbios_node_type` - (Optional) The NetBIOS node type (1, 2, 4, or 8). AWS recommends to specify 2 since broadcast and multicast are not supported in their network. For more information about these node types, see RFC 2132.  Defaults to 2.
+- `netbios_node_type` - (Optional) The NetBIOS node type (1, 2, 4, or 8). AWS recommends to specify 2 since broadcast and multicast are not supported in their network. For more information about these node types, see RFC 2132.
 - `ntp_servers` - (Optional) List of NTP servers to configure.
 - `stack_item_fullname` - Long form descriptive name for this stack item.  This value is used to create the "application" resource tag for resources created by this stack item.
 - `stack_item_label` - Short form identifier for this stack.  This value is used to create the "Name" resource tag for resources created by this stack item, and also serves as a unique key for re-use.

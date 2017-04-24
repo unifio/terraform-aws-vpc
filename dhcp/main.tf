@@ -1,12 +1,17 @@
 # DHCP Options
 
+## Set Terraform version constraint
+terraform {
+  required_version = "> 0.8.0"
+}
+
 ## Provisions DHCP options
 resource "aws_vpc_dhcp_options" "dhcp" {
   domain_name          = "${var.domain_name}"
-  domain_name_servers  = ["${var.name_servers}"]
-  netbios_name_servers = ["${var.netbios_name_servers}"]
+  domain_name_servers  = ["${compact(var.name_servers)}"]
+  netbios_name_servers = ["${compact(var.netbios_name_servers)}"]
   netbios_node_type    = "${var.netbios_node_type}"
-  ntp_servers          = ["${var.ntp_servers}"]
+  ntp_servers          = ["${compact(var.ntp_servers)}"]
 
   tags {
     application = "${var.stack_item_fullname}"

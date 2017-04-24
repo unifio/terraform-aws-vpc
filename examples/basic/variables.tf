@@ -28,6 +28,12 @@ variable "vpc_cidr" {
   type = "string"
 }
 
+## DHCP
+variable "domain_name" {
+  type    = "string"
+  default = ""
+}
+
 ## AZ parameters
 variable "azs_provisioned" {
   type    = "string"

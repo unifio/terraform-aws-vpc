@@ -18,6 +18,18 @@ module "vpc_base" {
   vpc_cidr            = "${var.vpc_cidr}"
 }
 
+## Configures DHCP
+module "vpc_dhcp" {
+  # Example GitHub source
+  #source = "github.com/unifio/terraform-aws-vpc?ref=master//dhcp"
+  source = "../../dhcp"
+
+  domain_name         = "${var.domain_name}"
+  stack_item_fullname = "${var.stack_item_fullname}"
+  stack_item_label    = "${var.stack_item_label}"
+  vpc_id              = "${module.vpc_base.vpc_id}"
+}
+
 ## Configures VPC Availabilty Zones
 module "vpc_az" {
   # Example GitHub source

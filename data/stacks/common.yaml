@@ -3,6 +3,7 @@
 
 ## Basic example
 examples::basic::vars:
+  domain_name: 'basic.example'
   region: 'us-east-2'
   stack_item_fullname: 'Basic Examples'
   stack_item_label: 'bsc'

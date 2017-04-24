@@ -21,29 +21,29 @@ variable "vpc_id" {
 variable "domain_name" {
   type        = "string"
   description = "The suffix domain name to use by default when resolving non Fully Qualified Domain Names"
-  default     = "service.consul"
+  default     = ""
 }
 
 variable "name_servers" {
   type        = "list"
   description = "List of name servers to configure in '/etc/resolv.conf'"
-  default     = ["127.0.0.1"]
+  default     = ["AmazonProvidedDNS"]
 }
 
 variable "netbios_name_servers" {
   type        = "list"
   description = "List of NETBIOS name servers"
-  default     = ["127.0.0.1"]
+  default     = []
 }
 
 variable "netbios_node_type" {
   type        = "string"
   description = "The NetBIOS node type (1, 2, 4, or 8). AWS recommends to specify 2 since broadcast and multicast are not supported in their network."
-  default     = "2"
+  default     = ""
 }
 
 variable "ntp_servers" {
   type        = "list"
   description = "List of NTP servers to configure"
-  default     = ["127.0.0.1"]
+  default     = []
 }

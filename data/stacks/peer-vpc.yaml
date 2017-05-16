@@ -15,8 +15,15 @@ peer-vpc::state:
 examples::complete::vars:
   domain_name: 'complete.example'
   enable_hostnames: 'true'
-  name_servers: '172.17.0.2,172.17.1.2,172.17.2.2'
-  netbios_name_servers: '172.17.0.2,172.17.1.2,172.17.2.2'
-  ntp_servers: '127.0.0.1'
+  name_servers:
+    - '172.17.0.2'
+    - '172.17.1.2'
+    - '172.17.2.2'
+  netbios_name_servers:
+    - '172.17.0.2'
+    - '172.17.1.2'
+    - '172.17.2.2'
+  ntp_servers:
+    - '127.0.0.1'
   stack_item_label: 'cmpl-peer'
   vpc_cidr: '172.17.0.0/21'

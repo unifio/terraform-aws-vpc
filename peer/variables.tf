@@ -51,12 +51,13 @@ variable "accepter_vpc_id" {
 variable "requester_allow_classic_link_to_remote" {
   type        = "string"
   description = "Allow a local linked EC2-Classic instance to communicate with instances in a peer VPC. This enables an outbound communication from the local ClassicLink connection to the remote VPC."
-  default     = "false"
+  default     = ""
 }
 
 variable "requester_allow_remote_dns" {
   type        = "string"
   description = "Allow requester VPC to resolve public DNS hostnames to private IP addresses when queried from instances in the accepter VPC."
+  default     = "false"
 }
 
 variable "requester_allow_to_remote_classic_link" {

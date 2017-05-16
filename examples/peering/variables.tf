@@ -13,7 +13,7 @@ variable "stack_item_label" {
 
 ## Peering Parameters
 variable "accepter_rt_lan_ids" {
-  type        = "string"
+  type        = "list"
   description = "The IDs of the peer VPC routing tables."
 }
 
@@ -32,7 +32,7 @@ variable "region" {
 }
 
 variable "requester_rt_lan_ids" {
-  type        = "string"
+  type        = "list"
   description = "The IDs of the requesting VPC routing tables."
 }
 

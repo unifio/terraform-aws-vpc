@@ -24,17 +24,17 @@ module "vpc_peer" {
 }
 
 resource "aws_route" "requester-to-accepter" {
-  count = "${length(split(",",var.requester_rt_lan_ids))}"
+  count = "${length(var.requester_rt_lan_ids)}"
 
   destination_cidr_block    = "${var.accepter_vpc_cidr}"
-  route_table_id            = "${element(split(",",var.requester_rt_lan_ids),count.index)}"
+  route_table_id            = "${element(var.requester_rt_lan_ids,count.index)}"
   vpc_peering_connection_id = "${module.vpc_peer.peer_connection_id}"
 }
 
 resource "aws_route" "accepter-to-requester" {
-  count = "${length(split(",",var.accepter_rt_lan_ids))}"
+  count = "${length(var.accepter_rt_lan_ids)}"
 
   destination_cidr_block    = "${var.requester_vpc_cidr}"
-  route_table_id            = "${element(split(",",var.accepter_rt_lan_ids),count.index)}"
+  route_table_id            = "${element(var.accepter_rt_lan_ids,count.index)}"
   vpc_peering_connection_id = "${module.vpc_peer.peer_connection_id}"
 }

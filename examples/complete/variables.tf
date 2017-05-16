@@ -55,13 +55,13 @@ variable "domain_name" {
 }
 
 variable "name_servers" {
-  type    = "string"
-  default = ""
+  type    = "list"
+  default = []
 }
 
 variable "netbios_name_servers" {
-  type    = "string"
-  default = ""
+  type    = "list"
+  default = []
 }
 
 variable "netbios_node_type" {
@@ -70,6 +70,6 @@ variable "netbios_node_type" {
 }
 
 variable "ntp_servers" {
-  type    = "string"
-  default = ""
+  type    = "list"
+  default = []
 }

@@ -1,6 +1,24 @@
 #### Consider Implementing:
 * ipv6 support
 
+## 0.3.2 (May 16, 2017)
+
+#### BACKWARDS INCOMPATIBILITIES / NOTES:
+* The following output variables have been changed:
+  * az module
+    * `dmz_cidrs (string)` -> `dmz_cidrs (list)`
+    * `dmz_ids (string)` -> `dmz_ids (list)`
+    * `eip_nat_ids (string)` -> `eip_nat_ids (list)`
+    * `eip_nat_ips (string)` -> `eip_nat_ips (list)`
+    * `lan_ids (string)` -> `lan_ids (list)`
+    * `lan_cidrs (string)` -> `lan_cidrs (list)`
+    * `nat_ids (string)` -> `nat_ids (list)`
+    * `rt_lan_ids (string)` -> `rt_lan_ids (list)`
+* The following input variable have been changed:
+  * az module
+    * `stack_item_fullname` now defaults to a value of `VPC Quick Start`
+    * `stack_item_label` now defaults to a value of `exmpl`
+
 ## 0.3.1 (April 23, 2017)
 
 #### IMPROVEMENTS / NEW FEATURES:

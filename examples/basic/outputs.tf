@@ -5,13 +5,13 @@ output "vpc_id" {
 }
 
 output "dmz_subnet_ids" {
-  value = "${join(",",module.vpc_az.dmz_ids)}"
+  value = "${module.vpc_az.dmz_ids}"
 }
 
 output "lan_subnet_ids" {
-  value = "${join(",",module.vpc_az.lan_ids)}"
+  value = "${module.vpc_az.lan_ids}"
 }
 
 output "lan_rt_ids" {
-  value = "${join(",",module.vpc_az.rt_lan_ids)}"
+  value = "${module.vpc_az.rt_lan_ids}"
 }

@@ -16,23 +16,23 @@ examples::peering::vars:
   accepter_rt_lan_ids:
     type: 's3.state'
     bucket: "%{hiera('tf_state_bucket')}"
-    document: "terraform-aws-vpc/complete/peer/terraform.tfstate"
+    document: 'terraform-aws-vpc/complete/peer/terraform.tfstate'
     key: 'lan_rt_ids'
   accepter_vpc_cidr: '172.17.0.0/21'
   accepter_vpc_id:
     type: 's3.state'
     bucket: "%{hiera('tf_state_bucket')}"
-    document: "terraform-aws-vpc/complete/peer/terraform.tfstate"
+    document: 'terraform-aws-vpc/complete/peer/terraform.tfstate'
     key: 'vpc_id'
   requester_rt_lan_ids:
     type: 's3.state'
     bucket: "%{hiera('tf_state_bucket')}"
-    document: "terraform-aws-vpc/complete/terraform.tfstate"
+    document: 'terraform-aws-vpc/complete/terraform.tfstate'
     key: 'lan_rt_ids'
   requester_vpc_cidr: '172.16.0.0/21'
   requester_vpc_id:
     type: 's3.state'
     bucket: "%{hiera('tf_state_bucket')}"
-    document: "terraform-aws-vpc/complete/terraform.tfstate"
+    document: 'terraform-aws-vpc/complete/terraform.tfstate'
     key: 'vpc_id'
   stack_item_label: 'cmpl'

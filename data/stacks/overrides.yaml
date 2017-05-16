@@ -17,9 +17,16 @@ examples::complete::vars:
   enable_classiclink: 'true'
   instance_tenacy: 'dedicated'
   lans_per_az: '2'
-  name_servers: '172.16.0.2,172.16.1.2,172.16.2.2'
+  name_servers:
+    - '172.16.0.2'
+    - '172.16.1.2'
+    - '172.16.2.2'
   nat_gateways_enabled: 'true'
-  netbios_name_servers: '172.16.0.2,172.16.1.2,172.16.2.2'
-  ntp_servers: '127.0.0.1'
+  netbios_name_servers:
+    - '172.16.0.2'
+    - '172.16.1.2'
+    - '172.16.2.2'
+  ntp_servers:
+    - '127.0.0.1'
   stack_item_label: 'cmpl'
   vpc_cidr: '172.16.0.0/21'

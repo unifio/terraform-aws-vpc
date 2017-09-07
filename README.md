@@ -37,7 +37,7 @@ Name | Type | Required | Description
 `enable_dns` | string | Default: `true` | Specifies whether DNS resolution is supported for the VPC.
 `enable_hostnames` | string | Default: `true` | Specifies whether the instances launched in the VPC get DNS hostnames.
 `flow_log_traffic_type` | string | Default: `ALL` | The type of traffic to capture. Valid values: ACCEPT,REJECT,ALL.
-`instance_tenacy` | string | Default: `default` | The allowed tenancy of instances launched into the VPC. Only other option at this time is `dedicated`, which will force any instance launched into the VPC to be dedicated, regardless of the tenancy option specified when the instance is launched.
+`instance_tenancy` | string | Default: `default` | The allowed tenancy of instances launched into the VPC. Only other option at this time is `dedicated`, which will force any instance launched into the VPC to be dedicated, regardless of the tenancy option specified when the instance is launched.
 `stack_item_label` | string | Default: `qckstrt` | Short form identifier for this stack. This value is used to create the "Name" tag for resources created by this stack item, and also serves as a unique key for re-use.
 `stack_item_fullname` | string | Default: `VPC Quick Start` | Long form descriptive name for this stack item. This value is used to create the "application" tag for resources created by this stack item.
 `vpc_cidr` | string | Default: `172.16.0.0/21` | The CIDR block you want the VPC to cover.

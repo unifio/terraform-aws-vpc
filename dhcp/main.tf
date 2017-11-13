@@ -7,6 +7,8 @@ terraform {
 
 ## Provisions DHCP options
 resource "aws_vpc_dhcp_options" "dhcp" {
+  count = "${var.enable == "true" ? "1" : "0"}"
+
   domain_name          = "${var.domain_name}"
   domain_name_servers  = ["${compact(var.name_servers)}"]
   netbios_name_servers = ["${compact(var.netbios_name_servers)}"]
@@ -21,6 +23,8 @@ resource "aws_vpc_dhcp_options" "dhcp" {
 }
 
 resource "aws_vpc_dhcp_options_association" "dns_resolver" {
+  count = "${var.enable == "true" ? "1" : "0"}"
+
   dhcp_options_id = "${aws_vpc_dhcp_options.dhcp.id}"
   vpc_id          = "${var.vpc_id}"
 }

@@ -24,6 +24,12 @@ variable "domain_name" {
   default     = ""
 }
 
+variable "enable" {
+  type        = "string"
+  description = "Determine if resources should be added.  Used if you want to include conditionally in a module."
+  default     = "true"
+}
+
 variable "name_servers" {
   type        = "list"
   description = "List of name servers to configure in '/etc/resolv.conf'"

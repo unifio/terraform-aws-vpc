@@ -1,6 +1,11 @@
 #### Consider Implementing:
 * ipv6 support
 
+## 0.3.3 (November 13, 2017)
+
+#### IMPROVEMENTS / NEW FEATURES:
+* Add 'enable' flag for DHCP.  Default is true.  This allows for stacks to include these based on variable since at this time you cannot conditionally include modules.
+
 ## 0.3.2 (May 16, 2017)
 
 #### BACKWARDS INCOMPATIBILITIES / NOTES:

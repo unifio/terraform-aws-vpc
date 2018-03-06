@@ -22,7 +22,7 @@
 * The following input variable have been changed:
   * az module
     * `stack_item_fullname` now defaults to a value of `VPC Quick Start`
-    * `stack_item_label` now defaults to a value of `exmpl`
+    * `stack_item_label` now defaults to a value of `qckstrt`
 
 ## 0.3.1 (April 23, 2017)
 

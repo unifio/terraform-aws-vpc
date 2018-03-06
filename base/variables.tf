@@ -14,10 +14,22 @@ variable "stack_item_label" {
 }
 
 ## VPC parameters
+variable "assign_generated_ipv6_cidr_block" {
+  type        = "string"
+  description = "Requests an Amazon-provided IPv6 CIDR block with a /56 prefix length for the VPC. You cannot specify the range of IP addresses, or the size of the CIDR block."
+  default     = "false"
+}
+
 variable "enable_classiclink" {
   type        = "string"
   description = "A boolean flag to enable/disable ClassicLink for the VPC. Only valid in regions and accounts that support EC2 Classic. Defaults false."
   default     = ""
+}
+
+variable "enable_classiclink_dns_support" {
+  type        = "string"
+  description = "A boolean flag to enable/disable ClassicLink DNS Support for the VPC. Only valid in regions and accounts that support EC2 Classic."
+  default     = "false"
 }
 
 variable "enable_dns" {

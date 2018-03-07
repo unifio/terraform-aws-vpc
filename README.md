@@ -7,7 +7,7 @@ This module is well suited to both basic and advanced use cases with very few re
 
 ## Requirements ##
 
-- Terraform 0.8.0 or newer
+- Terraform 0.11.0 or newer
 - AWS provider
 
 ## Quick Start
@@ -16,7 +16,7 @@ The following code will yield a fully functioning VPC environment:
 
 ```js
 module "vpc_base" {
-  source = "github.com/terraform-aws-vpc?ref=master//base"
+  source = "github.com/unifio/terraform-aws-vpc?ref=master//base"
 }
 
 module "az" {
@@ -88,11 +88,11 @@ Name | Type | Required | Description
 
 ```js
 module "vpc_base" {
-  source = "github.com/terraform-aws-vpc?ref=master//base"
+  source = "github.com/unifio/terraform-aws-vpc?ref=master//base"
 }
 
 module "dhcp" {
-  source = "github.com/terraform-aws-vpc?ref=master//dhcp"
+  source = "github.com/unifio/terraform-aws-vpc?ref=master//dhcp"
 
   domain_name          = "mydomain.com"
   name_servers         = ["172.16.0.2"]
@@ -128,11 +128,11 @@ Name | Type | Required | Description
 
 ```js
 module "vpc_base" {
-  source = "github.com/terraform-aws-vpc?ref=master//base"
+  source = "github.com/unifio/terraform-aws-vpc?ref=master//base"
 }
 
 module "vpg" {
-  source = "github.com/terraform-aws-vpc?ref=master//vpg"
+  source = "github.com/unifio/terraform-aws-vpc?ref=master//vpg"
 
   stack_item_fullname = "My Stack"
   stack_item_label    = "mystack"
@@ -157,9 +157,9 @@ Name | Type | Required | Description
 --- | --- | --- | ---
 `azs_provisioned` | string | Default: `2` | The number of availability zones to be provisioned. Either this or **azs\_provisioned\_override** must be specified. Auto-provisioning will support up to 4 AZs without the need for overrides.
 `azs_provisioned_override` | list | | List of availability zone letters to be provisioned. Useful in regions where not all AZs are VPC ready. Either this or **azs_provisioned** must be specified.
-`dmz_cidrs` | list | | The CIDR block(s) you want the public subnet(s) to cover.
+`dmz_cidrs_override` | list | | The CIDR block(s) you want the public subnet(s) to cover.
 `enable_dmz_public_ips` | string | | Specify true to indicate that instances launched into the DMZ subnet should be assigned a public IP address.
-`lan_cidrs` | list | | The CIDR block(s) you want the LAN subnet(s) to cover.
+`lan_cidrs_override` | list | | The CIDR block(s) you want the LAN subnet(s) to cover.
 `lans_per_az` | string | Default: `1` | The number of private subnets to be provisioned per AZ. Auto-provisioning will support up to 2 private subnets per AZ without the need for overrides.
 `nat_ami_override` | string | | Custom NAT Amazon Machine Image (AMI).
 `nat_eips_enabled` | string | Default: `false` | Flag for specifying allocation of Elastic IPs to NATs for the purposes of whitelisting. This value is overriden to `true` when utilizing NAT gateways.
@@ -176,7 +176,7 @@ Name | Type | Required | Description
 
 ```js
 module "vpc_base" {
-  source = "github.com/terraform-aws-vpc?ref=master//base"
+  source = "github.com/unifio/terraform-aws-vpc?ref=master//base"
 }
 
 module "az" {
@@ -232,7 +232,7 @@ Name | Type | Required | Description
 
 ```js
 module "vpc_peer" {
-  source = "github.com/terraform-aws-vpc?ref=master//peer"
+  source = "github.com/unifio/terraform-aws-vpc?ref=master//peer"
 
   accepter_allow_remote_dns  = "false"
   accepter_owner_id          = "${var.peer_owner_id}"

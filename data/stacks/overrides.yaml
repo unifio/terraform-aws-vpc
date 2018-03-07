@@ -15,7 +15,8 @@ overrides::state:
 examples::complete::vars:
   domain_name: 'complete.example'
   enable_classiclink: 'true'
-  instance_tenancy: 'dedicated'
+  # TODO: Cannot be paired with Classiclink. Update test for this.
+  #instance_tenancy: 'dedicated'
   lans_per_az: '2'
   name_servers:
     - '172.16.0.2'

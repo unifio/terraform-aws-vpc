@@ -1,5 +1,23 @@
 #### Consider Implementing:
-* ipv6 support
+* full ipv6 support
+* vpc endpoints
+
+## 0.3.4 (March 7, 2018)
+
+#### BACKWARDS INCOMPATIBILITIES / NOTES:
+* Terraform versions earlier than 0.11.0 no longer supported.
+* The following input variable have been changed:
+  * az module
+    * `dmz_cidrs` -> `dmz_cidrs_override`
+    * `lan_cidrs` -> `lan_cidrs_override`
+
+#### IMPROVEMENTS / NEW FEATURES:
+* Added support for the `enable_classiclink_dns_support` parameter on the vpc resource.
+* Added support for the `assign_generated_ipv6_cidr_block` parameter on the vpc resource. Full ipv6 support coming in the next update.
+* Introduced local variables into the `az` module to better document formulation for default options.
+
+#### BUG FIXES:
+* Updated DHCP module outputs to suppress warnings in Terraform 0.11.0+
 
 ## 0.3.3 (November 13, 2017)
 

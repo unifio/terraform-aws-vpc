@@ -16,11 +16,11 @@ The following code will yield a fully functioning VPC environment:
 
 ```js
 module "vpc_base" {
-  source = "github.com/terraform-aws-vpc?ref=master//base"
+  source = "github.com/unifio/terraform-aws-vpc//base?ref=master"
 }
 
 module "az" {
-  source = "github.com/unifio/terraform-aws-vpc?ref=master//az"
+  source = "github.com/unifio/terraform-aws-vpc//az?ref=master"
 
   vpc_id = "${module.vpc_base.vpc_id}"
 }
@@ -48,7 +48,7 @@ Name | Type | Required | Description
 
 ```js
 module "vpc_base" {
-  source = "github.com/unifio/terraform-aws-vpc?ref=master//base"
+  source = "github.com/unifio/terraform-aws-vpc//base?ref=master"
 
   enable_dns          = "true"
   enable_hostnames    = "false"
@@ -176,11 +176,11 @@ Name | Type | Required | Description
 
 ```js
 module "vpc_base" {
-  source = "github.com/terraform-aws-vpc?ref=master//base"
+  source = "github.com/terraform-aws-vpc//base?ref=master"
 }
 
 module "az" {
-  source = "github.com/unifio/terraform-aws-vpc?ref=master//az"
+  source = "github.com/unifio/terraform-aws-vpc//az?ref=master"
 
   azs_provisioned       = 2
   enable_dmz_public_ips = "true"

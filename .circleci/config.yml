@@ -1,0 +1,59 @@
+version: 2
+
+jobs:
+  build:
+    working_directory: ~/repo
+
+    docker:
+      - image: unifio/ci:3.0.411-ruby-2.4
+
+    environment:
+      AWS_REGION: 'us-east-2'
+      TF_PLUGIN_CACHE_DIR: "/root/.terraform.d/plugin-cache"
+
+    steps:
+      - checkout
+
+      - run:
+          name: Verify
+          command: bundle exec rake ci
+
+      - run:
+          name: Test DMZ only configuration
+          command: bundle exec rake basic:no-lan:apply
+
+      - run:
+          name: Test defaults
+          command: |
+            bundle exec rake basic:defaults:apply
+            bundle exec rake basic:defaults:destroy
+
+      - run:
+          name: Test some base module options and expand to 3 AZs
+          command: |
+            bundle exec rake basic:base-options:apply
+
+      - run:
+          name: Test VPN gateway attachment
+          command: |
+            bundle exec rake basic:vpg-attach:apply
+            bundle exec rake basic:vpg-attach:destroy
+
+      - run:
+          name: Test more options and overrides
+          command: |
+            bundle exec rake complete:overrides:apply
+
+      - run:
+          name: Test peering connection
+          command: |
+            bundle exec rake complete:peer-vpc:apply
+            bundle exec rake peering:peer-connect:apply
+
+      - run:
+          name: Clean up
+          when: always
+          command: |
+            bundle exec rake peering:destroy || true
+            bundle exec rake complete:destroy
+            bundle exec rake basic:destroy

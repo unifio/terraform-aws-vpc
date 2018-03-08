@@ -42,10 +42,22 @@ variable "accepter_owner_id" {
   default     = ""
 }
 
+variable "accepter_region" {
+  type        = "string"
+  description = "The region of the accepter VPC of the VPC Peering Connection."
+  default     = ""
+}
+
 variable "accepter_vpc_id" {
   type        = "string"
   description = "The ID of the VPC with which you are creating the VPC Peering Connection."
   default     = ""
+}
+
+variable "auto_accept" {
+  type        = "string"
+  description = "Accept the peering (both VPCs need to be in the same AWS account and region)."
+  default     = "true"
 }
 
 variable "requester_allow_classic_link_to_remote" {

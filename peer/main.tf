@@ -2,15 +2,16 @@
 
 ## Set Terraform version constraint
 terraform {
-  required_version = "> 0.8.0"
+  required_version = "> 0.11.0"
 }
 
 ## Provisions VPC peering
 resource "aws_vpc_peering_connection" "peer" {
   count = "${length(var.vpc_peering_connection_id) > 0 ? "0" : "1"}"
 
-  auto_accept   = "${length(var.accepter_owner_id) > 0 ? "false" : "true"}"
+  auto_accept   = "${var.accepter_region != "" ? "false" : var.auto_accept}"
   peer_owner_id = "${var.accepter_owner_id}"
+  peer_region   = "${var.accepter_region}"
   peer_vpc_id   = "${var.accepter_vpc_id}"
   vpc_id        = "${var.requester_vpc_id}"
 

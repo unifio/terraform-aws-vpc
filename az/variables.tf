@@ -52,7 +52,7 @@ variable "azs_provisioned_override" {
   default     = ["non_empty_list"]
 }
 
-variable "dmz_cidrs" {
+variable "dmz_cidrs_override" {
   type        = "list"
   description = "The CIDR block(s) you want the DMZ subnet(s) to cover."
   default     = ["non_empty_list"]
@@ -64,7 +64,7 @@ variable "enable_dmz_public_ips" {
   default     = ""
 }
 
-variable "lan_cidrs" {
+variable "lan_cidrs_override" {
   type        = "list"
   description = "The CIDR block(s) you want the LAN subnet(s) to cover."
   default     = ["non_empty_list"]

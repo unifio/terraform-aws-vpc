@@ -66,13 +66,13 @@ module "vpc_az" {
 
   azs_provisioned_override = "${var.azs_provisioned_override}"
 
-  dmz_cidrs = ["${cidrsubnet(var.vpc_cidr,3,0)}",
+  dmz_cidrs_override = ["${cidrsubnet(var.vpc_cidr,3,0)}",
     "${cidrsubnet(var.vpc_cidr,3,1)}",
     "${cidrsubnet(var.vpc_cidr,3,2)}",
     "${cidrsubnet(var.vpc_cidr,3,3)}",
   ]
 
-  lan_cidrs = ["${cidrsubnet(var.vpc_cidr,4,8)}",
+  lan_cidrs_override = ["${cidrsubnet(var.vpc_cidr,4,8)}",
     "${cidrsubnet(var.vpc_cidr,4,9)}",
     "${cidrsubnet(var.vpc_cidr,4,10)}",
     "${cidrsubnet(var.vpc_cidr,4,11)}",

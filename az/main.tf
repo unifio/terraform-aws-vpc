@@ -30,7 +30,7 @@ locals {
   lan_cidrs_override_enabled = "${length(var.lan_cidrs_override) > 0 && var.lan_cidrs_override[0] != "non_empty_list" ? "true" : "false"}"
 
   # Multiplier to be used in downstream calculation based on the number of LAN subnets per AZ.
-  lans_multiplier = "${local.lans_per_az_checked > 0 ? local.lans_per_az_checked : 1}"
+  lans_multiplier = "${local.lans_per_az_checked >= 0 ? local.lans_per_az_checked : 1}"
 
   # Handles scenario where an emptry string is passed in for lans_per_az
   lans_per_az_checked = "${var.lans_per_az != "" ? var.lans_per_az : "1"}"

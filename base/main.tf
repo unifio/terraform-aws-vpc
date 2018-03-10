@@ -47,7 +47,7 @@ resource "aws_route_table" "rt_dmz" {
 
 ## Provisions VPC flow logs
 resource "aws_cloudwatch_log_group" "flow_log_group" {
-  name = "${var.stack_item_label}-vpc-flow-logs"
+  name_prefix = "${var.stack_item_label}-vpc-logs-"
 }
 
 data "aws_iam_policy_document" "flow_log_role" {
@@ -63,7 +63,7 @@ data "aws_iam_policy_document" "flow_log_role" {
 
 resource "aws_iam_role" "flow_log_role" {
   assume_role_policy = "${data.aws_iam_policy_document.flow_log_role.json}"
-  name               = "${var.stack_item_label}-vpc-flow-logs"
+  name_prefix        = "${var.stack_item_label}-vpc-logs-"
 }
 
 data "aws_iam_policy_document" "flow_log_policy" {
@@ -87,7 +87,7 @@ resource "aws_iam_role_policy" "flow_log_role_policies" {
 }
 
 resource "aws_flow_log" "flow_log" {
-  log_group_name = "${var.stack_item_label}-vpc-flow-logs"
+  log_group_name = "${aws_cloudwatch_log_group.flow_log_group.name}"
   iam_role_arn   = "${aws_iam_role.flow_log_role.arn}"
   vpc_id         = "${aws_vpc.vpc.id}"
   traffic_type   = "${var.flow_log_traffic_type}"

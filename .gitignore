@@ -1,4 +1,4 @@
 *.tfstate*
 .terraform/
 .env
-spec/reports/**
+reports/**

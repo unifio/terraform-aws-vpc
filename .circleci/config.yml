@@ -1,22 +1,39 @@
+common: &common
+  working_directory: ~/repo
+
+  docker:
+    - image: unifio/ci:3.0.411-ruby-2.4
+
+  environment:
+    AWS_REGION: 'us-east-2'
+    TF_PLUGIN_CACHE_DIR: '/root/.terraform.d/plugin-cache'
+
 version: 2
 
 jobs:
   build:
-    working_directory: ~/repo
-
-    docker:
-      - image: unifio/ci:3.0.411-ruby-2.4
-
-    environment:
-      AWS_REGION: 'us-east-2'
-      TF_PLUGIN_CACHE_DIR: "/root/.terraform.d/plugin-cache"
+    <<: *common
 
     steps:
       - checkout
 
       - run:
           name: Verify
-          command: bundle exec rake ci
+          environment:
+            CI_REPORTS: 'reports'
+            COVALENCE_TEST_ENVS: 'basic,complete'
+          command: |
+            mkdir reports
+            bundle exec rake ci
+
+      - store_test_results:
+          path: reports
+
+  basic:
+    <<: *common
+
+    steps:
+      - checkout
 
       - run:
           name: Test DMZ only configuration
@@ -40,8 +57,22 @@ jobs:
             bundle exec rake basic:vpg-attach:destroy
 
       - run:
+          name: Clean up
+          when: always
+          command: |
+            bundle exec rake basic:destroy
+
+  complete:
+    <<: *common
+
+    steps:
+      - checkout
+
+      - run:
           name: Test more options and overrides
           command: |
+            bundle exec rake complete:overrides:apply || true
+            # Need to run twice due to frequent timing issues
             bundle exec rake complete:overrides:apply
 
       - run:
@@ -56,4 +87,16 @@ jobs:
           command: |
             bundle exec rake peering:destroy || true
             bundle exec rake complete:destroy
-            bundle exec rake basic:destroy
+
+workflows:
+  version: 2
+
+  vpc_module:
+    jobs:
+      - build
+      - basic:
+          requires:
+            - build
+      - complete:
+          requires:
+            - build

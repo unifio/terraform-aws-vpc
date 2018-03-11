@@ -30,7 +30,7 @@ locals {
   lan_cidrs_override_enabled = "${length(var.lan_cidrs_override) > 0 && var.lan_cidrs_override[0] != "non_empty_list" ? "true" : "false"}"
 
   # Multiplier to be used in downstream calculation based on the number of LAN subnets per AZ.
-  lans_multiplier = "${local.lans_per_az_checked > 0 ? local.lans_per_az_checked : 1}"
+  lans_multiplier = "${local.lans_per_az_checked >= 0 ? local.lans_per_az_checked : 1}"
 
   # Handles scenario where an emptry string is passed in for lans_per_az
   lans_per_az_checked = "${var.lans_per_az != "" ? var.lans_per_az : "1"}"
@@ -146,6 +146,7 @@ resource "aws_security_group" "sg_nat" {
 
   egress {
     cidr_blocks = ["0.0.0.0/0"]
+    description = "Egress to the Internet"
     from_port   = 0
     protocol    = "-1"
     to_port     = 0
@@ -153,6 +154,7 @@ resource "aws_security_group" "sg_nat" {
 
   ingress {
     cidr_blocks = ["${local.lan_cidrs_override_enabled == "true" ? element(var.lan_cidrs_override,count.index) : cidrsubnet(data.aws_vpc.base.cidr_block,lookup(var.az_cidrsubnet_newbits, local.azs_provisioned_count * local.lans_multiplier),count.index + lookup(var.az_cidrsubnet_offset, local.azs_provisioned_count))}"]
+    description = "Ingress from ${var.stack_item_label}-lan-${count.index}"
     from_port   = 0
     protocol    = "-1"
     to_port     = 0

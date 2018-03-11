@@ -2,6 +2,15 @@
 * full ipv6 support
 * vpc endpoints
 
+## 0.3.5 (March 11, 2018)
+
+#### IMPROVEMENTS / NEW FEATURES:
+* Updated CI configuration to more reliably handle Terraform / AWS timing issues.
+* Added security group rule descriptions.
+
+#### BUG FIXES:
+* Updated az module to properly handle 0 private subnets.
+
 ## 0.3.4 (March 7, 2018)
 
 #### BACKWARDS INCOMPATIBILITIES / NOTES:

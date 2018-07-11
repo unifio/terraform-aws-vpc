@@ -2,6 +2,11 @@
 * full ipv6 support
 * vpc endpoints
 
+## 0.3.6 (Jul 11, 2018)
+
+#### BUG FIXES:
+* Resolved [issue](https://github.com/unifio/terraform-aws-vpc/issues/32) caused by [terraform-provider-aws v1.25.0](https://github.com/terraform-providers/terraform-provider-aws/issues/2514). Addressed by adding a default `instance_tenancy` when one isn't supplied using a local variable.
+
 ## 0.3.5 (March 11, 2018)
 
 #### IMPROVEMENTS / NEW FEATURES:

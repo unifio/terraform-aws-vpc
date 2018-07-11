@@ -5,10 +5,15 @@ terraform {
   required_version = "> 0.11.0"
 }
 
+## Set default instance tennancy if not provided
+locals {
+  default_instance_tenancy = "${length(var.instance_tenancy) >= 1 ? "${var.instance_tenancy}" : "default"}"
+}
+
 ## Provisions Virtual Private Cloud (VPC)
 resource "aws_vpc" "vpc" {
   cidr_block                       = "${var.vpc_cidr}"
-  instance_tenancy                 = "${var.instance_tenancy}"
+  instance_tenancy                 = "${local.default_instance_tenancy}"
   enable_dns_support               = "${var.enable_dns}"
   enable_dns_hostnames             = "${var.enable_hostnames}"
   enable_classiclink               = "${var.enable_classiclink}"

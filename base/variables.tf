@@ -14,9 +14,9 @@ variable "stack_item_label" {
 }
 
 variable "additional_vpc_tags" {
-  type        = "list"
+  type        = "map"
   description = "Additional tags to apply at the VPC level, if any"
-  default     = []
+  default     = {}
 }
 
 ## VPC parameters

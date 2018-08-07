@@ -14,9 +14,9 @@ variable "stack_item_label" {
 }
 
 variable "additional_subnet_tags" {
-  type        = "list"
-  description = "Additional subnet to apply at the subnet level, if any"
-  default     = []
+  type        = "map"
+  description = "Additional tags to apply at the subnet level, if any"
+  default     = {}
 }
 
 ## VPC parameters

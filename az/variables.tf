@@ -13,6 +13,12 @@ variable "stack_item_label" {
   default     = "qckstrt"
 }
 
+variable "additional_subnet_tags" {
+  type        = "list"
+  description = "Additional subnet to apply at the subnet level, if any"
+  default     = []
+}
+
 ## VPC parameters
 variable "az_cidrsubnet_newbits" {
   type        = "map"

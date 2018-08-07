@@ -8,6 +8,14 @@ terraform {
 ## Set default instance tennancy if not provided
 locals {
   default_instance_tenancy = "${length(var.instance_tenancy) >= 1 ? "${var.instance_tenancy}" : "default"}"
+
+  default_vpc_tags = [
+    {
+      application = "${var.stack_item_fullname}"
+      managed_by  = "terraform"
+      Name        = "${var.stack_item_label}-vpc"
+    },
+  ]
 }
 
 ## Provisions Virtual Private Cloud (VPC)
@@ -20,11 +28,7 @@ resource "aws_vpc" "vpc" {
   enable_classiclink_dns_support   = "${var.enable_classiclink_dns_support}"
   assign_generated_ipv6_cidr_block = "${var.assign_generated_ipv6_cidr_block}"
 
-  tags {
-    application = "${var.stack_item_fullname}"
-    managed_by  = "terraform"
-    Name        = "${var.stack_item_label}-vpc"
-  }
+  tags = "${concat(local.default_vpc_tags, var.additional_vpc_tags)}"
 }
 
 ## Provisions Internet gateways

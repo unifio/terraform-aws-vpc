@@ -13,6 +13,12 @@ variable "stack_item_label" {
   default     = "qckstrt"
 }
 
+variable "additional_vpc_tags" {
+  type        = "list"
+  description = "Additional tags to apply at the VPC level, if any"
+  default     = []
+}
+
 ## VPC parameters
 variable "assign_generated_ipv6_cidr_block" {
   type        = "string"

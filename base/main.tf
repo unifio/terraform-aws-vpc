@@ -94,7 +94,7 @@ resource "aws_iam_role_policy" "flow_log_role_policies" {
 }
 
 resource "aws_flow_log" "flow_log" {
-  log_destination = "${aws_cloudwatch_log_group.flow_log_group.name}"
+  log_destination = "${aws_cloudwatch_log_group.flow_log_group.arn}"
   iam_role_arn    = "${aws_iam_role.flow_log_role.arn}"
   vpc_id          = "${aws_vpc.vpc.id}"
   traffic_type    = "${var.flow_log_traffic_type}"

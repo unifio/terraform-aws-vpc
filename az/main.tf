@@ -82,7 +82,7 @@ resource "aws_route_table_association" "rta_dmz" {
 data "aws_ami" "nat_ami" {
   most_recent = true
 
-  owner = ["amazon"]
+  owners = ["amazon"]
 
   filter {
     name   = "architecture"

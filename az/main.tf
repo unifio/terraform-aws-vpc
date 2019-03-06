@@ -82,6 +82,8 @@ resource "aws_route_table_association" "rta_dmz" {
 data "aws_ami" "nat_ami" {
   most_recent = true
 
+  owners = ["amazon"]
+
   filter {
     name   = "architecture"
     values = ["x86_64"]
@@ -90,11 +92,6 @@ data "aws_ami" "nat_ami" {
   filter {
     name   = "name"
     values = ["amzn-ami-vpc-nat*"]
-  }
-
-  filter {
-    name   = "owner-alias"
-    values = ["amazon"]
   }
 
   filter {

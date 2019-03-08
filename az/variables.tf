@@ -127,3 +127,9 @@ variable "vpc_id" {
   type        = "string"
   description = "The ID of the VPC"
 }
+
+variable "vpg_ready" {
+  type        = "string"
+  description = "Variable used to ensure the VPG attachment has completed before propogating the route table to the VPG."
+  default     = ""
+}

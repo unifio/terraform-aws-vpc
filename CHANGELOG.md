@@ -2,6 +2,12 @@
 * full ipv6 support
 * vpc endpoints
 
+## UNRELEASED
+
+#### BUG FIXES:
+
+* Resolves [issue #39](https://github.com/unifio/terraform-aws-vpc/issues/39) will create drift on existing state due to the inclusion of a null_resource to create a dependency between the vpg attachment and the route table.
+
 ## 0.3.6 (Jul 11, 2018)
 
 #### BUG FIXES:

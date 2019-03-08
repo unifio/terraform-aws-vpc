@@ -5,6 +5,10 @@ terraform {
   required_version = "> 0.11.0"
 }
 
+resource "null_resource" "vpg_ready" {
+  depends_on = ["aws_vpn_gateway_attachment.attach", "aws_vpn_gateway.vpg"]
+}
+
 ## Gateway configuration
 resource "aws_vpn_gateway" "vpg" {
   availability_zone = "${var.availability_zone}"

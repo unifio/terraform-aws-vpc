@@ -56,6 +56,13 @@ data "aws_vpc" "base" {
   id = "${var.vpc_id}"
 }
 
+resource "null_resource" "vpg_ready" {
+  triggers {
+    # Explicitly wait on the vpg_ready_check variable
+    vpg_ready = "${var.vpg_ready}"
+  }
+}
+
 resource "aws_subnet" "dmz" {
   count = "${local.azs_provisioned_count}"
 
@@ -203,6 +210,8 @@ resource "aws_route_table" "rt_lan" {
     managed_by  = "terraform"
     Name        = "${var.stack_item_label}-lan-${count.index}"
   }
+
+  depends_on = ["null_resource.vpg_ready"]
 }
 
 ### Associates subnet with routing table

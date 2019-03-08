@@ -89,6 +89,7 @@ module "vpc_az" {
   stack_item_label     = "${var.stack_item_label}"
   stack_item_fullname  = "${var.stack_item_fullname}"
   vgw_ids              = ["${module.vpc_vpg.vpg_id}"]
+  vpg_ready            = "${module.vpc_vpg.vpg_ready}"
   vpc_id               = "${module.vpc_base.vpc_id}"
 }
 

@@ -73,11 +73,15 @@ jobs:
           command: |
             bundle exec rake complete:overrides:apply || true
             # Need to run twice due to frequent timing issues
+            # see https://github.com/unifio/terraform-aws-vpc/issues/39
             bundle exec rake complete:overrides:apply
 
       - run:
           name: Test peering connection
           command: |
+            bundle exec rake complete:peer-vpc:apply || true
+            # Need to run twice due to frequent timing issues
+            # see https://github.com/unifio/terraform-aws-vpc/issues/39
             bundle exec rake complete:peer-vpc:apply
             bundle exec rake peering:peer-connect:apply
 

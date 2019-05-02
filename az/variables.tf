@@ -82,6 +82,18 @@ variable "lans_per_az" {
   default     = "1"
 }
 
+variable "static_cidrs_override" {
+  type        = "list"
+  description = "The CIDR block(s) you want the static subnet(s) to cover."
+  default     = ["non_empty_list"]
+}
+
+variable "statics_per_az" {
+  type        = "string"
+  description = "The number of private static subnets to be provisioned per AZ"
+  default     = "0"
+}
+
 variable "nat_ami_override" {
   type        = "string"
   description = "Custom NAT Amazon machine image"

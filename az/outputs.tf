@@ -9,10 +9,6 @@ output "dmz_cidrs" {
   value = ["${aws_subnet.dmz.*.cidr_block}"]
 }
 
-output "rt_dmz_ids" {
-  value = ["${aws_route_table.rt_dmz.*.id}"]
-}
-
 
 ## Returns information about lan subnets
 output "lan_ids" {

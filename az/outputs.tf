@@ -48,6 +48,6 @@ output "eip_nat_ips" {
 }
 
 output "nat_ids" {
-  value = ["${compact(concat(aws_instance.nat.*.id, aws_nat_gateway.nat.*.id))}"]
+  value = ["${compact(concat(aws_instance.nat.*.id,aws_nat_gateway.nat.*.id))}"]
 }
 

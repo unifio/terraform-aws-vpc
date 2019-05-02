@@ -69,6 +69,6 @@ resource "aws_route" "lan-to-nat" {
   count = "${var.azs_provisioned * var.lans_per_az}"
 
   destination_cidr_block = "0.0.0.0/0"
-  instance_id            = "${element(module.vpc_az.nat_ids, count.index)}"
-  route_table_id         = "${element(module.vpc_az.rt_lan_ids, count.index)}"
+  instance_id            = "${element(module.vpc_az.nat_ids,count.index)}"
+  route_table_id         = "${element(module.vpc_az.rt_lan_ids,count.index)}"
 }

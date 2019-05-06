@@ -35,6 +35,18 @@ locals {
   # Handles scenario where an emptry string is passed in for lans_per_az
   lans_per_az_checked = "${var.lans_per_az != "" ? var.lans_per_az : "1"}"
 
+  # Check to see if private static subnets are to be provisioned.
+  statics_enabled_check = "${local.statics_per_az_checked > 0 ? 1 : 0}"
+
+  # Check to see if static CIDRs are being overridden. An empty list causes problems in some of the downstream formualtion.
+  static_cidrs_override_enabled = "${length(var.static_cidrs_override) > 0 && var.static_cidrs_override[0] != "non_empty_list" ? "true" : "false"}"
+
+  # Multiplier to be used in downstream calculation based on the number of static subnets per AZ.
+  statics_multiplier = "${local.statics_per_az_checked >= 0 ? local.statics_per_az_checked : 1}"
+
+  # Handles scenario where an emptry string is passed in for statics_per_az
+  statics_per_az_checked = "${var.statics_per_az != "" ? var.statics_per_az : "0"}"
+
   # Check to see if NAT gateways are to be provisioned
   nat_gateways_enabled_check = "${var.nat_gateways_enabled == "true" ? 1 : 0}"
 
@@ -60,10 +72,10 @@ resource "aws_subnet" "dmz" {
   count = "${local.azs_provisioned_count}"
 
   # Selects the first N number of AZs available for VPC use in the given region, where N is the requested number of AZs to provision. This order can be overidden by passing in an explicit list of AZ letters to be used.
-  availability_zone = "${local.azs_provisioned_override_enabled == "true" ? "${data.aws_region.current.name}${element(var.azs_provisioned_override,count.index)}" : element(data.aws_availability_zones.available.names,count.index)}"
+  availability_zone = "${local.azs_provisioned_override_enabled == "true" ? "${data.aws_region.current.name}${element(var.azs_provisioned_override, count.index)}" : element(data.aws_availability_zones.available.names, count.index)}"
 
   # Provisions N number of evenly allocated address spaces from the overall VPC CIDR block, where N is the requested number of AZs to provision. Address space per subnet can be overidden by passing in an explicit list of CIDRs to be used.
-  cidr_block              = "${local.dmz_cidrs_override_enabled == "true" ? element(var.dmz_cidrs_override,count.index) : cidrsubnet(data.aws_vpc.base.cidr_block,lookup(var.az_cidrsubnet_newbits, local.azs_provisioned_count),count.index)}"
+  cidr_block              = "${local.dmz_cidrs_override_enabled == "true" ? element(var.dmz_cidrs_override, count.index) : cidrsubnet(data.aws_vpc.base.cidr_block, lookup(var.az_cidrsubnet_newbits, local.azs_provisioned_count), count.index)}"
   map_public_ip_on_launch = "${var.enable_dmz_public_ips}"
   vpc_id                  = "${var.vpc_id}"
 
@@ -75,7 +87,7 @@ resource "aws_route_table_association" "rta_dmz" {
   count = "${local.azs_provisioned_count}"
 
   route_table_id = "${var.rt_dmz_id}"
-  subnet_id      = "${element(aws_subnet.dmz.*.id,count.index)}"
+  subnet_id      = "${element(aws_subnet.dmz.*.id, count.index)}"
 }
 
 ### Provisions NATs
@@ -114,20 +126,20 @@ resource "aws_eip" "eip_nat" {
 resource "aws_eip_association" "eip_nat_assoc" {
   count = "${local.azs_provisioned_count * local.lans_enabled_check * local.eips_enabled_check * local.nat_gateways_not_enabled_check}"
 
-  allocation_id = "${element(aws_eip.eip_nat.*.id,count.index)}"
-  instance_id   = "${element(aws_instance.nat.*.id,count.index)}"
+  allocation_id = "${element(aws_eip.eip_nat.*.id, count.index)}"
+  instance_id   = "${element(aws_instance.nat.*.id, count.index)}"
 }
 
 resource "aws_instance" "nat" {
   count = "${local.azs_provisioned_count * local.lans_enabled_check * local.nat_gateways_not_enabled_check}"
 
-  ami                         = "${coalesce(var.nat_ami_override,data.aws_ami.nat_ami.id)}"
+  ami                         = "${coalesce(var.nat_ami_override, data.aws_ami.nat_ami.id)}"
   associate_public_ip_address = true
   instance_type               = "${var.nat_instance_type}"
   key_name                    = "${var.nat_key_name}"
   source_dest_check           = false
-  subnet_id                   = "${element(aws_subnet.dmz.*.id,count.index)}"
-  vpc_security_group_ids      = ["${element(aws_security_group.sg_nat.*.id,count.index)}"]
+  subnet_id                   = "${element(aws_subnet.dmz.*.id, count.index)}"
+  vpc_security_group_ids      = ["${element(aws_security_group.sg_nat.*.id, count.index)}"]
 
   tags {
     application = "${var.stack_item_fullname}"
@@ -152,7 +164,7 @@ resource "aws_security_group" "sg_nat" {
   }
 
   ingress {
-    cidr_blocks = ["${local.lan_cidrs_override_enabled == "true" ? element(var.lan_cidrs_override,count.index) : cidrsubnet(data.aws_vpc.base.cidr_block,lookup(var.az_cidrsubnet_newbits, local.azs_provisioned_count * local.lans_multiplier),count.index + lookup(var.az_cidrsubnet_offset, local.azs_provisioned_count))}"]
+    cidr_blocks = ["${local.lan_cidrs_override_enabled == "true" ? element(var.lan_cidrs_override, count.index) : cidrsubnet(data.aws_vpc.base.cidr_block, lookup(var.az_cidrsubnet_newbits, local.azs_provisioned_count * local.lans_multiplier), count.index + lookup(var.az_cidrsubnet_offset, local.azs_provisioned_count))}"]
     description = "Ingress from ${var.stack_item_label}-lan-${count.index}"
     from_port   = 0
     protocol    = "-1"
@@ -169,8 +181,8 @@ resource "aws_security_group" "sg_nat" {
 resource "aws_nat_gateway" "nat" {
   count = "${local.azs_provisioned_count * local.lans_enabled_check * local.nat_gateways_enabled_check}"
 
-  allocation_id = "${element(aws_eip.eip_nat.*.id,count.index)}"
-  subnet_id     = "${element(aws_subnet.dmz.*.id,count.index)}"
+  allocation_id = "${element(aws_eip.eip_nat.*.id, count.index)}"
+  subnet_id     = "${element(aws_subnet.dmz.*.id, count.index)}"
 }
 
 ###
@@ -182,10 +194,10 @@ resource "aws_subnet" "lan" {
   count = "${local.azs_provisioned_count * local.lans_multiplier}"
 
   # Selects the first N number of AZs available for VPC use in the given region, where N is the requested number of AZs to provision. This order can be overidden by passing in an explicit list of AZ letters to be used.
-  availability_zone = "${local.azs_provisioned_override_enabled == "true" ? "${data.aws_region.current.name}${element(var.azs_provisioned_override,count.index)}" : element(data.aws_availability_zones.available.names,count.index)}"
+  availability_zone = "${local.azs_provisioned_override_enabled == "true" ? "${data.aws_region.current.name}${element(var.azs_provisioned_override, count.index)}" : element(data.aws_availability_zones.available.names, count.index)}"
 
   # Provisions N number of evenly allocated address spaces from the overall VPC CIDR block, where N is the requested number of AZs to provision multiplied by the number of LAN subnets to provision per AZ. Address space per subnet can be overidden by passing in an explicit list of CIDRs to be used.
-  cidr_block = "${local.lan_cidrs_override_enabled == "true" ? element(var.lan_cidrs_override,count.index) : cidrsubnet(data.aws_vpc.base.cidr_block,lookup(var.az_cidrsubnet_newbits, local.azs_provisioned_count * local.lans_multiplier),count.index + lookup(var.az_cidrsubnet_offset, local.azs_provisioned_count))}"
+  cidr_block = "${local.lan_cidrs_override_enabled == "true" ? element(var.lan_cidrs_override, count.index) : cidrsubnet(data.aws_vpc.base.cidr_block, lookup(var.az_cidrsubnet_newbits, local.azs_provisioned_count * local.lans_multiplier), count.index + lookup(var.az_cidrsubnet_offset, local.azs_provisioned_count))}"
   vpc_id     = "${var.vpc_id}"
 
   tags = "${merge(local.default_subnet_tags, var.additional_subnet_tags, map("Name", "${var.stack_item_label}-lan-${count.index}"))}"
@@ -209,6 +221,46 @@ resource "aws_route_table" "rt_lan" {
 resource "aws_route_table_association" "rta_lan" {
   count = "${local.azs_provisioned_count * local.lans_multiplier}"
 
-  route_table_id = "${element(aws_route_table.rt_lan.*.id,count.index)}"
-  subnet_id      = "${element(aws_subnet.lan.*.id,count.index)}"
+  route_table_id = "${element(aws_route_table.rt_lan.*.id, count.index)}"
+  subnet_id      = "${element(aws_subnet.lan.*.id, count.index)}"
 }
+
+
+## Provisions static resources
+
+### Provisions subnet
+resource "aws_subnet" "static" {
+  count = "${local.azs_provisioned_count * local.statics_multiplier}"
+
+  # Selects the first N number of AZs available for VPC use in the given region, where N is the requested number of AZs to provision. This order can be overidden by passing in an explicit list of AZ letters to be used.
+  availability_zone = "${local.azs_provisioned_override_enabled == "true" ? "${data.aws_region.current.name}${element(var.azs_provisioned_override, count.index)}" : element(data.aws_availability_zones.available.names, count.index)}"
+
+  # Provisions N number of evenly allocated address spaces from the overall VPC CIDR block, where N is the requested number of AZs to provision multiplied by the number of static subnets to provision per AZ. Address space per subnet can be overidden by passing in an explicit list of CIDRs to be used.
+  cidr_block = "${local.static_cidrs_override_enabled == "true" ? element(var.static_cidrs_override, count.index) : cidrsubnet(data.aws_vpc.base.cidr_block, lookup(var.az_cidrsubnet_newbits, local.azs_provisioned_count * local.statics_multiplier), count.index + lookup(var.az_cidrsubnet_offset, local.azs_provisioned_count))}"
+  vpc_id     = "${var.vpc_id}"
+
+  tags = "${merge(local.default_subnet_tags, var.additional_subnet_tags, map("Name", "${var.stack_item_label}-static-${count.index}"))}"
+}
+
+### Provisions routing table
+resource "aws_route_table" "rt_static" {
+  count = "${local.azs_provisioned_count * local.statics_multiplier}"
+
+  propagating_vgws = ["${compact(var.vgw_ids)}"]
+  vpc_id           = "${var.vpc_id}"
+
+  tags {
+    application = "${var.stack_item_fullname}"
+    managed_by  = "terraform"
+    Name        = "${var.stack_item_label}-static-${count.index}"
+  }
+}
+
+### Associates subnet with routing table
+resource "aws_route_table_association" "rta_static" {
+  count = "${local.azs_provisioned_count * local.statics_multiplier}"
+
+  route_table_id = "${element(aws_route_table.rt_static.*.id, count.index)}"
+  subnet_id      = "${element(aws_subnet.static.*.id, count.index)}"
+}
+

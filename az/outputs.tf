@@ -30,7 +30,7 @@ output "static_ids" {
 }
 
 output "static_cidrs" {
-  value = ["${aws_subnet.static.*.id}"]
+  value = ["${aws_subnet.static.*.cidr_block}"]
 }
 
 output "rt_static_ids" {

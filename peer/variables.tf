@@ -81,12 +81,12 @@ variable "requester_allow_to_remote_classic_link" {
 variable "requester_vpc_id" {
   type        = string
   description = "The ID of the requester VPC."
-  default     = null
+  default     = ""
 }
 
 variable "vpc_peering_connection_id" {
   type        = string
   description = "The VPC Peering Connection ID to manage."
-  default     = null
+  default     = ""
 }
 

@@ -15,7 +15,7 @@ variable "stack_item_label" {
 variable "accepter_allow_classic_link_to_remote" {
   type        = string
   description = "Allow a local linked EC2-Classic instance to communicate with instances in a peer VPC. This enables an outbound communication from the local ClassicLink connection to the remote VPC."
-  default     = ""
+  default     = null
 }
 
 variable "accepter_allow_remote_dns" {
@@ -27,31 +27,31 @@ variable "accepter_allow_remote_dns" {
 variable "accepter_allow_to_remote_classic_link" {
   type        = string
   description = "Allow a local VPC to communicate with a linked EC2-Classic instance in a peer VPC. This enables an outbound communication from the local VPC to the remote ClassicLink connection."
-  default     = ""
+  default     = null
 }
 
 variable "accepter_auto_accept" {
   type        = string
   description = "Accept the peering (both VPCs need to be in the same AWS account)."
-  default     = ""
+  default     = null
 }
 
 variable "accepter_owner_id" {
   type        = string
   description = "The AWS account ID of the owner of the peer VPC."
-  default     = ""
+  default     = null
 }
 
 variable "accepter_region" {
   type        = string
   description = "The region of the accepter VPC of the VPC Peering Connection."
-  default     = ""
+  default     = null
 }
 
 variable "accepter_vpc_id" {
   type        = string
   description = "The ID of the VPC with which you are creating the VPC Peering Connection."
-  default     = ""
+  default     = null
 }
 
 variable "auto_accept" {
@@ -63,7 +63,7 @@ variable "auto_accept" {
 variable "requester_allow_classic_link_to_remote" {
   type        = string
   description = "Allow a local linked EC2-Classic instance to communicate with instances in a peer VPC. This enables an outbound communication from the local ClassicLink connection to the remote VPC."
-  default     = ""
+  default     = null
 }
 
 variable "requester_allow_remote_dns" {
@@ -75,18 +75,18 @@ variable "requester_allow_remote_dns" {
 variable "requester_allow_to_remote_classic_link" {
   type        = string
   description = "Allow a local VPC to communicate with a linked EC2-Classic instance in a peer VPC. This enables an outbound communication from the local VPC to the remote ClassicLink connection."
-  default     = ""
+  default     = null
 }
 
 variable "requester_vpc_id" {
   type        = string
   description = "The ID of the requester VPC."
-  default     = ""
+  default     = null
 }
 
 variable "vpc_peering_connection_id" {
   type        = string
   description = "The VPC Peering Connection ID to manage."
-  default     = ""
+  default     = null
 }
 

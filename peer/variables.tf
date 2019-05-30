@@ -33,7 +33,7 @@ variable "accepter_allow_to_remote_classic_link" {
 variable "accepter_auto_accept" {
   type        = string
   description = "Accept the peering (both VPCs need to be in the same AWS account)."
-  default     = null
+  default     = "true"
 }
 
 variable "accepter_owner_id" {

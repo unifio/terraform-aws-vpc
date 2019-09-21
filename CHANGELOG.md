@@ -2,6 +2,14 @@
 * full ipv6 support
 * vpc endpoints
 
+## 0.4.0 (Sep 21, 2019)
+
+#### IMPROVEMENTS / NEW FEATURES:
+* Updated for Terraform v0.12
+
+#### BACKWARDS INCOMPATIBILITIES / NOTES:
+* Terraform versions earlier than 0.12.0 no longer supported.
+
 ## 0.3.6 (Jul 11, 2018)
 
 #### BUG FIXES:

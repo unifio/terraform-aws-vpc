@@ -1,9 +1,6 @@
 # Peering Connection
 
-## Set Terraform version constraint
-terraform {
-  required_version = "> 0.11.0"
-}
+
 
 ## Provisions VPC peering
 resource "aws_vpc_peering_connection" "peer" {

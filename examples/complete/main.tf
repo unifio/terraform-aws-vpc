@@ -37,7 +37,7 @@ module "vpc_dhcp" {
 
 ## Configures ACLs
 resource "aws_network_acl" "acl" {
-  vpc_id = module.vpc_base.vpc_id
+  vpc_id     = module.vpc_base.vpc_id
   subnet_ids = concat(module.vpc_az.lan_ids, module.vpc_az.dmz_ids)
 
   tags = {

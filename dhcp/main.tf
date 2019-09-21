@@ -1,9 +1,6 @@
 # DHCP Options
 
-## Set Terraform version constraint
-terraform {
-  required_version = "> 0.11.0"
-}
+
 
 ## Provisions DHCP options
 resource "aws_vpc_dhcp_options" "dhcp" {

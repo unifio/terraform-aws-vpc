@@ -1,9 +1,6 @@
 # VPC availability zone
 
-## Set Terraform version constraint
-terraform {
-  required_version = "> 0.11.0"
-}
+
 
 ## Variables
 data "aws_region" "current" {

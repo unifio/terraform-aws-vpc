@@ -7,7 +7,7 @@ This module is well suited to both basic and advanced use cases with very few re
 
 ## Requirements ##
 
-- Terraform 0.11.0 or newer
+- Terraform 0.12.0 or newer
 - AWS provider
 
 ## Quick Start

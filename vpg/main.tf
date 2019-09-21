@@ -1,9 +1,6 @@
 # Virtual Private Gateway
 
-## Set Terraform version constraint
-terraform {
-  required_version = "> 0.11.0"
-}
+
 
 ## Gateway configuration
 resource "aws_vpn_gateway" "vpg" {

@@ -1,9 +1,6 @@
 # VPC base
 
-## Set Terraform version constraint
-terraform {
-  required_version = "> 0.11.0"
-}
+
 
 ## Set default instance tennancy if not provided
 locals {

@@ -41,8 +41,8 @@ variable "azs_provisioned" {
 }
 
 variable "enable_dmz_public_ips" {
-  type    = string
-  default = ""
+  type    = bool
+  default = "false"
 }
 
 variable "lans_per_az" {

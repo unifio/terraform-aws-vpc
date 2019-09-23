@@ -57,6 +57,8 @@ locals {
     application = var.stack_item_fullname
     managed_by  = "terraform"
   }
+  # Sets to a type bool or null depending on string provided.
+  enable_dmz_public_ips = var.enable_dmz_public_ips == "" ? null : tobool(var.enable_dmz_public_ips)
 }
 
 ## Provisions DMZ resources
@@ -79,7 +81,7 @@ resource "aws_subnet" "dmz" {
     var.az_cidrsubnet_newbits[local.azs_provisioned_count],
     count.index,
   )
-  map_public_ip_on_launch = var.enable_dmz_public_ips
+  map_public_ip_on_launch = local.enable_dmz_public_ips
   vpc_id                  = var.vpc_id
 
   tags = merge(

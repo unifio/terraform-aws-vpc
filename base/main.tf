@@ -4,8 +4,11 @@
 
 ## Set default instance tennancy if not provided
 locals {
-  default_instance_tenancy = length(var.instance_tenancy) >= 1 ? var.instance_tenancy : "default"
-
+  default_instance_tenancy       = length(var.instance_tenancy) >= 1 ? var.instance_tenancy : "default"
+  enable_dns                     = var.enable_dns == "" ? null : tobool(var.enable_dns)
+  enable_hostnames               = var.enable_hostnames == "" ? null : tobool(var.enable_hostnames)
+  enable_classiclink             = var.enable_classiclink == "" ? null : tobool(var.enable_classiclink)
+  enable_classiclink_dns_support = var.enable_classiclink_dns_support == "" ? null : tobool(var.enable_classiclink_dns_support)
   default_vpc_tags = {
     application = var.stack_item_fullname
     managed_by  = "terraform"
@@ -17,10 +20,10 @@ locals {
 resource "aws_vpc" "vpc" {
   cidr_block                       = var.vpc_cidr
   instance_tenancy                 = local.default_instance_tenancy
-  enable_dns_support               = var.enable_dns
-  enable_dns_hostnames             = var.enable_hostnames
-  enable_classiclink               = var.enable_classiclink
-  enable_classiclink_dns_support   = var.enable_classiclink_dns_support
+  enable_dns_support               = local.enable_dns
+  enable_dns_hostnames             = local.enable_hostnames
+  enable_classiclink               = local.enable_classiclink
+  enable_classiclink_dns_support   = local.enable_classiclink_dns_support
   assign_generated_ipv6_cidr_block = var.assign_generated_ipv6_cidr_block
 
   tags = merge(local.default_vpc_tags, var.additional_vpc_tags)

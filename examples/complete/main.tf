@@ -26,10 +26,10 @@ module "vpc_dhcp" {
   source = "../../dhcp"
 
   domain_name          = var.domain_name
-  name_servers         = [var.name_servers]
-  netbios_name_servers = [var.netbios_name_servers]
+  name_servers         = var.name_servers
+  netbios_name_servers = var.netbios_name_servers
   netbios_node_type    = var.netbios_node_type
-  ntp_servers          = [var.ntp_servers]
+  ntp_servers          = var.ntp_servers
   stack_item_fullname  = var.stack_item_fullname
   stack_item_label     = var.stack_item_label
   vpc_id               = module.vpc_base.vpc_id
@@ -102,7 +102,7 @@ resource "aws_route" "dmz-to-igw" {
 }
 
 resource "aws_route" "lan-to-nat-gw" {
-  count = length(var.azs_provisioned_override) * length(var.lans_per_az) > 0 ? var.lans_per_az : "1" * signum(var.nat_gateways_enabled == "true" ? "1" : "0")
+  count = (length(var.azs_provisioned_override) * length(var.lans_per_az) > 0 ? var.lans_per_az : "1") * signum(var.nat_gateways_enabled == "true" ? "1" : "0")
 
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = element(module.vpc_az.nat_ids, count.index)
@@ -110,7 +110,7 @@ resource "aws_route" "lan-to-nat-gw" {
 }
 
 resource "aws_route" "lan-to-nat" {
-  count = length(var.azs_provisioned_override) * length(var.lans_per_az) > 0 ? var.lans_per_az : "1" * signum(var.nat_gateways_enabled == "true" ? "0" : "1")
+  count = (length(var.azs_provisioned_override) * length(var.lans_per_az) > 0 ? var.lans_per_az : "1") * signum(var.nat_gateways_enabled == "true" ? "0" : "1")
 
   destination_cidr_block = "0.0.0.0/0"
   instance_id            = element(module.vpc_az.nat_ids, count.index)

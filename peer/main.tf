@@ -13,7 +13,7 @@ locals {
 }
 ## Provisions VPC peering
 resource "aws_vpc_peering_connection" "peer" {
-  count = length(var.vpc_peering_connection_id) > 0 ? "0" : "1"
+  count = length(var.vpc_peering_connection_id) > 0 ? 0 : 1
 
   auto_accept   = var.accepter_region != "" ? null : local.auto_accept
   peer_owner_id = var.accepter_owner_id
@@ -41,7 +41,7 @@ resource "aws_vpc_peering_connection" "peer" {
 }
 
 resource "aws_vpc_peering_connection_accepter" "peer_accept" {
-  count = length(var.vpc_peering_connection_id) > 0 ? "1" : "0"
+  count = length(var.vpc_peering_connection_id) > 0 ? 1 : 0
 
   auto_accept               = local.accepter_auto_accept
   vpc_peering_connection_id = var.vpc_peering_connection_id

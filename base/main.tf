@@ -42,7 +42,7 @@ resource "aws_internet_gateway" "igw" {
 
 ## Provisions DMZ routing table
 resource "aws_route_table" "rt_dmz" {
-  propagating_vgws = ["${compact(var.vgw_ids)}"]
+  propagating_vgws = "${compact(var.vgw_ids)}"
   vpc_id           = "${aws_vpc.vpc.id}"
 
   tags = {
@@ -83,7 +83,7 @@ data "aws_iam_policy_document" "flow_log_policy" {
       "logs:DescribeLogStreams",
     ]
 
-    resources = ["${aws_cloudwatch_log_group.flow_log_group.arn}"]
+    resources = "${aws_cloudwatch_log_group.flow_log_group.arn}"
   }
 }
 

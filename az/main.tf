@@ -152,7 +152,7 @@ resource "aws_security_group" "sg_nat" {
   }
 
   ingress {
-    cidr_blocks = ["${local.lan_cidrs_override_enabled == "true" ? element(var.lan_cidrs_override,count.index) : cidrsubnet(data.aws_vpc.base.cidr_block,lookup(var.az_cidrsubnet_newbits, local.azs_provisioned_count * local.lans_multiplier),count.index + lookup(var.az_cidrsubnet_offset, local.azs_provisioned_count))}"]
+    cidr_blocks = "${local.lan_cidrs_override_enabled == "true" ? element(var.lan_cidrs_override,count.index) : cidrsubnet(data.aws_vpc.base.cidr_block,lookup(var.az_cidrsubnet_newbits, local.azs_provisioned_count * local.lans_multiplier),count.index + lookup(var.az_cidrsubnet_offset, local.azs_provisioned_count))}"
     description = "Ingress from ${var.stack_item_label}-lan-${count.index}"
     from_port   = 0
     protocol    = "-1"
@@ -195,7 +195,7 @@ resource "aws_subnet" "lan" {
 resource "aws_route_table" "rt_lan" {
   count = "${local.azs_provisioned_count * local.lans_multiplier}"
 
-  propagating_vgws = ["${compact(var.vgw_ids)}"]
+  propagating_vgws = "${compact(var.vgw_ids)}"
   vpc_id           = "${var.vpc_id}"
 
   tags = {

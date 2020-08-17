@@ -33,7 +33,7 @@ resource "aws_vpc" "vpc" {
 resource "aws_internet_gateway" "igw" {
   vpc_id = "${aws_vpc.vpc.id}"
 
-  tags {
+  tags = {
     application = "${var.stack_item_fullname}"
     managed_by  = "terraform"
     Name        = "${var.stack_item_label}-igw"
@@ -45,7 +45,7 @@ resource "aws_route_table" "rt_dmz" {
   propagating_vgws = ["${compact(var.vgw_ids)}"]
   vpc_id           = "${aws_vpc.vpc.id}"
 
-  tags {
+  tags = {
     application = "${var.stack_item_fullname}"
     managed_by  = "terraform"
     Name        = "${var.stack_item_label}-dmz"

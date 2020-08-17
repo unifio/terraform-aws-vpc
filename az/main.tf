@@ -129,7 +129,7 @@ resource "aws_instance" "nat" {
   subnet_id                   = "${element(aws_subnet.dmz.*.id,count.index)}"
   vpc_security_group_ids      = ["${element(aws_security_group.sg_nat.*.id,count.index)}"]
 
-  tags {
+  tags = {
     application = "${var.stack_item_fullname}"
     managed_by  = "terraform"
     Name        = "${var.stack_item_label}-nat-${count.index}"
@@ -159,7 +159,7 @@ resource "aws_security_group" "sg_nat" {
     to_port     = 0
   }
 
-  tags {
+  tags = {
     application = "${var.stack_item_fullname}"
     managed_by  = "terraform"
     Name        = "${var.stack_item_label}-nat-${count.index}"
@@ -198,7 +198,7 @@ resource "aws_route_table" "rt_lan" {
   propagating_vgws = ["${compact(var.vgw_ids)}"]
   vpc_id           = "${var.vpc_id}"
 
-  tags {
+  tags = {
     application = "${var.stack_item_fullname}"
     managed_by  = "terraform"
     Name        = "${var.stack_item_label}-lan-${count.index}"

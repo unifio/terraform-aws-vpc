@@ -15,7 +15,7 @@ resource "aws_vpc_dhcp_options" "dhcp" {
   netbios_node_type    = "${var.netbios_node_type}"
   ntp_servers          = ["${compact(var.ntp_servers)}"]
 
-  tags {
+  tags = {
     application = "${var.stack_item_fullname}"
     managed_by  = "terraform"
     Name        = "${var.stack_item_label}-dhcp"

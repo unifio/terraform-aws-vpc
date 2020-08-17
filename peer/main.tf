@@ -27,7 +27,7 @@ resource "aws_vpc_peering_connection" "peer" {
     allow_vpc_to_remote_classic_link = "${var.requester_allow_to_remote_classic_link}"
   }
 
-  tags {
+  tags = {
     application = "${var.stack_item_fullname}"
     managed_by  = "terraform"
     Name        = "${var.stack_item_label}-peer"
@@ -52,7 +52,7 @@ resource "aws_vpc_peering_connection_accepter" "peer_accept" {
     allow_vpc_to_remote_classic_link = "${var.requester_allow_to_remote_classic_link}"
   }
 
-  tags {
+  tags = {
     application = "${var.stack_item_fullname}"
     managed_by  = "terraform"
     Name        = "${var.stack_item_label}-peer"

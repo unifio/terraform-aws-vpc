@@ -9,7 +9,7 @@ terraform {
 resource "aws_vpn_gateway" "vpg" {
   availability_zone = "${var.availability_zone}"
 
-  tags {
+  tags = {
     application = "${var.stack_item_fullname}"
     managed_by  = "terraform"
     Name        = "${var.stack_item_label}-vpg"

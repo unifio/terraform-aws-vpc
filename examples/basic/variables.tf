@@ -13,14 +13,14 @@ variable "stack_item_label" {
 variable "enable_dns" {
   type    = bool
 
-  //set false for test
-  default = false
+  //set true for test
+  default = true
 }
 
 variable "enable_hostnames" {
   type    = bool
-  //set true for test
-  default = true
+  //set false for test
+  default = false
 }
 
 variable "region" {
@@ -41,8 +41,8 @@ variable "domain_name" {
 
 ## AZ parameters
 variable "azs_provisioned" {
-  type    = string
-  default = ""
+  type    = number
+  default = 2
 }
 
 variable "enable_dmz_public_ips" {
@@ -52,8 +52,8 @@ variable "enable_dmz_public_ips" {
 }
 
 variable "lans_per_az" {
-  type    = string
-  default = "1"
+  type    = number
+  default = 1
 }
 
 variable "nat_eips_enabled" {

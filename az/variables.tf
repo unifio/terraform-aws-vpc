@@ -47,9 +47,9 @@ variable "az_cidrsubnet_offset" {
 }
 
 variable "azs_provisioned" {
-  type        = string
+  type        = number
   description = "The number of availability zones to be provisioned."
-  default     = "2"
+  default     = 2
 }
 
 variable "azs_provisioned_override" {
@@ -77,9 +77,9 @@ variable "lan_cidrs_override" {
 }
 
 variable "lans_per_az" {
-  type        = string
+  type        = number
   description = "The number of private LAN subnets to be provisioned per AZ"
-  default     = "1"
+  default     = 1
 }
 
 variable "nat_ami_override" {

@@ -15,33 +15,40 @@ variable "stack_item_label" {
 variable "accepter_rt_lan_ids" {
   type        = list
   description = "The IDs of the peer VPC routing tables."
+  
 }
 
 variable "accepter_vpc_cidr" {
   type        = string
   description = "The ID of the peer VPC."
+  
 }
 
 variable "accepter_vpc_id" {
   type        = string
   description = "The ID of the VPC with which you are creating the VPC Peering Connection."
+  
 }
 
 variable "region" {
   type = string
+  default = "us-east-1"
 }
 
 variable "requester_rt_lan_ids" {
   type        = list
   description = "The IDs of the requesting VPC routing tables."
+  
 }
 
 variable "requester_vpc_cidr" {
   type        = string
   description = "The ID of the requester VPC."
+  
 }
 
 variable "requester_vpc_id" {
   type        = string
   description = "The ID of the requester VPC."
+  
 }

@@ -55,7 +55,7 @@ variable "azs_provisioned" {
 variable "azs_provisioned_override" {
   type        = list
   description = "List of availability zones to be provisioned."
-  default     = ["non_empty_list"]
+  default     = ["non_empty_list"] //
 }
 
 variable "dmz_cidrs_override" {

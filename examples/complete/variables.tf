@@ -16,13 +16,13 @@ variable "azs_provisioned_override" {
 }
 
 variable "enable_classiclink" {
-  type    = string
-  default = ""
+  type    = bool
+  default = false
 }
 
 variable "enable_hostnames" {
-  type    = string
-  default = ""
+  type    = bool
+  default = false
 }
 
 variable "instance_tenancy" {
@@ -31,21 +31,23 @@ variable "instance_tenancy" {
 }
 
 variable "lans_per_az" {
-  type    = string
-  default = ""
+  type    = number
+  default = 1
 }
 
 variable "nat_gateways_enabled" {
-  type    = string
-  default = ""
+  type    = bool
+  default = true
 }
 
 variable "region" {
   type = string
+  default = "us-east-1"
 }
 
 variable "vpc_cidr" {
   type = string
+  default = "172.16.0.0/21"
 }
 
 ## DHCP

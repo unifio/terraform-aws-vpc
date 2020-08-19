@@ -19,9 +19,9 @@ variable "availability_zone" {
 }
 
 variable "vpc_attach" {
-  type        = string
+  type        = bool
   description = "Specifies whether the VPG should be associated with a VPC."
-  default     = ""
+  default     = true
 }
 
 variable "vpc_id" {

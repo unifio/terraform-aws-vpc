@@ -2,29 +2,29 @@
 
 ## Returns Subnet IDs
 output "dmz_ids" {
-  value = ["${aws_subnet.dmz.*.id}"]
+  value = aws_subnet.dmz.*.id // [] removed
 }
 
 output "lan_ids" {
-  value = ["${aws_subnet.lan.*.id}"]
+  value = aws_subnet.lan.*.id // [] removed
 }
 
 ## Returns Subnet CIDR blocks
 output "dmz_cidrs" {
-  value = ["${aws_subnet.dmz.*.cidr_block}"]
+  value = aws_subnet.dmz.*.cidr_block // [] removed
 }
 
 output "lan_cidrs" {
-  value = ["${aws_subnet.lan.*.cidr_block}"]
+  value = aws_subnet.lan.*.cidr_block // [] removed
 }
 
 ## Returns information about the NATs
 output "eip_nat_ids" {
-  value = ["${aws_eip.eip_nat.*.id}"]
+  value = aws_eip.eip_nat.*.id // [] removed
 }
 
 output "eip_nat_ips" {
-  value = ["${aws_eip.eip_nat.*.public_ip}"]
+  value = aws_eip.eip_nat.*.public_ip // [] removed
 }
 
 output "nat_ids" {

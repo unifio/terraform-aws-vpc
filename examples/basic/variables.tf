@@ -20,7 +20,7 @@ variable "enable_dns" {
 variable "enable_hostnames" {
   type    = bool
   //set false for test
-  default = true
+  default = false
 }
 
 variable "region" {
@@ -48,7 +48,7 @@ variable "azs_provisioned" {
 variable "enable_dmz_public_ips" {
   type    = bool
   //set false for testing
-  default = true
+  default = false
 }
 
 variable "lans_per_az" {
@@ -59,11 +59,11 @@ variable "lans_per_az" {
 variable "nat_eips_enabled" {
   type    = bool
   //set false for test
-  default = true
+  default = false
 }
 
 ## VPG parameters
 variable "vpc_attach" {
   type    = bool
-  default = true
+  default = false
 }

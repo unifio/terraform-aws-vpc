@@ -64,6 +64,6 @@ variable "nat_eips_enabled" {
 
 ## VPG parameters
 variable "vpc_attach" {
-  type    = string
-  default = ""
+  type    = bool
+  default = true
 }

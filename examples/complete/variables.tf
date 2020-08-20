@@ -37,7 +37,7 @@ variable "lans_per_az" {
 
 variable "nat_gateways_enabled" {
   type    = bool
-  default = true
+  default = false
 }
 
 variable "region" {
@@ -67,8 +67,9 @@ variable "netbios_name_servers" {
 }
 
 variable "netbios_node_type" {
-  type    = string
-  default = ""
+  type    = number
+  //set to 2 for test
+  default = 2
 }
 
 variable "ntp_servers" {

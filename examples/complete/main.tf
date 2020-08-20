@@ -26,10 +26,10 @@ module "vpc_dhcp" {
   source = "../../dhcp"
 
   domain_name          = var.domain_name
-  name_servers         = var.name_servers //[] removed
-  netbios_name_servers = var.netbios_name_servers //[]removed
+  name_servers         = var.name_servers
+  netbios_name_servers = var.netbios_name_servers 
   netbios_node_type    = var.netbios_node_type
-  ntp_servers          = var.ntp_servers //[] removed
+  ntp_servers          = var.ntp_servers
   stack_item_fullname  = var.stack_item_fullname
   stack_item_label     = var.stack_item_label
   vpc_id               = module.vpc_base.vpc_id
@@ -38,7 +38,7 @@ module "vpc_dhcp" {
 ## Configures ACLs
 resource "aws_network_acl" "acl" {
   vpc_id     = module.vpc_base.vpc_id
-  subnet_ids = concat(module.vpc_az.lan_ids,module.vpc_az.dmz_ids) //[] removed
+  subnet_ids = concat(module.vpc_az.lan_ids,module.vpc_az.dmz_ids) 
 
   tags = {
     application = var.stack_item_fullname
@@ -88,7 +88,7 @@ module "vpc_az" {
   rt_dmz_id            = module.vpc_base.rt_dmz_id
   stack_item_label     = var.stack_item_label
   stack_item_fullname  = var.stack_item_fullname
-  vgw_ids              = module.vpc_vpg.vpg_id
+  vgw_ids              = [module.vpc_vpg.vpg_id]
   vpc_id               = module.vpc_base.vpc_id
 }
 

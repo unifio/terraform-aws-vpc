@@ -2,7 +2,7 @@ common: &common
   working_directory: ~/repo
 
   docker:
-    - image: unifio/ci:5.0.694-ruby-2.5.5
+    - image: unifio/ci:5.0.1005-ruby-2.5.5
 
   environment:
     AWS_REGION: 'us-east-1'

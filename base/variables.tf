@@ -14,7 +14,7 @@ variable "stack_item_label" {
 }
 
 variable "additional_vpc_tags" {
-  type        = map
+  type        = map(string)
   description = "Additional tags to apply at the VPC level, if any"
   default     = {}
 }
@@ -71,7 +71,7 @@ variable "flow_log_traffic_type" {
 
 ## Routing parameters
 variable "vgw_ids" {
-  type        = list
+  type        = list(string)
   description = "A list of virtual gateways for propagation."
   default     = []
 }

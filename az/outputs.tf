@@ -33,5 +33,5 @@ output "nat_ids" {
 
 ## Returns the routing table ID
 output "rt_lan_ids" {
-  value = (aws_route_table.rt_lan.*.id)
+  value = aws_route_table.rt_lan.*.id
 }

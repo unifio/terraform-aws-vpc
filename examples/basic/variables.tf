@@ -12,15 +12,12 @@ variable "stack_item_label" {
 ## VPC base parameters
 variable "enable_dns" {
   type    = bool
-
-  //set true for test
-  default = true
+  default = null
 }
 
 variable "enable_hostnames" {
   type    = bool
-  //set false for test
-  default = false
+  default = null
 }
 
 variable "region" {
@@ -30,7 +27,7 @@ variable "region" {
 variable "vpc_cidr" {
   type = string
   //set for test
-  default = "172.16.0.0/21"
+  //default = "172.16.0.0/21"
 }
 
 ## DHCP
@@ -47,8 +44,7 @@ variable "azs_provisioned" {
 
 variable "enable_dmz_public_ips" {
   type    = bool
-  //set false for testing
-  default = false
+  default = null
 }
 
 variable "lans_per_az" {
@@ -58,12 +54,11 @@ variable "lans_per_az" {
 
 variable "nat_eips_enabled" {
   type    = bool
-  //set false for test
-  default = false
+  default = null
 }
 
 ## VPG parameters
 variable "vpc_attach" {
   type    = bool
-  default = false
+  default = null
 }

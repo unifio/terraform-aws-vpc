@@ -2,12 +2,16 @@
 
 ## Set Terraform version constraint
 terraform {
-  required_version = "> 0.11.0"
+  required_version = "> 0.12.0"
 }
 
 ## Set default instance tennancy if not provided
 locals {
   default_instance_tenancy = length(var.instance_tenancy) >= 1 ? var.instance_tenancy : "default"
+  enable_dns                     = var.enable_dns
+  enable_hostnames               = var.enable_hostnames
+  enable_classiclink             = var.enable_classiclink
+  enable_classiclink_dns_support = var.enable_classiclink_dns_support
 
   default_vpc_tags = {
     application = var.stack_item_fullname

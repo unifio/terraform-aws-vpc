@@ -31,13 +31,13 @@ variable "enable" {
 }
 
 variable "name_servers" {
-  type        = list
+  type        = list(string)
   description = "List of name servers to configure in '/etc/resolv.conf'"
   default     = ["AmazonProvidedDNS"]
 }
 
 variable "netbios_name_servers" {
-  type        = list
+  type        = list(string)
   description = "List of NETBIOS name servers"
   default     = []
 }
@@ -49,7 +49,7 @@ variable "netbios_node_type" {
 }
 
 variable "ntp_servers" {
-  type        = list
+  type        = list(string)
   description = "List of NTP servers to configure"
   default     = []
 }

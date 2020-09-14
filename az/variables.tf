@@ -14,14 +14,14 @@ variable "stack_item_label" {
 }
 
 variable "additional_subnet_tags" {
-  type        = map
+  type        = map(string)
   description = "Additional tags to apply at the subnet level, if any"
   default     = {}
 }
 
 ## VPC parameters
 variable "az_cidrsubnet_newbits" {
-  type        = map
+  type        = map(string)
   description = "The number of bits by which to extend the CIDR range for the given number of AZs."
 
   default = {
@@ -35,7 +35,7 @@ variable "az_cidrsubnet_newbits" {
 }
 
 variable "az_cidrsubnet_offset" {
-  type        = map
+  type        = map(string)
   description = "The number of AZs to provision for."
 
   default = {
@@ -53,13 +53,13 @@ variable "azs_provisioned" {
 }
 
 variable "azs_provisioned_override" {
-  type        = list
+  type        = list(string)
   description = "List of availability zones to be provisioned."
-  default     = ["non_empty_list"] //
+  default     = ["non_empty_list"]
 }
 
 variable "dmz_cidrs_override" {
-  type        = list
+  type        = list(string)
   description = "The CIDR block(s) you want the DMZ subnet(s) to cover."
   default     = ["non_empty_list"]
 }
@@ -71,7 +71,7 @@ variable "enable_dmz_public_ips" {
 }
 
 variable "lan_cidrs_override" {
-  type        = list
+  type        = list(string)
   description = "The CIDR block(s) you want the LAN subnet(s) to cover."
   default     = ["non_empty_list"]
 }
@@ -81,6 +81,17 @@ variable "lans_per_az" {
   description = "The number of private LAN subnets to be provisioned per AZ"
   default     = 1
 }
+
+variable "static_cidrs_override" {
+  type        = list(string)
+  description = "The CIDR block(s) you want the static subnet(s) to cover."
+  default     = ["non_empty_list"]
+}
+
+variable "statics_per_az" {
+  type        = number
+  description = "The number of private static subnets to be provisioned per AZ"
+  default     = 0
 
 variable "nat_ami_override" {
   type        = string
@@ -118,7 +129,7 @@ variable "rt_dmz_id" {
 }
 
 variable "vgw_ids" {
-  type        = list
+  type        = list(string)
   description = "A list of virtual gateways to associate with the routing tables for route propagation."
   default     = []
 }

@@ -11,18 +11,18 @@ variable "stack_item_label" {
 
 ## VPC Parameters
 variable "azs_provisioned_override" {
-  type    = list
+  type    = list(string)
   default = ["a", "c", "d", "e"]
 }
 
 variable "enable_classiclink" {
   type    = bool
-  default = false
+  default = null
 }
 
 variable "enable_hostnames" {
   type    = bool
-  default = false
+  default = null
 }
 
 variable "instance_tenancy" {
@@ -37,17 +37,19 @@ variable "lans_per_az" {
 
 variable "nat_gateways_enabled" {
   type    = bool
-  default = false
+  default = null
 }
 
 variable "region" {
   type = string
-  default = "us-east-1"
+  //set for test
+  //default = us-east-1
 }
 
 variable "vpc_cidr" {
   type = string
-  default = "172.16.0.0/21"
+  //set for test
+  //default = "172.16.0.0/21"
 }
 
 ## DHCP
@@ -57,22 +59,23 @@ variable "domain_name" {
 }
 
 variable "name_servers" {
-  type    = list
+  type    = list(string)
   default = []
 }
 
 variable "netbios_name_servers" {
-  type    = list
+  type    = list(string)
   default = []
 }
 
 variable "netbios_node_type" {
   type    = number
+  default = null
   //set to 2 for test
-  default = 2
+  //default = 2
 }
 
 variable "ntp_servers" {
-  type    = list
+  type    = list(string)
   default = []
 }

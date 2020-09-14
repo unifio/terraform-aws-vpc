@@ -27,7 +27,7 @@ module "vpc_dhcp" {
 
   domain_name          = var.domain_name
   name_servers         = var.name_servers
-  netbios_name_servers = var.netbios_name_servers 
+  netbios_name_servers = var.netbios_name_servers
   netbios_node_type    = var.netbios_node_type
   ntp_servers          = var.ntp_servers
   stack_item_fullname  = var.stack_item_fullname
@@ -38,7 +38,7 @@ module "vpc_dhcp" {
 ## Configures ACLs
 resource "aws_network_acl" "acl" {
   vpc_id     = module.vpc_base.vpc_id
-  subnet_ids = concat(module.vpc_az.lan_ids,module.vpc_az.dmz_ids) 
+  subnet_ids = concat(module.vpc_az.lan_ids,module.vpc_az.dmz_ids)
 
   tags = {
     application = var.stack_item_fullname
@@ -66,13 +66,15 @@ module "vpc_az" {
 
   azs_provisioned_override = var.azs_provisioned_override
 
-  dmz_cidrs_override = [cidrsubnet(var.vpc_cidr,3,0),
+  dmz_cidrs_override = [
+    cidrsubnet(var.vpc_cidr,3,0),
     cidrsubnet(var.vpc_cidr,3,1),
     cidrsubnet(var.vpc_cidr,3,2),
     cidrsubnet(var.vpc_cidr,3,3),
   ]
 
-  lan_cidrs_override = [cidrsubnet(var.vpc_cidr,4,8),
+  lan_cidrs_override = [
+    cidrsubnet(var.vpc_cidr,4,8),
     cidrsubnet(var.vpc_cidr,4,9),
     cidrsubnet(var.vpc_cidr,4,10),
     cidrsubnet(var.vpc_cidr,4,11),
@@ -103,16 +105,16 @@ resource "aws_route" "lan-to-nat-gw" {
   count = length(var.azs_provisioned_override) * (var.lans_per_az > 0 ? var.lans_per_az : 1) * signum(var.nat_gateways_enabled == true ? 1 : 0)
 
   destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = element(module.vpc_az.nat_ids,count.index)
-  route_table_id         = element(module.vpc_az.rt_lan_ids,count.index)
+  nat_gateway_id         = module.vpc_az.nat_ids[count.index]
+  route_table_id         = module.vpc_az.rt_lan_ids[count.index]
 }
 
 resource "aws_route" "lan-to-nat" {
   count = length(var.azs_provisioned_override) * (var.lans_per_az > 0 ? var.lans_per_az : 1) * signum(var.nat_gateways_enabled == true ? 0 : 1)
 
   destination_cidr_block = "0.0.0.0/0"
-  instance_id            = element(module.vpc_az.nat_ids,count.index)
-  route_table_id         = element(module.vpc_az.rt_lan_ids,count.index)
+  instance_id            = module.vpc_az.nat_ids[count.index]
+  route_table_id         = module.vpc_az.rt_lan_ids[count.index]
 }
 
 resource "aws_vpc_endpoint" "s3-ep" {

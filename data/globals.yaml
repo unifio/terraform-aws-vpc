@@ -2,5 +2,5 @@
 # Global variables
 
 ## Terraform
-tf_state_bucket: 'unifio-terraform-state'
-tf_state_region: "us-east-2"
+tf_state_bucket: 'unifio-terrraform-state-us-east-1'
+tf_state_region: "us-east-1"

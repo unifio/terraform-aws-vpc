@@ -7,9 +7,9 @@ peer-vpc::module: 'examples/complete'
 ## State storage
 peer-vpc::state:
   - s3:
-      bucket: "%{hiera('tf_state_bucket')}"
+      bucket: "%{alias('tf_state_bucket')}"
       name: "terraform-aws-vpc/%{environment}/peer"
-      region: "%{hiera('tf_state_region')}"
+      region: "%{alias('tf_state_region')}"
 
 ## Input variables
 examples::complete::vars:

@@ -7,7 +7,7 @@ This module is well suited to both basic and advanced use cases with very few re
 
 ## Requirements ##
 
-- Terraform 0.11.0 or newer
+- Terraform 0.12.0 or newer
 - AWS provider
 
 ## Quick Start
@@ -36,7 +36,7 @@ Name | Type | Required | Description
 --- | --- | --- | ---
 `enable_classiclink` | string | Default: `false` | Specifies whether ClassicLink is enabled for the VPC.
 `enable_dns` | string | Default: `true` | Specifies whether DNS resolution is supported for the VPC.
-`enable_hostnames` | string | Default: `true` | Specifies whether the instances launched in the VPC get DNS hostnames.
+`enable_hostnames` | string | Default: `false` | Specifies whether the instances launched in the VPC get DNS hostnames.
 `flow_log_traffic_type` | string | Default: `ALL` | The type of traffic to capture. Valid values: ACCEPT,REJECT,ALL.
 `instance_tenancy` | string | Default: `default` | The allowed tenancy of instances launched into the VPC. Other options at this time are `dedicated` and `host`. These will both force any instance launched into the VPC to be dedicated, regardless of the tenancy option specified when the instance is launched. See [EC2 Dedicated Instance Doc](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/dedicated-instance.html) for more information.
 `stack_item_label` | string | Default: `qckstrt` | Short form identifier for this stack. This value is used to create the "Name" tag for resources created by this stack item, and also serves as a unique key for re-use.

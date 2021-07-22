@@ -13,6 +13,18 @@ variable "stack_item_label" {
   default     = "qckstrt"
 }
 
+variable "additional_dmz_tags" {
+  type        = "map"
+  description = "Additional tags to apply at the dmz subnet level, if any"
+  default     = {}
+}
+
+variable "additional_lan_tags" {
+  type        = "map"
+  description = "Additional tags to apply at the lan subnet level, if any"
+  default     = {}
+}
+
 variable "additional_subnet_tags" {
   type        = "map"
   description = "Additional tags to apply at the subnet level, if any"

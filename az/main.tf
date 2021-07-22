@@ -67,7 +67,7 @@ resource "aws_subnet" "dmz" {
   map_public_ip_on_launch = "${var.enable_dmz_public_ips}"
   vpc_id                  = "${var.vpc_id}"
 
-  tags = "${merge(local.default_subnet_tags, var.additional_subnet_tags, map("Name", "${var.stack_item_label}-dmz-${count.index}"))}"
+  tags = "${merge(local.default_subnet_tags, var.additional_dmz_tags, var.additional_subnet_tags, map("Name", "${var.stack_item_label}-dmz-${count.index}"))}"
 }
 
 ### Associates subnet with routing table
@@ -188,7 +188,7 @@ resource "aws_subnet" "lan" {
   cidr_block = "${local.lan_cidrs_override_enabled == "true" ? element(var.lan_cidrs_override,count.index) : cidrsubnet(data.aws_vpc.base.cidr_block,lookup(var.az_cidrsubnet_newbits, local.azs_provisioned_count * local.lans_multiplier),count.index + lookup(var.az_cidrsubnet_offset, local.azs_provisioned_count))}"
   vpc_id     = "${var.vpc_id}"
 
-  tags = "${merge(local.default_subnet_tags, var.additional_subnet_tags, map("Name", "${var.stack_item_label}-lan-${count.index}"))}"
+  tags = "${merge(local.default_subnet_tags, var.additional_lan_tags, var.additional_subnet_tags, map("Name", "${var.stack_item_label}-lan-${count.index}"))}"
 }
 
 ### Provisions routing table

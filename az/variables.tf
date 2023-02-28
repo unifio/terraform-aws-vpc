@@ -84,13 +84,13 @@ variable "lans_per_az" {
 }
 
 variable "static_cidrs_override" {
-  type        = "list"
+  type        = list(string)
   description = "The CIDR block(s) you want the static subnet(s) to cover."
   default     = ["non_empty_list"]
 }
 
 variable "statics_per_az" {
-  type        = "string"
+  type        = string
   description = "The number of private static subnets to be provisioned per AZ"
   default     = "0"
 }
@@ -140,4 +140,8 @@ variable "vpc_id" {
   type        = string
   description = "The ID of the VPC"
 }
-
+variable "propagate_vgws" {
+  type        = bool
+  description = "Whether or not to propagate_vgws in routing tables. In some cases aws_vpn_gateway_route_propagation may be used to manage the propagations."
+  default     = true
+}

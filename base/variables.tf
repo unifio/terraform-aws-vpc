@@ -77,3 +77,8 @@ variable "vgw_ids" {
   default     = []
 }
 
+variable "propagate_vgws" {
+  type        = bool
+  description = "Whether or not to propagate_vgws in routing tables. In some cases aws_vpn_gateway_route_propagation may be used to manage the propagation."
+  default     = true
+}

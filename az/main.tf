@@ -233,7 +233,7 @@ resource "aws_subnet" "lan" {
 resource "aws_route_table" "rt_lan" {
   count = local.azs_provisioned_count * local.lans_multiplier
 
-  propagating_vgws = compact(var.vgw_ids)
+  propagating_vgws = var.propagate_vgws ? compact(var.vgw_ids) : null
   vpc_id           = var.vpc_id
 
   tags = {
@@ -283,7 +283,7 @@ resource "aws_subnet" "static" {
 resource "aws_route_table" "rt_static" {
   count = local.azs_provisioned_count * local.statics_multiplier
 
-  propagating_vgws = compact(var.vgw_ids)
+  propagating_vgws = var.propagate_vgws ? compact(var.vgw_ids) : null
   vpc_id           = var.vpc_id
 
   tags = {

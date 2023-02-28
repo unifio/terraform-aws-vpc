@@ -42,7 +42,7 @@ resource "aws_internet_gateway" "igw" {
 
 ## Provisions DMZ routing table
 resource "aws_route_table" "rt_dmz" {
-  propagating_vgws = compact(var.vgw_ids)
+  propagating_vgws = var.propagate_vgws ? compact(var.vgw_ids) : null
   vpc_id           = aws_vpc.vpc.id
 
   tags = {

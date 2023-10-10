@@ -54,3 +54,7 @@ output "nat_ids" {
 output "nat_public_ips" {
   value = aws_nat_gateway.nat.*.public_ip
 }
+
+output "vpc_cidrblock" {
+  value = aws_vpc.base.cidr_block
+}
